@@ -217,29 +217,35 @@ body.dark-mode .ref-link-display{background:#0f172a;color:#f1f5f9;border-color:#
 .ad-claim-btn.active{opacity:1;pointer-events:auto;box-shadow:0 8px 25px rgba(16,185,129,.5)}
 .ad-lock-hint{text-align:center;font-size:11px;font-weight:700;color:#64748b;margin-top:12px}
 .ad-lock-hint.hidden{display:none}
-.auto-container{display:flex;flex-direction:column;gap:18px;padding:10px 0}
-.auto-header{text-align:center;position:relative;padding:30px 0 20px}
-.auto-pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.3) 0%,transparent 70%);animation:autoPulseRing 2s infinite}
-@keyframes autoPulseRing{0%{transform:translate(-50%,-50%) scale(.8);opacity:1}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
-.auto-main-icon{font-size:64px;margin-bottom:10px;position:relative;z-index:1}
-.auto-title{font-size:22px;font-weight:900;color:#4f46e5;margin-bottom:6px;position:relative;z-index:1}
-body.dark-mode .auto-title{color:#a78bfa}
-.auto-subtitle{font-size:13px;color:var(--text);opacity:.7;font-weight:700;position:relative;z-index:1}
-.auto-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.auto-stat{background:var(--card);border:2px solid var(--cardB);border-radius:16px;padding:16px;text-align:center}
-.auto-stat.highlight{background:linear-gradient(135deg,#10b981,#059669);border-color:#10b981;color:#fff}
-.auto-stat.highlight .as-label,.auto-stat.highlight .as-sub{color:rgba(255,255,255,.85)}
-.auto-stat.highlight .as-value{color:#fff}
-.as-label{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--text);opacity:.7;margin-bottom:6px}
-.as-value{font-size:28px;font-weight:900;color:#4f46e5;line-height:1;margin-bottom:4px}
-.as-sub{font-size:10px;font-weight:700;color:var(--text);opacity:.6;text-transform:uppercase}
-.auto-progress-wrap{background:var(--cardB);border-radius:20px;height:14px;overflow:hidden}
-.auto-progress-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#4f46e5,#3b82f6);border-radius:20px;transition:width .5s ease}
-.auto-progress-label{text-align:center;font-size:12px;font-weight:800;color:var(--text);opacity:.7;margin-top:-8px}
-.auto-daily-info{text-align:center;font-size:13px;font-weight:700;color:var(--text);padding:12px;background:var(--cardB);border-radius:12px}
-.auto-daily-info b{color:#4f46e5}
-.auto-stop-btn{width:100%;padding:16px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;border-radius:16px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit}
-.auto-warning{text-align:center;font-size:11px;font-weight:700;color:#f59e0b;padding:10px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;line-height:1.5}
+/* AUTO EARN FULLSCREEN AD */
+.auto-ad-overlay{position:fixed;inset:0;background:linear-gradient(180deg,#000 0%,#0a0a1a 100%);display:none;flex-direction:column;z-index:999999}
+.auto-ad-overlay.active{display:flex}
+.auto-ad-top{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:linear-gradient(180deg,rgba(0,0,0,.9),transparent)}
+.auto-ad-timer{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;padding:10px 18px;border-radius:30px;font-size:16px;font-weight:900;border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px)}
+.auto-ad-timer.done{background:rgba(16,185,129,.25);border-color:#10b981;color:#10b981}
+.auto-ad-progress-label{font-size:11px;color:#94a3b8;font-weight:800;padding:8px 18px;background:rgba(255,255,255,.08);border-radius:20px}
+.auto-ad-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;position:relative}
+.auto-ad-video{width:100%;max-width:340px;aspect-ratio:9/16;max-height:60vh;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #334155;position:relative;overflow:hidden}
+.auto-ad-video::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,#10b981,#6366f1,#10b981);opacity:.15;animation:spinBg 4s linear infinite}
+@keyframes spinBg{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.auto-ad-video-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px}
+.auto-ad-icon{font-size:72px;animation:aeBounce 1.5s infinite;filter:drop-shadow(0 0 20px rgba(99,102,241,.8))}
+.auto-ad-title{font-size:18px;font-weight:900;color:#fff}
+.auto-ad-sub{font-size:12px;color:#94a3b8;font-weight:600}
+.auto-ad-brand{position:absolute;top:14px;right:14px;font-size:9px;font-weight:900;letter-spacing:2px;color:#f59e0b;background:rgba(245,158,11,.15);padding:4px 10px;border-radius:20px;border:1px solid rgba(245,158,11,.3);z-index:3}
+.auto-ad-reward-tag{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:900;color:#10b981;background:rgba(16,185,129,.15);padding:6px 14px;border-radius:20px;border:1px solid rgba(16,185,129,.4);z-index:3;white-space:nowrap}
+.auto-ad-counter{font-size:12px;color:#64748b;font-weight:700;margin-top:16px}
+.auto-ad-bottom{padding:16px 20px calc(20px + env(safe-area-inset-bottom,0px));text-align:center;background:linear-gradient(0deg,rgba(0,0,0,.9),transparent)}
+.auto-ad-bottom p{font-size:11px;color:#64748b;font-weight:700;line-height:1.5}
+.split-banner{background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:14px;padding:14px;color:#fff;text-align:center;margin-bottom:14px;box-shadow:0 6px 20px rgba(16,185,129,.3)}
+.split-banner h4{font-size:15px;font-weight:900;margin-bottom:6px}
+.split-banner .split-row{display:flex;align-items:center;justify-content:center;gap:14px;font-size:13px;font-weight:800;margin-top:8px}
+.split-item{background:rgba(255,255,255,.2);padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.3)}
+.commission-info{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fbbf24;border-radius:16px;padding:14px;margin-bottom:14px}
+.commission-info h4{font-size:14px;font-weight:900;color:#78350f;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.commission-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px;font-weight:800;color:#92400e;border-bottom:1px dashed rgba(120,53,15,.2)}
+.commission-row:last-child{border-bottom:none}
+.commission-row span:last-child{color:#059669;font-weight:900}
 .dual-condition-box{display:flex;flex-direction:column;gap:10px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #a78bfa;border-radius:16px;padding:14px;margin-bottom:14px}
 body.dark-mode .dual-condition-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-color:#6366f1}
 .dual-header{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:900;color:#4f46e5;text-transform:uppercase;margin-bottom:2px}
@@ -259,15 +265,6 @@ body.dark-mode .condition-bar-wrap{background:rgba(255,255,255,.1)}
 .condition-sub{display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--text);opacity:.75}
 .condition-sub b{color:#4f46e5}
 body.dark-mode .condition-sub b{color:#a78bfa}
-.split-banner{background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:14px;padding:14px;color:#fff;text-align:center;margin-bottom:14px;box-shadow:0 6px 20px rgba(16,185,129,.3)}
-.split-banner h4{font-size:15px;font-weight:900;margin-bottom:6px}
-.split-banner .split-row{display:flex;align-items:center;justify-content:center;gap:14px;font-size:13px;font-weight:800;margin-top:8px}
-.split-item{background:rgba(255,255,255,.2);padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.3)}
-.commission-info{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fbbf24;border-radius:16px;padding:14px;margin-bottom:14px}
-.commission-info h4{font-size:14px;font-weight:900;color:#78350f;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.commission-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px;font-weight:800;color:#92400e;border-bottom:1px dashed rgba(120,53,15,.2)}
-.commission-row:last-child{border-bottom:none}
-.commission-row span:last-child{color:#059669;font-weight:900}
 @media(max-width:400px){.header h1{font-size:13px}.balance-badge{font-size:11px;padding:3px 8px}.header-icon-btn{width:30px;height:30px;font-size:14px}}
 </style>
 </head>
@@ -373,9 +370,9 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 
       <div class="commission-info">
         <h4>💎 রেফার কমিশন সিস্টেম</h4>
-        <div class="commission-row"><span>Level 1 (আপনার রেফার)</span><span>৫%</span></div>
-        <div class="commission-row"><span>Level 2 (তার রেফার)</span><span>২.৫%</span></div>
-        <div style="font-size:10px;color:#78350f;margin-top:6px;opacity:.8;font-weight:600">যখন আপনার রেফার আয় করে, তার ৫% আপনার অ্যাকাউন্টে আসবে।</div>
+        <div class="commission-row"><span>Level 1 (আপনার সরাসরি রেফার)</span><span>৭%</span></div>
+        <div class="commission-row"><span>Level 2 (তার রেফার)</span><span>৩%</span></div>
+        <div style="font-size:10px;color:#78350f;margin-top:6px;opacity:.8;font-weight:600">যখন আপনার রেফার আয় করে, তার ৭% আপনার অ্যাকাউন্টে আসবে।</div>
       </div>
 
       <div class="card">
@@ -413,26 +410,6 @@ body.dark-mode .condition-sub b{color:#a78bfa}
             <div class="tu-icon">👥</div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div id="sec-auto" class="section">
-      <div class="auto-container">
-        <div class="auto-header">
-          <div class="auto-pulse-ring"></div>
-          <div class="auto-main-icon">⚡</div>
-          <h2 class="auto-title">Auto Earning...</h2>
-          <p class="auto-subtitle" id="autoStatus">অ্যাড লোড হচ্ছে...</p>
-        </div>
-        <div class="auto-stats-grid">
-          <div class="auto-stat"><div class="as-label">এই সেশনে</div><div class="as-value" id="autoCountDisplay">0</div><div class="as-sub">অ্যাড</div></div>
-          <div class="auto-stat highlight" id="autoEarnStat"><div class="as-label">এই সেশনে আয়</div><div class="as-value" id="autoEarnDisplay">৳0.00</div><div class="as-sub">টাকা</div></div>
-        </div>
-        <div class="auto-progress-wrap"><div class="auto-progress-bar" id="autoProgressBar" style="width:0%"></div></div>
-        <div class="auto-progress-label" id="autoProgressText">0 / 20 অ্যাড</div>
-        <div class="auto-daily-info">📊 আজকের লিমিট: <b><span id="autoDailyUsed">0</span> / 100</b></div>
-        <button class="auto-stop-btn" onclick="stopAutoEarn(false)">⏹ থামুন এবং ফিরে যান</button>
-        <div class="auto-warning">⚠️ এই পেজে থাকলে অ্যাড স্বয়ংক্রিয়ভাবে চলবে।</div>
       </div>
     </div>
 
@@ -482,7 +459,6 @@ body.dark-mode .condition-sub b{color:#a78bfa}
         <div class="stat-row"><span>Balance</span><span id="profBalance">৳ 0.00</span></div>
         <div class="stat-row"><span>Commission</span><span id="profCommission">৳ 0.00</span></div>
         <div class="stat-row"><span>Total Referrals</span><span id="profRefCount">0</span></div>
-        <div class="stat-row"><span>Total Ads Watched</span><span id="profAdsCount">0</span></div>
       </div>
       <div class="card leaderboard-card">
         <h4><span>🏆 Top Referral Leaderboard</span><span class="lb-count" id="lbTotalCount">30 Users</span></h4>
@@ -499,6 +475,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
   </div>
 </div>
 
+<!-- REGULAR AD OVERLAY -->
 <div class="ad-overlay" id="adOverlay">
   <div class="ad-top-bar">
     <div class="ad-timer-chip" id="adTimerChip">
@@ -522,6 +499,32 @@ body.dark-mode .condition-sub b{color:#a78bfa}
     </div>
     <button class="ad-claim-btn" id="adClaimBtn" onclick="claimAdReward()">Claim ৳2.00</button>
     <div class="ad-lock-hint" id="adLockHint">🔒 টাইমার শেষ না হওয়া পর্যন্ত ক্লেইম করা যাবে না</div>
+  </div>
+</div>
+
+<!-- AUTO EARN FULLSCREEN AD OVERLAY -->
+<div class="auto-ad-overlay" id="autoAdOverlay">
+  <div class="auto-ad-top">
+    <div class="auto-ad-timer" id="autoAdTimerChip">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="autoAdTimerText">20</span>s
+    </div>
+    <div class="auto-ad-progress-label" id="autoAdProgress">1 / 20</div>
+  </div>
+  <div class="auto-ad-body">
+    <div class="auto-ad-video">
+      <div class="auto-ad-brand">SPONSORED</div>
+      <div class="auto-ad-video-inner">
+        <div class="auto-ad-icon" id="autoAdIcon">🎬</div>
+        <div class="auto-ad-title" id="autoAdTitle">বিজ্ঞাপন চলছে...</div>
+        <div class="auto-ad-sub" id="autoAdSub">ভিডিওটি শেষ পর্যন্ত দেখুন</div>
+      </div>
+      <div class="auto-ad-reward-tag" id="autoAdReward">+৳২ পাবেন</div>
+    </div>
+    <div class="auto-ad-counter" id="autoAdCounter">আজকের সেশন: ০টি অ্যাড</div>
+  </div>
+  <div class="auto-ad-bottom">
+    <p>⚠️ টাইমার শেষ না হওয়া পর্যন্ত বের হওয়া যাবে না</p>
   </div>
 </div>
 
@@ -553,26 +556,25 @@ const CHANNELS = {
   tg3: { id:'-1004427257866', link:'https://t.me/trueplaychannel3', name:'Gift Codes', icon:'🎁' }
 };
 
-// 💰 EARNINGS
 const AD_REWARD = 2.00;
+const AUTO_AD_REWARD = 2.00;
 const USER_SHARE_PERCENT = 80;
 const COMPANY_SHARE_PERCENT = 20;
 const TG_JOIN_BONUS = 5;
 const TG_REF_BONUS = 10;
 const DAILY_AD_LIMIT = 100;
 const AD_TIMER_SECONDS = 20;
+const AUTO_AD_TIMER = 20;
 const ADS_PER_FREE_REF = 15;
 
-// 💎 COMMISSION
-const COMMISSION_L1 = 5;      // 5%
-const COMMISSION_L2 = 2.5;    // 2.5%
+// 💎 COMMISSION 7% + 3%
+const COMMISSION_L1 = 7;
+const COMMISSION_L2 = 3;
 
-// 💸 WITHDRAW
 const MIN_WITHDRAW = 1000;
 const MAX_WITHDRAW = 50000;
 const WITHDRAW_CHARGE = 5;
 const REFERRALS_REQUIRED = 5;
-
 const TOTAL_CHANNELS = 3;
 const MIN_JOIN_WAIT_MS = 15000;
 const AUTO_AD_DELAY_MS = 60000;
@@ -593,6 +595,7 @@ let autoEarnRunning = false;
 let autoEarnSessionCount = 0;
 let autoEarnSessionEarnings = 0;
 let autoEarnLoopId = 0;
+let autoAdInterval = null;
 let gateCheckInProgress = false;
 let tgWebApp = null;
 
@@ -700,9 +703,7 @@ async function initAuth() {
       currentUserData = { ...newUser, loginId };
     }
     showLoading(false);
-    // Check gate first
     if (currentUserData.isBrowserUser === true) {
-      // Browser users skip gate
       await enterApp();
       listenUserChanges(currentUserKey);
     } else {
@@ -740,7 +741,6 @@ function showBlockedScreen(reason) {
   document.getElementById('app').style.display = 'none';
 }
 
-// TELEGRAM API
 async function tgApi(method, params = {}) {
   try { const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(params) }); return await r.json(); } catch(e) { return { ok: false }; }
 }
@@ -749,61 +749,39 @@ async function checkChannel(uid, cid) {
   return null;
 }
 
-// ═══════════════════════════════════════════════════════════════════
 // JOIN GATE
-// ═══════════════════════════════════════════════════════════════════
 function showJoinGate() {
   document.getElementById('app').style.display = 'none';
   document.getElementById('joinGateScreen').classList.add('active');
   updateGateUI();
 }
-function hideJoinGate() {
-  document.getElementById('joinGateScreen').classList.remove('active');
-}
+function hideJoinGate() { document.getElementById('joinGateScreen').classList.remove('active'); }
 
 async function checkGateChannels() {
   const u = getActiveUser();
   if (!u || !u.telegramId || u.isBrowserUser === true) return true;
   try {
     const results = {};
-    for (const [k, ch] of Object.entries(CHANNELS)) {
-      results[k] = await checkChannel(u.telegramId, ch.id);
-    }
-    const status = {
-      tg1: results.tg1 === true,
-      tg2: results.tg2 === true,
-      tg3: results.tg3 === true
-    };
-    // Save status
-    if (currentUserKey) {
-      try { await db.collection('users').doc(currentUserKey).update({ telegramStatus: status }); } catch(e) {}
-    }
+    for (const [k, ch] of Object.entries(CHANNELS)) { results[k] = await checkChannel(u.telegramId, ch.id); }
+    const status = { tg1: results.tg1 === true, tg2: results.tg2 === true, tg3: results.tg3 === true };
+    if (currentUserKey) { try { await db.collection('users').doc(currentUserKey).update({ telegramStatus: status }); } catch(e) {} }
     if (currentUserData) currentUserData.telegramStatus = status;
     return status.tg1 && status.tg2 && status.tg3;
   } catch(e) { return false; }
 }
-
 function updateGateUI() {
   const u = getActiveUser();
   const s = u?.telegramStatus || { tg1:false, tg2:false, tg3:false };
   ['tg1','tg2','tg3'].forEach((k, i) => {
     const el = document.getElementById('jg' + (i+1));
     const btn = el.querySelector('.jg-btn');
-    if (s[k]) {
-      el.classList.add('joined');
-      btn.classList.add('done');
-      btn.textContent = '✓ Joined';
-    } else {
-      el.classList.remove('joined');
-      btn.classList.remove('done');
-      btn.textContent = 'Join';
-    }
+    if (s[k]) { el.classList.add('joined'); btn.classList.add('done'); btn.textContent = '✓ Joined'; }
+    else { el.classList.remove('joined'); btn.classList.remove('done'); btn.textContent = 'Join'; }
   });
   const allJoined = s.tg1 && s.tg2 && s.tg3;
   document.getElementById('jgVerifyBtn').disabled = !allJoined;
   document.getElementById('jgVerifyBtn').textContent = allJoined ? '✅ চ্যানেল জয়েন ভেরিফাই করুন' : 'চ্যানেল জয়েন করে ভেরিফাই করুন';
 }
-
 async function joinGateChannel(k) {
   const ch = CHANNELS[k]; if(!ch) return;
   const u = getActiveUser();
@@ -818,7 +796,6 @@ async function joinGateChannel(k) {
   setTimeout(async () => { await checkGateChannels(); updateGateUI(); }, 7000);
   setTimeout(async () => { await checkGateChannels(); updateGateUI(); }, 12000);
 }
-
 async function verifyGateChannels() {
   if (gateCheckInProgress) return;
   gateCheckInProgress = true;
@@ -830,15 +807,9 @@ async function verifyGateChannels() {
       hideJoinGate();
       await awardJoinBonuses();
       await enterApp();
-    } else {
-      showPopup('❌ এখনো জয়েন হয়নি', 'সবগুলো চ্যানেলে "Join" ক্লিক করে আবার চেষ্টা করুন।');
-    }
-  } finally {
-    gateCheckInProgress = false;
-    showLoading(false);
-  }
+    } else { showPopup('❌ এখনো জয়েন হয়নি', 'সবগুলো চ্যানেলে "Join" ক্লিক করে আবার চেষ্টা করুন।'); }
+  } finally { gateCheckInProgress = false; showLoading(false); }
 }
-
 async function awardJoinBonuses() {
   const u = getActiveUser();
   if (!u || !currentUserKey) return;
@@ -848,8 +819,7 @@ async function awardJoinBonuses() {
     if (!user.telegramJoinBonuses) user.telegramJoinBonuses = { tg1:false, tg2:false, tg3:false };
     let newBalance = user.balance || 0;
     const history = user.history || [];
-    let changed = false;
-    let bonusCount = 0;
+    let changed = false, bonusCount = 0;
     for (const k of ['tg1','tg2','tg3']) {
       if (user.telegramStatus?.[k] === true && !user.telegramJoinBonuses[k]) {
         user.telegramJoinBonuses[k] = true;
@@ -866,7 +836,6 @@ async function awardJoinBonuses() {
     await processReferralBonus();
   } catch(e) { console.log(e); }
 }
-
 async function processReferralBonus() {
   const u = getActiveUser();
   if (!u || !u.referredBy) return;
@@ -890,9 +859,7 @@ async function processReferralBonus() {
   } catch(e) { console.log(e); }
 }
 
-// ═══════════════════════════════════════════════════════════════════
 // UI UPDATE
-// ═══════════════════════════════════════════════════════════════════
 function updateUI(){
   const u = getActiveUser(); if(!u) return;
   document.getElementById('headerBalance').textContent = (u.balance||0).toFixed(2);
@@ -903,27 +870,22 @@ function updateUI(){
   document.getElementById('profBalance').textContent = '৳ ' + (u.balance||0).toFixed(2);
   const pc = document.getElementById('profCommission'); if (pc) pc.textContent = '৳ ' + (u.commission||0).toFixed(2);
   document.getElementById('profRefCount').textContent = (u.referCount||0) + ' জন';
-  document.getElementById('profAdsCount').textContent = (u.totalAdsWatched||0) + ' টি';
   document.getElementById('wdBalance').textContent = (u.balance||0).toFixed(2);
   document.getElementById('cardBalance').textContent = (u.balance||0).toFixed(2);
   document.getElementById('cardReferCount').textContent = u.referCount || 0;
   const cc = document.getElementById('cardCommission'); if (cc) cc.textContent = (u.commission||0).toFixed(2);
   document.getElementById('refLinkDisplay').textContent = `https://t.me/${BOT_USERNAME}?start=${u.userId}`;
-
   const av = document.getElementById('homeProfileAvatar');
   if (u.profileImg) av.innerHTML = `<img src="${u.profileImg}" onerror="this.parentElement.innerHTML='<span>${(u.nick||'U').charAt(0).toUpperCase()}</span>'">`;
   else av.innerHTML = `<span>${(u.nick||'U').charAt(0).toUpperCase()}</span>`;
-
   const today = new Date().toDateString();
   let todayCount = u.adsToday || 0;
   if (u.lastAdDate !== today) todayCount = 0;
   document.getElementById('adLimitHome').textContent = `📊 আজ: ${todayCount} / ${DAILY_AD_LIMIT}`;
-
   let rp = u.adsSinceLastRef || 0;
   if (rp >= ADS_PER_FREE_REF) rp = rp % ADS_PER_FREE_REF;
   document.getElementById('refProgressBar').style.width = ((rp / ADS_PER_FREE_REF) * 100) + '%';
   document.getElementById('refProgressText').textContent = `🎁 পরবর্তী ফ্রি রেফার: ${rp} / ${ADS_PER_FREE_REF} অ্যাড`;
-
   const tgStatusEl = document.getElementById('tgIdStatus');
   if (u.isBrowserUser === true) { tgStatusEl.innerHTML = '🌐 Browser Mode - Guest'; tgStatusEl.style.color = '#3b82f6'; }
   else if (u.telegramId) {
@@ -932,7 +894,6 @@ function updateUI(){
     tgStatusEl.innerHTML = `${emoji} Joined: ${joined}/${TOTAL_CHANNELS}`;
     tgStatusEl.style.color = joined === TOTAL_CHANNELS ? '#10b981' : (joined > 0 ? '#f59e0b' : '#ef4444');
   }
-
   const refs = u.referCount || 0;
   const refPct = Math.min(100, (refs / REFERRALS_REQUIRED) * 100);
   const refOk = refs >= REFERRALS_REQUIRED;
@@ -944,9 +905,7 @@ function updateUI(){
   if (refOk) { refStatus.textContent='✓ Unlocked'; refStatus.classList.add('unlocked'); refRow.classList.add('unlocked'); }
   else { refStatus.textContent='🔒 Locked'; refStatus.classList.remove('unlocked'); refRow.classList.remove('unlocked'); }
   const ov = document.getElementById('dualOverallStatus');
-  if (refOk) { ov.textContent='✓ Unlocked'; ov.style.color='#10b981'; }
-  else { ov.textContent='Locked'; ov.style.color='#ef4444'; }
-
+  if (refOk) { ov.textContent='✓ Unlocked'; ov.style.color='#10b981'; } else { ov.textContent='Locked'; ov.style.color='#ef4444'; }
   renderTasks();
   renderWithdrawHistory(u.history);
   renderGiftHistory();
@@ -982,7 +941,6 @@ function renderWithdrawHistory(history){
     return `<div class="history-item"><div class="history-info-left"><div class="history-title">💸 Withdraw</div><div class="history-subtext">${item.number||''}</div><div class="history-time">${item.time||''}</div></div><div class="history-info-right"><span class="status-badge ${cls}">${item.status||'Pending'}</span><div class="history-amount neg">-৳${amt.toFixed(2)}</div></div></div>`;
   }).join('');
 }
-
 function renderGiftHistory(){
   const u = getActiveUser(); if(!u) return;
   const box = document.getElementById('giftHistoryList'); if(!box) return;
@@ -1004,9 +962,7 @@ function showSection(name){
   const sc = document.getElementById('scrollableContent'); if (sc) sc.scrollTop = 0;
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// AD SYSTEM
-// ═══════════════════════════════════════════════════════════════════
+// REGULAR AD SYSTEM
 function openAdWatch(){
   const u = getActiveUser(); if(!u) return;
   const today = new Date().toDateString();
@@ -1090,10 +1046,7 @@ function closeAdOverlay(){
   try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// AWARD + COMMISSION (Multi-level 5% + 2.5%)
-// ═══════════════════════════════════════════════════════════════════
-async function awardAdToUser(user) {
+async function awardAdToUser(user, isAutoAd) {
   const today = new Date().toDateString();
   let todayCount = user.adsToday || 0;
   if (user.lastAdDate !== today) todayCount = 0;
@@ -1107,43 +1060,137 @@ async function awardAdToUser(user) {
   let gotFreeRef = false;
   if (adsSinceRef >= ADS_PER_FREE_REF) { newRefCount++; adsSinceRef = 0; gotFreeRef = true; }
   const hist = user.history || [];
-  hist.push({ id:'AD_'+Date.now()+'_'+Math.random().toString(36).substr(2,5), type:'Ad Watched', amount: userReward, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+  hist.push({ id:'AD_'+Date.now()+'_'+Math.random().toString(36).substr(2,5), type: isAutoAd ? 'Auto Ad Watched' : 'Ad Watched', amount: userReward, status:'Completed', time: new Date().toLocaleString('bn-BD') });
   if (gotFreeRef) hist.push({ id:'FREEREF_'+Date.now(), type:'🎁 ফ্রি রেফার বোনাস', amount: 0, status:'Completed', time: new Date().toLocaleString('bn-BD') });
   await saveUserData({ balance: newBalance, adsToday: todayCount, lastAdDate: today, totalAdsWatched: newTotal, adsSinceLastRef: adsSinceRef, referCount: newRefCount, history: hist });
-
-  // Save company earnings
   try { await db.collection('company_earnings').add({ userId: user.userId, userReward, companyShare, timestamp: new Date().toLocaleString('bn-BD'), createdAt: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
-
-  // Multi-level commission
   await processCommissions(user, userReward);
-
   return { gotFreeRef, newRefCount };
 }
 
+// ═══════════════════════════════════════════════════════════════════
+// AUTO EARN (FULLSCREEN IN-APP AD — NO CLICK, NO EXTERNAL LINK)
+// ═══════════════════════════════════════════════════════════════════
+function updateAutoAdProgressUI() {
+  document.getElementById('autoAdProgress').textContent = autoEarnSessionCount + ' / ' + AUTO_EARN_MAX;
+  document.getElementById('autoAdCounter').textContent = 'এই সেশনে: ' + autoEarnSessionCount + 'টি অ্যাড • ৳' + autoEarnSessionEarnings.toFixed(2);
+}
+
+async function startAutoEarn(){
+  const u = getActiveUser(); if(!u) return;
+  autoEarnRunning = true;
+  autoEarnSessionCount = 0;
+  autoEarnSessionEarnings = 0;
+  autoEarnLoopId++;
+  const myLoopId = autoEarnLoopId;
+  try { if (tgWebApp?.enableClosingConfirmation) tgWebApp.enableClosingConfirmation(); } catch(e) {}
+  try { history.pushState({ autoAd: true }, ''); } catch(e) {}
+  updateAutoAdProgressUI();
+  runAutoEarnLoop(myLoopId);
+}
+
+function startAutoAdTimer() {
+  return new Promise(resolve => {
+    let tl = AUTO_AD_TIMER;
+    const timerText = document.getElementById('autoAdTimerText');
+    const timerChip = document.getElementById('autoAdTimerChip');
+    timerText.textContent = tl;
+    timerChip.classList.remove('done');
+    clearInterval(autoAdInterval);
+    autoAdInterval = setInterval(() => {
+      tl--;
+      timerText.textContent = tl;
+      if (tl <= 0) {
+        clearInterval(autoAdInterval); autoAdInterval = null;
+        timerText.textContent = '0';
+        timerChip.classList.add('done');
+        resolve();
+      }
+    }, 1000);
+  });
+}
+
+async function runAutoEarnLoop(myLoopId){
+  while(autoEarnRunning && myLoopId === autoEarnLoopId){
+    if (autoEarnSessionCount >= AUTO_EARN_MAX) { stopAutoEarn(true); return; }
+
+    // Show fullscreen ad overlay
+    const overlay = document.getElementById('autoAdOverlay');
+    overlay.classList.add('active');
+    document.getElementById('autoAdIcon').textContent = '🎬';
+    document.getElementById('autoAdTitle').textContent = 'বিজ্ঞাপন চলছে...';
+    document.getElementById('autoAdSub').textContent = 'ভিডিওটি শেষ পর্যন্ত দেখুন';
+    document.getElementById('autoAdReward').textContent = '+৳২ পাবেন';
+    updateAutoAdProgressUI();
+
+    // Start countdown
+    await startAutoAdTimer();
+
+    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) { overlay.classList.remove('active'); return; }
+
+    // Award immediately (no user click required)
+    const user = getActiveUser();
+    if (user) {
+      await awardAdToUser(user, true);
+      autoEarnSessionCount++;
+      autoEarnSessionEarnings += AUTO_AD_REWARD;
+      updateAutoAdProgressUI();
+      updateUI();
+      try { if (navigator.vibrate) navigator.vibrate(40); } catch(e){}
+    }
+
+    // Show completed state for 1.5s
+    document.getElementById('autoAdIcon').textContent = '✅';
+    document.getElementById('autoAdTitle').textContent = 'বিজ্ঞাপন সম্পন্ন!';
+    document.getElementById('autoAdSub').textContent = '+৳২ যোগ হয়েছে';
+    document.getElementById('autoAdReward').textContent = '✓ +৳২ পেয়েছেন';
+    await delay(1500);
+
+    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) { overlay.classList.remove('active'); return; }
+
+    // Small gap before next ad
+    overlay.classList.remove('active');
+    await delay(800);
+  }
+  const overlay = document.getElementById('autoAdOverlay');
+  overlay.classList.remove('active');
+}
+
+function stopAutoEarn(silent){
+  const wasRunning = autoEarnRunning;
+  autoEarnRunning = false;
+  autoEarnLoopId++;
+  clearInterval(autoAdInterval); autoAdInterval = null;
+  document.getElementById('autoAdOverlay').classList.remove('active');
+  try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
+  if (silent && wasRunning) showClaimSuccess(`🎉 সেশন সম্পন্ন!\n${autoEarnSessionCount}টি অ্যাড • ৳${autoEarnSessionEarnings.toFixed(2)}`);
+  else if (wasRunning && autoEarnSessionCount > 0) showClaimSuccess(`✅ থেমে গেছে\n${autoEarnSessionCount}টি অ্যাড • ৳${autoEarnSessionEarnings.toFixed(2)}`);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MULTI-LEVEL COMMISSION (7% + 3%)
+// ═══════════════════════════════════════════════════════════════════
 async function processCommissions(user, earningAmount) {
   if (!user || !user.referredBy) return;
   try {
-    // Level 1
     const l1 = user.referredBy;
     const c1 = (earningAmount * COMMISSION_L1) / 100;
     const l1Doc = await db.collection('users').doc(l1).get();
-    if (l1Doc.exists) {
-      const l1User = l1Doc.data();
-      const l1History = l1User.history || [];
-      l1History.push({ id:'COMM_L1_'+Date.now(), type:'💰 L1 কমিশন (৫%)', amount: c1, status:'Completed', time: new Date().toLocaleString('bn-BD') });
-      await db.collection('users').doc(l1).update({ commission: (l1User.commission || 0) + c1, balance: (l1User.balance || 0) + c1, history: l1History });
+    if (!l1Doc.exists) return;
+    const l1User = l1Doc.data();
+    const l1History = l1User.history || [];
+    l1History.push({ id:'COMM_L1_'+Date.now(), type:'💰 L1 কমিশন (৭%)', amount: c1, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+    await db.collection('users').doc(l1).update({ commission: (l1User.commission || 0) + c1, balance: (l1User.balance || 0) + c1, history: l1History });
 
-      // Level 2
-      if (l1User.referredBy) {
-        const l2 = l1User.referredBy;
-        const c2 = (earningAmount * COMMISSION_L2) / 100;
-        const l2Doc = await db.collection('users').doc(l2).get();
-        if (l2Doc.exists) {
-          const l2User = l2Doc.data();
-          const l2History = l2User.history || [];
-          l2History.push({ id:'COMM_L2_'+Date.now(), type:'💰 L2 কমিশন (২.৫%)', amount: c2, status:'Completed', time: new Date().toLocaleString('bn-BD') });
-          await db.collection('users').doc(l2).update({ commission: (l2User.commission || 0) + c2, balance: (l2User.balance || 0) + c2, history: l2History });
-        }
+    if (l1User.referredBy) {
+      const l2 = l1User.referredBy;
+      const c2 = (earningAmount * COMMISSION_L2) / 100;
+      const l2Doc = await db.collection('users').doc(l2).get();
+      if (l2Doc.exists) {
+        const l2User = l2Doc.data();
+        const l2History = l2User.history || [];
+        l2History.push({ id:'COMM_L2_'+Date.now(), type:'💰 L2 কমিশন (৩%)', amount: c2, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+        await db.collection('users').doc(l2).update({ commission: (l2User.commission || 0) + c2, balance: (l2User.balance || 0) + c2, history: l2History });
       }
     }
   } catch(e) { console.log('Commission error:', e); }
@@ -1155,92 +1202,13 @@ async function claimAdReward(){
   const today = new Date().toDateString();
   const todayCount = (u.lastAdDate === today ? (u.adsToday||0) : 0);
   if (todayCount >= DAILY_AD_LIMIT) { closeAdOverlay(); showPopup('⏰ লিমিট শেষ',`আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
-  const r = await awardAdToUser(u);
+  const r = await awardAdToUser(u, false);
   closeAdOverlay(); updateUI();
   if (r.gotFreeRef) setTimeout(() => showClaimSuccess(`🎉 ১৫টি অ্যাড সম্পন্ন!\n+১টি ফ্রি রেফার!\n\nমোট রেফার: ${r.newRefCount}`), 500);
   else showClaimSuccess(`🎉 ৳${AD_REWARD.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে!`);
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// AUTO EARN
-// ═══════════════════════════════════════════════════════════════════
-function updateAutoUI(){
-  document.getElementById('autoCountDisplay').textContent = autoEarnSessionCount;
-  document.getElementById('autoEarnDisplay').textContent = '৳' + autoEarnSessionEarnings.toFixed(2);
-  document.getElementById('autoProgressBar').style.width = Math.min(100, (autoEarnSessionCount / AUTO_EARN_MAX) * 100) + '%';
-  document.getElementById('autoProgressText').textContent = autoEarnSessionCount + ' / ' + AUTO_EARN_MAX + ' অ্যাড';
-  const u = getActiveUser();
-  if (u) {
-    const today = new Date().toDateString();
-    const tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-    document.getElementById('autoDailyUsed').textContent = tc;
-  }
-}
-function updateAutoStatus(msg){ document.getElementById('autoStatus').textContent = msg; }
-
-async function startAutoEarn(){
-  const u = getActiveUser(); if(!u) return;
-  const today = new Date().toDateString();
-  const tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-  if (tc >= DAILY_AD_LIMIT) { showPopup('⏰ দৈনিক লিমিট শেষ', `আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
-  autoEarnRunning = true;
-  autoEarnSessionCount = 0;
-  autoEarnSessionEarnings = 0;
-  autoEarnLoopId++;
-  const myLoopId = autoEarnLoopId;
-  showSection('auto');
-  updateAutoUI();
-  updateAutoStatus('অ্যাড লোড হচ্ছে...');
-  try { if (tgWebApp?.enableClosingConfirmation) tgWebApp.enableClosingConfirmation(); } catch(e){}
-  runAutoEarnLoop(myLoopId);
-}
-
-async function runAutoEarnLoop(myLoopId){
-  while(autoEarnRunning && myLoopId === autoEarnLoopId){
-    const u = getActiveUser();
-    if (!u) break;
-    const today = new Date().toDateString();
-    let tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-    if (tc >= DAILY_AD_LIMIT) { updateAutoStatus('✅ দৈনিক লিমিট শেষ!'); await delay(1500); stopAutoEarn(true); return; }
-    if (autoEarnSessionCount >= AUTO_EARN_MAX) { updateAutoStatus('✅ সেশন সম্পূর্ণ!'); await delay(1500); stopAutoEarn(true); return; }
-    updateAutoStatus('⏳ পরবর্তী অ্যাড লোড হচ্ছে...');
-    await delay(1500);
-    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) return;
-    updateAutoStatus('🎬 অ্যাড চলছে...');
-    try {
-      if (typeof window.show_11891042 === 'function') {
-        const r = window.show_11891042('pop');
-        if (r && typeof r.then === 'function') { await Promise.race([r, delay(25000)]); }
-        else { await delay(15000); }
-      } else { await delay(10000); }
-    } catch(e) { console.log(e); }
-    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) return;
-    const user = getActiveUser();
-    if (user) {
-      await awardAdToUser(user);
-      autoEarnSessionCount++;
-      autoEarnSessionEarnings += AD_REWARD;
-      updateAutoUI(); updateUI();
-      try { if (navigator.vibrate) navigator.vibrate(30); } catch(e){}
-    }
-    updateAutoStatus('✅ অ্যাড সম্পন্ন! পরের অ্যাড আসছে...');
-    await delay(2500);
-  }
-}
-
-function stopAutoEarn(silent){
-  const wasRunning = autoEarnRunning;
-  autoEarnRunning = false;
-  autoEarnLoopId++;
-  try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
-  showSection('home');
-  if (silent && wasRunning) showClaimSuccess(`🎉 সেশন সম্পন্ন!\n${autoEarnSessionCount}টি • ৳${autoEarnSessionEarnings.toFixed(2)}`);
-  else if (wasRunning && autoEarnSessionCount > 0) showClaimSuccess(`✅ থেমে গেছে\n${autoEarnSessionCount}টি • ৳${autoEarnSessionEarnings.toFixed(2)}`);
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // JOIN CHANNEL (Task page)
-// ═══════════════════════════════════════════════════════════════════
 async function joinChannel(k){
   const u = getActiveUser(); if(!u) return;
   if (u.isBrowserUser === true) { showPopup('🌐 Browser Mode','Telegram এ @'+BOT_USERNAME+' থেকে খুলুন।'); return; }
@@ -1252,7 +1220,6 @@ async function joinChannel(k){
   showPopup('📢 '+ch.name,'১️⃣ Telegram এ চ্যানেল ওপেন হচ্ছে\n২️⃣ "Join" ক্লিক করুন\n৩️⃣ ফিরে আসুন\n\n⏳ ১৫ সেকেন্ড পর অটো ভেরিফাই।');
   setTimeout(verifyAllChannels, 7000); setTimeout(verifyAllChannels, 15000); setTimeout(verifyAllChannels, 25000);
 }
-
 async function verifyAllChannels() {
   const u = getActiveUser();
   if (!u || !u.telegramId || u.isBrowserUser === true) return;
@@ -1292,9 +1259,7 @@ async function verifyAllChannels() {
   } catch(e) { console.error(e); }
 }
 
-// ═══════════════════════════════════════════════════════════════════
 // WITHDRAW
-// ═══════════════════════════════════════════════════════════════════
 function selectWdMethod(m){
   selectedWdMethodName = m;
   document.getElementById('wdMethodBkash').classList.toggle('active', m==='bKash');
@@ -1302,7 +1267,6 @@ function selectWdMethod(m){
   const u = getActiveUser();
   if (u && u.linkedNumbers) { const f = document.getElementById('wdNumber'); if (f && u.linkedNumbers[m]) f.value = u.linkedNumbers[m]; else if (f) f.value = ''; }
 }
-
 async function doWithdraw(){
   const u = getActiveUser(); if(!u) return;
   const refs = u.referCount || 0;
@@ -1461,20 +1425,7 @@ function showToastSafe(title, msg){
 function toggleDarkMode(){ document.body.classList.toggle('dark-mode'); const isDark = document.body.classList.contains('dark-mode'); const icon = document.getElementById('darkModeIcon'); if (isDark) { icon.textContent='☀️'; localStorage.setItem('darkMode','enabled'); } else { icon.textContent='🌙'; localStorage.setItem('darkMode','disabled'); } }
 function loadDarkModePreference(){ const dm = localStorage.getItem('darkMode'); if (dm === 'enabled') { document.body.classList.add('dark-mode'); document.getElementById('darkModeIcon').textContent = '☀️'; } }
 
-// AUTO AD + TOTAL USERS
-function startAutoAdTrigger(){
-  clearTimeout(autoAdTimer);
-  autoAdTimer = setTimeout(() => {
-    if (adInProgress || autoEarnRunning || withdrawPageActive) { startAutoAdTrigger(); return; }
-    const u = getActiveUser(); if(!u) return;
-    const today = new Date().toDateString();
-    const tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-    if (tc >= DAILY_AD_LIMIT) return;
-    showToastSafe('💰 Auto Ad','৩ সেকেন্ডে অ্যাড আসছে...');
-    setTimeout(() => { if (!adInProgress && !autoEarnRunning && !withdrawPageActive) openAdWatch(); }, 3000);
-  }, AUTO_AD_DELAY_MS);
-}
-
+// TOTAL USERS
 function loadTotalUsers(){
   db.collection('users').onSnapshot(s => {
     const count = s.size || 0;
@@ -1483,17 +1434,23 @@ function loadTotalUsers(){
   }, err => {});
 }
 
+// BACK BUTTON PROTECTION
 window.addEventListener('popstate', function(e){
-  if (autoEarnRunning) { try { history.pushState({autoEarn:true},''); } catch(err){} showToastSafe('⏳ থামুন','প্রথমে "থামুন" বাটনে ক্লিক করুন'); return; }
-  if (adInProgress) { try { history.pushState({ adOverlay: true },''); } catch(err){} showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); }
-  else if (document.getElementById('adOverlay').classList.contains('active')) { closeAdOverlay(); }
+  if (autoEarnRunning) {
+    // Restore back lock - user must use stop button
+    try { history.pushState({ autoAd: true },''); } catch(err){}
+    showToastSafe('⏳ অপেক্ষা','অ্যাড শেষ হওয়ার আগে বের হওয়া যাবে না');
+    return;
+  }
+  if (adInProgress) { try { history.pushState({ adOverlay: true },''); } catch(err){} showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); return; }
+  if (document.getElementById('adOverlay').classList.contains('active')) closeAdOverlay();
 });
 
 async function enterApp(){
   hideJoinGate();
   document.getElementById('app').style.display = 'flex';
   document.getElementById('blockedScreen').classList.remove('active');
-  updateUI(); loadDarkModePreference(); checkNoticeDot(); loadTotalUsers(); startAutoAdTrigger();
+  updateUI(); loadDarkModePreference(); checkNoticeDot(); loadTotalUsers();
   if (currentUserData && currentUserData.isBrowserUser !== true) {
     setTimeout(verifyAllChannels, 2000);
     if (tgCheckInterval) clearInterval(tgCheckInterval);
