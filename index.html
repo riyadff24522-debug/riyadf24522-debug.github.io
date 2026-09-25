@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Ad Earn Bot - Watch Ads & Earn</title>
+<title>Taste Wallet - Official</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src='//libtl.com/sdk.js' data-zone='11891042' data-sdk='show_11891042'></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="icon-192.png" />
 <style>
-:root{--bg:#f8fafc;--text:#1e293b;--card:#fff;--cardB:#f1f5f9;--shadow:0 10px 25px -5px rgba(0,0,0,.05);--input:#f8fafc;--inputB:#e2e8f0;--nav:#fff;--navB:#e2e8f0;--header:linear-gradient(135deg,#4f46e5,#7c3aed);--noticeB:#fffbeb;--noticeBd:#fde68a;--noticeC:#b45309;--depNtB:#f0fdf4;--depNtBd:#bbf7d0;--depNtC:#166534;--popup:#fff;--popupT:#1e293b;--hist:#fff;--histB:#e2e8f0;--histT:#0f172a;--pendB:#fef3c7;--pendT:#b45309;--compB:#dcfce7;--compT:#15803d;--rejB:#fee2e2;--rejT:#b91c1c;--msgUB:#eef2ff;--msgUBd:#4f46e5;--blkB:#fee2e2;--blkBd:#fca5a5;--blkC:#991b1b}
-body.dark-mode{--bg:#0f172a;--text:#f1f5f9;--card:#1e293b;--cardB:#334155;--shadow:0 10px 25px -5px rgba(0,0,0,.3);--input:#1e293b;--inputB:#334155;--nav:#1e293b;--navB:#334155;--header:linear-gradient(135deg,#1e1b4b,#312e81);--noticeB:#451a03;--noticeBd:#78350f;--noticeC:#fcd34d;--depNtB:#064e3b;--depNtBd:#065f46;--depNtC:#86efac;--popup:#1e293b;--popupT:#f1f5f9;--hist:#1e293b;--histB:#334155;--histT:#f1f5f9;--pendB:#451a03;--pendT:#fcd34d;--compB:#064e3b;--compT:#86efac;--rejB:#7f1d1d;--rejT:#fca5a5;--msgUB:#1e1b4b;--msgUBd:#818cf8;--blkB:#7f1d1d;--blkBd:#991b1b;--blkC:#fca5a5}
+:root{--bg:#f8fafc;--text:#1e293b;--card:#fff;--cardB:#f1f5f9;--shadow:0 10px 25px -5px rgba(0,0,0,.05);--input:#f8fafc;--inputB:#e2e8f0;--nav:#fff;--navB:#e2e8f0;--header:linear-gradient(135deg,#4f46e5,#7c3aed);--noticeB:#fffbeb;--noticeBd:#fde68a;--noticeC:#b45309;--depNtB:#f0fdf4;--depNtBd:#bbf7d0;--depNtC:#166534;--popup:#fff;--popupT:#1e293b;--hist:#fff;--histB:#e2e8f0;--histT:#0f172a;--pendB:#fef3c7;--pendT:#b45309;--compB:#dcfce7;--compT:#15803d;--rejB:#fee2e2;--rejT:#b91c1c;--msgUB:#eef2ff;--msgUBd:#4f46e5;--blkB:#fee2e2;--blkBd:#fca5a5;--blkC:#991b1b;--gift:linear-gradient(135deg,#fff7ed,#ffedd5);--giftBd:#fed7aa}
+body.dark-mode{--bg:#0f172a;--text:#f1f5f9;--card:#1e293b;--cardB:#334155;--shadow:0 10px 25px -5px rgba(0,0,0,.3);--input:#1e293b;--inputB:#334155;--nav:#1e293b;--navB:#334155;--header:linear-gradient(135deg,#1e1b4b,#312e81);--noticeB:#451a03;--noticeBd:#78350f;--noticeC:#fcd34d;--depNtB:#064e3b;--depNtBd:#065f46;--depNtC:#86efac;--popup:#1e293b;--popupT:#f1f5f9;--hist:#1e293b;--histB:#334155;--histT:#f1f5f9;--pendB:#451a03;--pendT:#fcd34d;--compB:#064e3b;--compT:#86efac;--rejB:#7f1d1d;--rejT:#fca5a5;--msgUB:#1e1b4b;--msgUBd:#818cf8;--blkB:#7f1d1d;--blkBd:#991b1b;--blkC:#fca5a5;--gift:linear-gradient(135deg,#451a03,#78350f);--giftBd:#92400e}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
 body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transition:background .3s,color .3s}
 #blockedScreen{position:fixed;inset:0;background:var(--blkB);display:none;align-items:center;justify-content:center;z-index:99999;padding:20px}
@@ -29,11 +27,14 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 #screenShield .shield-text{font-size:18px;font-weight:900;color:#ef4444;margin-bottom:8px;letter-spacing:1px}
 #screenShield .shield-sub{font-size:13px;color:#64748b;font-weight:700}
 .header{background:var(--header);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 12px rgba(79,70,229,.15);min-height:60px;position:relative;z-index:95}
-.header h1{font-size:15px;font-weight:800;letter-spacing:.3px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.header h1{font-size:18px;font-weight:800;letter-spacing:.5px}
 .header-right{display:flex;align-items:center;gap:6px}
 .balance-badge{background:rgba(255,255,255,.2);padding:4px 10px;border-radius:30px;font-weight:700;font-size:13px;border:1px solid rgba(255,255,255,.3);white-space:nowrap}
-.header-icon-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;position:relative;color:#fff;flex-shrink:0}
-.content{flex:1;overflow-y:auto;padding:12px;padding-top:20px;padding-bottom:80px;position:relative;background:var(--bg)}
+.header-icon-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s;position:relative;color:#fff;flex-shrink:0}
+.header-icon-btn .badge-dot{position:absolute;top:2px;right:2px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:1.5px solid rgba(79,70,229,.8)}
+.header-icon-btn .badge-dot.hidden{display:none}
+@keyframes pulseDot{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(239,68,68,.7)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(239,68,68,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+.content{flex:1;overflow-y:auto;padding:12px;padding-bottom:80px;position:relative;background:var(--bg)}
 .card{background:var(--card);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--cardB)}
 .card h3{font-size:17px;margin-bottom:14px;color:var(--text);font-weight:800}
 .stat-row{display:flex;justify-content:space-between;margin:10px 0;font-size:14px;align-items:center;color:var(--text);opacity:.8}
@@ -48,6 +49,7 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .info-box.ib-refer{background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#fff}
 .info-box.ib-deposit{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff}
 .info-box.ib-withdraw{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff}
+.info-box.ib-users{background:linear-gradient(135deg,#06b6d4 0%,#0891b2 100%);color:#fff}
 .home-avatar{position:relative;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:900;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 20px rgba(79,70,229,.35)}
 .home-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .btn{display:inline-block;padding:10px 16px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:14px;text-align:center;transition:all .2s}
@@ -84,8 +86,14 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .nav-item{flex:1;text-align:center;padding:4px 0;font-size:11px;color:var(--text);cursor:pointer;font-weight:700;position:relative;opacity:.5}
 .nav-item.active{color:#4f46e5;opacity:1}
 .nav-item .icon{font-size:20px;display:block;margin-bottom:1px}
+.nav-badge{position:absolute;top:0;right:20%;background:#ef4444;color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:10px;border:1px solid #fff;min-width:14px;text-align:center}
 .popup-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:2000}
 .popup{background:var(--popup);width:88%;max-width:360px;border-radius:24px;padding:24px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);max-height:80vh;overflow-y:auto}
+.popup .notice-item{text-align:left;padding:10px 0;border-bottom:1px solid var(--cardB)}
+.popup .notice-item:last-child{border-bottom:none}
+.popup .notice-item .notice-title{font-weight:800;font-size:14px;color:var(--popupT)}
+.popup .notice-item .notice-body{font-size:13px;color:var(--text);opacity:.8;margin-top:4px;line-height:1.5}
+.popup .notice-item .notice-time{font-size:11px;color:var(--text);opacity:.4;margin-top:4px}
 .popup h3{margin-bottom:10px;font-size:20px;font-weight:800;color:var(--popupT)}
 .claim-popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .claim-popup-overlay.active{opacity:1;visibility:visible}
@@ -98,11 +106,57 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .hidden{display:none!important}
 .section{display:none}
 .section.active{display:block}
+.copy-btn{background:#eef2ff;color:#4f46e5;border:none;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:700}
+.gift-hero{background:var(--gift);border-radius:16px;padding:20px 14px;text-align:center;margin-bottom:14px;border:1px solid var(--giftBd)}
+.gift-box{font-size:50px;margin-bottom:6px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.gift-hero h2{font-size:16px;color:var(--text);font-weight:800;margin-bottom:4px}
+.gift-hero p{font-size:12px;color:var(--text);font-weight:600;opacity:.7}
+.gift-input{width:100%;padding:12px 14px;border:2px solid var(--giftBd);border-radius:12px;font-size:14px;text-align:center;margin:10px 0;background:var(--input);font-weight:700;color:var(--text)}
+.receive-btn{width:100%;padding:12px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer}
+.gift-history-empty{text-align:center;padding:20px 10px;color:var(--text);opacity:.5}
+.gift-history-empty .icon{font-size:34px;margin-bottom:6px;opacity:.5}
 .loading-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff}
 .loading-overlay.active{display:flex}
 .spinner{width:36px;height:36px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.watch-ad-card{background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:20px;padding:18px;margin-bottom:14px;color:#fff;box-shadow:0 10px 30px -10px rgba(16,185,129,.5);position:relative;overflow:hidden;cursor:pointer}
+.refer-premium{position:relative;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;cursor:pointer;overflow:hidden;border:1px solid transparent;margin-bottom:12px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.refer-premium .rp-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:2px solid rgba(255,255,255,.5)}
+.refer-premium .rp-content{flex:1;min-width:0}
+.refer-premium .rp-tag{display:inline-block;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;text-transform:uppercase;margin-bottom:4px}
+.refer-premium .rp-title{font-size:14px;font-weight:800;line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.refer-premium .rp-subtitle{font-size:11px;font-weight:600;opacity:.7}
+.refer-premium .rp-arrow{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;background:rgba(0,0,0,.06)}
+.refer-premium.rp-blue{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-color:#93c5fd}
+.refer-premium.rp-blue .rp-icon{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
+.refer-premium.rp-blue .rp-tag{background:#3b82f6;color:#fff}
+.refer-premium.rp-blue .rp-title{color:#1e3a8a}
+.refer-premium.rp-blue .rp-arrow{background:rgba(59,130,246,.15);color:#2563eb}
+.refer-premium.rp-purple{background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border-color:#c4b5fd}
+.refer-premium.rp-purple .rp-icon{background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff}
+.refer-premium.rp-purple .rp-tag{background:#8b5cf6;color:#fff}
+.refer-premium.rp-purple .rp-title{color:#4c1d95}
+.refer-premium.rp-purple .rp-arrow{background:rgba(139,92,246,.15);color:#7c3aed}
+.total-user-premium{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fbbf24;border-radius:18px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 4px 14px rgba(251,191,36,.2)}
+.total-user-premium .tu-label{font-size:11px;font-weight:800;color:#92400e;text-transform:uppercase}
+.total-user-premium .tu-count{font-size:26px;font-weight:900;color:#78350f;margin-top:2px}
+.total-user-premium .tu-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0}
+.leaderboard-card{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1px solid #334155;border-radius:20px;padding:18px 14px;margin-top:10px}
+.leaderboard-card h4{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#f1f5f9;padding-bottom:12px;border-bottom:1px solid #334155;flex-wrap:wrap;gap:8px}
+.leaderboard-card h4 .lb-count{font-size:12px;font-weight:700;color:#a78bfa;background:rgba(139,92,246,.15);padding:3px 10px;border-radius:20px}
+.lb-header{display:grid;grid-template-columns:40px 1fr 80px;gap:10px;padding:8px;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;border-bottom:1px solid #1e293b}
+.lb-scroll{max-height:400px;overflow-y:auto;margin-top:6px}
+.lb-item{display:grid;grid-template-columns:40px 1fr 80px;gap:10px;align-items:center;padding:10px 8px;border-radius:12px;margin-bottom:2px}
+.lb-rank{font-size:14px;font-weight:900;text-align:center;color:#64748b}
+.lb-rank.medal{font-size:22px;line-height:1}
+.lb-user{display:flex;align-items:center;gap:10px;min-width:0}
+.lb-avatar{width:38px;height:38px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid #334155;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+.lb-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.lb-name{font-weight:700;color:#f1f5f9;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-amount{font-size:13px;font-weight:800;color:#a78bfa;text-align:right;white-space:nowrap}
+.lb-empty{text-align:center;color:#64748b;padding:24px 0;font-size:13px}
+.watch-ad-card{background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:20px;padding:18px;margin-bottom:14px;color:#fff;box-shadow:0 10px 30px -10px rgba(16,185,129,.5);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s}
+.watch-ad-card:active{transform:scale(.98)}
 .watch-ad-card h3{font-size:16px;font-weight:900;margin-bottom:6px;position:relative}
 .watch-ad-card .wa-desc{font-size:12px;font-weight:700;opacity:.9;margin-bottom:12px;position:relative}
 .watch-ad-card .wa-stats{display:flex;justify-content:space-between;align-items:center;position:relative}
@@ -112,6 +166,25 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .ref-progress-bar-container{margin-top:12px;background:rgba(255,255,255,.2);border-radius:20px;height:8px;overflow:hidden;position:relative}
 .ref-progress-bar-fill{height:100%;background:#fff;border-radius:20px;transition:width .5s ease}
 .ref-progress-text{font-size:10px;margin-top:5px;font-weight:700;opacity:.95;position:relative}
+.auto-earn-card{position:relative;background:linear-gradient(135deg,#7c3aed 0%,#4f46e5 100%);border-radius:20px;padding:18px;margin-bottom:14px;cursor:pointer;overflow:hidden;box-shadow:0 10px 30px -10px rgba(124,58,237,.6);transition:transform .2s;color:#fff}
+.auto-earn-card:active{transform:scale(.98)}
+.ae-glow{position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,.3) 0%,transparent 70%);border-radius:50%;animation:aeRotate 8s linear infinite}
+@keyframes aeRotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.ae-content{position:relative;display:flex;align-items:center;gap:14px}
+.ae-icon{width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid rgba(255,255,255,.4);flex-shrink:0;animation:aeBounce 1.5s infinite}
+@keyframes aeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.ae-info{flex:1;min-width:0}
+.ae-title{font-size:16px;font-weight:900;margin-bottom:4px}
+.ae-sub{font-size:11px;font-weight:700;opacity:.9}
+.ae-arrow{width:36px;height:36px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ref-copy-box{position:relative;background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:2px dashed #818cf8;border-radius:16px;padding:14px;transition:all .3s ease}
+.ref-copy-box.copied{background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%);border-color:#10b981}
+.ref-copy-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.ref-copy-badge{font-size:9px;font-weight:800;color:#4f46e5;background:rgba(79,70,229,.12);padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
+.ref-link-display{background:#ffffff;border:1px solid #c7d2fe;border-radius:10px;padding:12px 14px;font-family:'Courier New',monospace;font-size:11px;color:#1e293b;word-break:break-all;font-weight:700;margin-bottom:10px;min-height:38px;display:flex;align-items:center;line-height:1.4;user-select:all}
+body.dark-mode .ref-link-display{background:#0f172a;color:#f1f5f9;border-color:#4338ca}
+.ref-copy-btn{width:100%;padding:12px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:12px;font-weight:900;font-size:14px;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
+.ref-copy-btn.success{background:linear-gradient(135deg,#10b981,#059669)}
 .ad-overlay{position:fixed;inset:0;background:#000;display:none;flex-direction:column;z-index:999999}
 .ad-overlay.active{display:flex}
 .ad-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(180deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,0) 100%)}
@@ -138,14 +211,29 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .ad-claim-btn.active{opacity:1;pointer-events:auto;box-shadow:0 8px 25px rgba(16,185,129,.5)}
 .ad-lock-hint{text-align:center;font-size:11px;font-weight:700;color:#64748b;margin-top:12px}
 .ad-lock-hint.hidden{display:none}
-.ref-copy-box{position:relative;background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:2px dashed #818cf8;border-radius:16px;padding:14px}
-.ref-copy-box.copied{background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%);border-color:#10b981}
-.ref-copy-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
-.ref-copy-badge{font-size:9px;font-weight:800;color:#4f46e5;background:rgba(79,70,229,.12);padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
-.ref-link-display{background:#ffffff;border:1px solid #c7d2fe;border-radius:10px;padding:12px 14px;font-family:'Courier New',monospace;font-size:11px;color:#1e293b;word-break:break-all;font-weight:700;margin-bottom:10px;min-height:38px;display:flex;align-items:center;line-height:1.4;user-select:all}
-body.dark-mode .ref-link-display{background:#0f172a;color:#f1f5f9;border-color:#4338ca}
-.ref-copy-btn{width:100%;padding:12px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:12px;font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
-.ref-copy-btn.success{background:linear-gradient(135deg,#10b981,#059669)}
+.auto-container{display:flex;flex-direction:column;gap:18px;padding:10px 0}
+.auto-header{text-align:center;position:relative;padding:30px 0 20px}
+.auto-pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.3) 0%,transparent 70%);animation:autoPulseRing 2s infinite}
+@keyframes autoPulseRing{0%{transform:translate(-50%,-50%) scale(.8);opacity:1}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+.auto-main-icon{font-size:64px;margin-bottom:10px;position:relative;z-index:1}
+.auto-title{font-size:22px;font-weight:900;color:#4f46e5;margin-bottom:6px;position:relative;z-index:1}
+body.dark-mode .auto-title{color:#a78bfa}
+.auto-subtitle{font-size:13px;color:var(--text);opacity:.7;font-weight:700;position:relative;z-index:1}
+.auto-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.auto-stat{background:var(--card);border:2px solid var(--cardB);border-radius:16px;padding:16px;text-align:center}
+.auto-stat.highlight{background:linear-gradient(135deg,#10b981,#059669);border-color:#10b981;color:#fff}
+.auto-stat.highlight .as-label,.auto-stat.highlight .as-sub{color:rgba(255,255,255,.85)}
+.auto-stat.highlight .as-value{color:#fff}
+.as-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text);opacity:.7;margin-bottom:6px}
+.as-value{font-size:28px;font-weight:900;color:#4f46e5;line-height:1;margin-bottom:4px}
+.as-sub{font-size:10px;font-weight:700;color:var(--text);opacity:.6;text-transform:uppercase}
+.auto-progress-wrap{background:var(--cardB);border-radius:20px;height:14px;overflow:hidden}
+.auto-progress-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#4f46e5,#3b82f6);border-radius:20px;transition:width .5s ease}
+.auto-progress-label{text-align:center;font-size:12px;font-weight:800;color:var(--text);opacity:.7;margin-top:-8px}
+.auto-daily-info{text-align:center;font-size:13px;font-weight:700;color:var(--text);padding:12px;background:var(--cardB);border-radius:12px}
+.auto-daily-info b{color:#4f46e5}
+.auto-stop-btn{width:100%;padding:16px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;border-radius:16px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit}
+.auto-warning{text-align:center;font-size:11px;font-weight:700;color:#f59e0b;padding:10px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;line-height:1.5}
 .dual-condition-box{display:flex;flex-direction:column;gap:10px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #a78bfa;border-radius:16px;padding:14px;margin-bottom:14px}
 body.dark-mode .dual-condition-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-color:#6366f1}
 .dual-header{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:900;color:#4f46e5;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
@@ -165,7 +253,7 @@ body.dark-mode .condition-bar-wrap{background:rgba(255,255,255,.1)}
 .condition-sub{display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--text);opacity:.75}
 .condition-sub b{color:#4f46e5}
 body.dark-mode .condition-sub b{color:#a78bfa}
-@media(max-width:400px){.header h1{font-size:13px}.balance-badge{font-size:11px;padding:3px 8px}.header-icon-btn{width:30px;height:30px;font-size:14px}}
+@media(max-width:400px){.header h1{font-size:15px}.balance-badge{font-size:11px;padding:3px 8px}.header-icon-btn{width:30px;height:30px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -183,14 +271,17 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 
 <div id="app">
   <div class="header">
-    <h1 id="headerTitle">Ad Earn Bot</h1>
+    <h1>Taste Wallet | Official</h1>
     <div class="header-right">
       <div class="balance-badge">৳ <span id="headerBalance">0.00</span></div>
       <button onclick="toggleDarkMode()" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:30px;padding:4px 8px;cursor:pointer;color:#fff;font-weight:700;font-size:12px"><span id="darkModeIcon">🌙</span></button>
+      <div class="header-icon-btn" onclick="showNoticePopup()" id="noticeBtn">📢<div class="badge-dot hidden" id="noticeDot"></div></div>
+      <div class="header-icon-btn" onclick="showNotificationPopup()">🔔</div>
     </div>
   </div>
 
   <div class="content" id="scrollableContent">
+    <!-- HOME -->
     <div id="sec-home" class="section active">
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
@@ -205,6 +296,19 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           <div class="info-box ib-refer"><div class="ib-icon">👥</div><div class="box-title">Refer Count</div><div class="box-value"><span id="cardReferCount">0</span><small>জন</small></div></div>
           <div class="info-box ib-deposit"><div class="ib-icon">📥</div><div class="box-title">Total Deposit</div><div class="box-value">৳ <span id="cardDeposit">0.00</span></div></div>
           <div class="info-box ib-withdraw"><div class="ib-icon">📤</div><div class="box-title">Total Withdraw</div><div class="box-value">৳ <span id="cardWithdraw">0.00</span></div></div>
+          <div class="info-box ib-users" style="grid-column:span 2"><div class="ib-icon">🌍</div><div class="box-title">Total Users</div><div class="box-value"><span id="cardTotalUsers">0</span><small>জন সক্রিয়</small></div></div>
+        </div>
+      </div>
+
+      <div class="auto-earn-card" onclick="startAutoEarn()">
+        <div class="ae-glow"></div>
+        <div class="ae-content">
+          <div class="ae-icon">⚡</div>
+          <div class="ae-info">
+            <div class="ae-title">Auto Earn Zone</div>
+            <div class="ae-sub">একটার পর একটা অ্যাড অটো চলবে</div>
+          </div>
+          <div class="ae-arrow">▶</div>
         </div>
       </div>
 
@@ -238,17 +342,54 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           </button>
         </div>
         <div style="margin-top:14px;background:linear-gradient(135deg,#eef2ff,#e0e7ff);border:1px solid var(--msgUBd);border-radius:14px;padding:14px;">
-          <div style="font-size:13px;font-weight:800;color:#4f46e5;">📱 Platform Status</div>
+          <div style="font-size:13px;font-weight:800;color:#4f46e5;">📱 Telegram Status</div>
           <div id="tgIdStatus" style="font-size:11px;color:var(--text);opacity:.7;margin-top:2px;font-weight:600;">লোড হচ্ছে...</div>
+        </div>
+        <div style="margin-top:16px;">
+          <div id="referBox1" class="refer-premium rp-blue" onclick="openReferLink('box1')">
+            <div class="rp-icon">📹</div>
+            <div class="rp-content"><span class="rp-tag">টিউটোরিয়াল</span><div class="rp-title">কিভাবে এই অ্যাপ এ কাজ করে</div><div class="rp-subtitle">🎬 বিস্তারিত ভিডিও দেখুন</div></div>
+            <div class="rp-arrow">▶</div>
+          </div>
+          <div id="referBox2" class="refer-premium rp-purple" onclick="openReferLink('box2')">
+            <div class="rp-icon">💰</div>
+            <div class="rp-content"><span class="rp-tag">গাইড</span><div class="rp-title">কিভাবে রেফার করে</div><div class="rp-subtitle">📖 স্টেপ বাই স্টেপ</div></div>
+            <div class="rp-arrow">▶</div>
+          </div>
+          <div id="totalUserBox" class="total-user-premium">
+            <div><div class="tu-label">মোট ইউজার</div><div class="tu-count" id="totalUserCount">০</div></div>
+            <div class="tu-icon">👥</div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- AUTO EARN -->
+    <div id="sec-auto" class="section">
+      <div class="auto-container">
+        <div class="auto-header">
+          <div class="auto-pulse-ring"></div>
+          <div class="auto-main-icon">⚡</div>
+          <h2 class="auto-title">Auto Earning...</h2>
+          <p class="auto-subtitle" id="autoStatus">অ্যাড লোড হচ্ছে...</p>
+        </div>
+        <div class="auto-stats-grid">
+          <div class="auto-stat"><div class="as-label">এই সেশনে</div><div class="as-value" id="autoCountDisplay">0</div><div class="as-sub">অ্যাড</div></div>
+          <div class="auto-stat highlight" id="autoEarnStat"><div class="as-label">এই সেশনে আয়</div><div class="as-value" id="autoEarnDisplay">৳0.00</div><div class="as-sub">টাকা</div></div>
+        </div>
+        <div class="auto-progress-wrap"><div class="auto-progress-bar" id="autoProgressBar" style="width:0%"></div></div>
+        <div class="auto-progress-label" id="autoProgressText">0 / 20 অ্যাড</div>
+        <div class="auto-daily-info">📊 আজকের লিমিট: <b><span id="autoDailyUsed">0</span> / 100</b></div>
+        <button class="auto-stop-btn" onclick="stopAutoEarn(false)">⏹ থামুন এবং ফিরে যান</button>
+        <div class="auto-warning">⚠️ এই পেজে থাকলে অ্যাড স্বয়ংক্রিয়ভাবে চলবে।</div>
+      </div>
+    </div>
+
+    <!-- WITHDRAW -->
     <div id="sec-withdraw" class="section">
       <div class="card">
         <h3>💸 Withdraw Money</h3>
         <p style="font-size:13px;color:var(--text);margin-bottom:12px;font-weight:700;opacity:.7;">বর্তমান ব্যালেন্স: ৳ <span id="wdBalance">0.00</span></p>
-
         <div class="dual-condition-box">
           <div class="dual-header"><span>🔓 Unlock Condition</span><span id="dualOverallStatus">Locked</span></div>
           <div class="condition-row" id="conditionRefRow">
@@ -260,10 +401,8 @@ body.dark-mode .condition-sub b{color:#a78bfa}
             <div class="condition-sub"><span>📊 <b id="conditionRefProgress">0/5</b></span><span>🔴 বাকি: <b id="conditionRefRemaining">5</b></span></div>
           </div>
         </div>
-
         <div class="notice-box" style="background:var(--depNtB);border-color:var(--depNtBd);color:var(--depNtC);">⚠️ প্রতি উইথড্রতে <strong>৳৫</strong> চার্জ। সর্বনিম্ন ৳৫০০।</div>
         <div class="notice-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">⚠️ Withdraw করতে <strong>৫টি রেফার</strong> বাধ্যতামূলক।</div>
-
         <div class="method-grid">
           <div class="method-option active" id="wdMethodBkash" onclick="selectWdMethod('bKash')">bKash</div>
           <div class="method-option" id="wdMethodNagad" onclick="selectWdMethod('Nagad')">Nagad</div>
@@ -275,18 +414,35 @@ body.dark-mode .condition-sub b{color:#a78bfa}
       <div class="card"><h3>📜 Withdraw History</h3><div id="withdrawHistoryList"><p style="color:var(--text);font-size:13px;text-align:center;padding:15px 0;opacity:.5;">কোনো হিস্টোরি নেই</p></div></div>
     </div>
 
+    <!-- TASK -->
     <div id="sec-task" class="section">
       <div class="card"><h3>✅ Daily Tasks</h3><div id="taskListContainer"></div></div>
+      <div class="card">
+        <div class="gift-hero"><div class="gift-box">🎁</div><h2>Hi</h2><p>We have a gift for you</p></div>
+        <p style="font-size:13px;color:var(--text);margin-bottom:6px;font-weight:700;opacity:.7;">Please enter the gift code below</p>
+        <input type="text" id="giftCode" class="gift-input" placeholder="Enter redemption code" />
+        <button class="receive-btn" onclick="redeemGift()">Receive</button>
+      </div>
+      <div class="card"><h3>🎁 Gift History</h3><div id="giftHistoryList"><div class="gift-history-empty"><div class="icon">📜</div><div>No data</div></div></div></div>
     </div>
 
+    <!-- PROFILE -->
     <div id="sec-profile" class="section">
       <div class="card">
-        <h3>👤 Profile</h3>
+        <h3>👤 Profile & Settings</h3>
         <div class="stat-row"><span>Nickname</span><span id="profNick">User</span></div>
         <div class="stat-row"><span>User ID</span><span id="profId">USR000000</span></div>
         <div class="stat-row"><span>Balance</span><span id="profBalance">৳ 0.00</span></div>
         <div class="stat-row"><span>Total Referrals</span><span id="profRefCount">0</span></div>
         <div class="stat-row"><span>Total Ads Watched</span><span id="profAdsCount">0</span></div>
+        <div style="margin-top:14px;padding:12px;background:var(--depNtB);border:1px solid var(--depNtBd);border-radius:12px;">
+          <div style="font-size:11px;color:var(--depNtC);font-weight:800;text-align:center;line-height:1.5">🛡️ আপনার Telegram ID স্থায়ীভাবে লিংকড।</div>
+        </div>
+      </div>
+      <div class="card leaderboard-card">
+        <h4><span>🏆 Top Referral Leaderboard</span><span class="lb-count" id="lbTotalCount">30 Users</span></h4>
+        <div class="lb-header"><div style="text-align:center;">#</div><div>User</div><div style="text-align:right;">Refers</div></div>
+        <div class="lb-scroll" id="leaderboardContainer"><div class="lb-empty">Loading...</div></div>
       </div>
     </div>
   </div>
@@ -325,11 +481,11 @@ body.dark-mode .condition-sub b{color:#a78bfa}
   </div>
 </div>
 
-<div class="popup-overlay" id="popup"><div class="popup"><h3 id="popupTitle">Success</h3><div id="popupContent"><p style="color:var(--text);margin-bottom:16px;font-size:14px;font-weight:600;line-height:1.5;white-space:pre-line;opacity:.8">Message</p></div><button class="btn btn-blue" style="width:100%;padding:12px;font-size:15px;" onclick="closePopup()">Confirm</button></div></div>
+<div class="popup-overlay" id="popup"><div class="popup"><h3 id="popupTitle">Success</h3><div id="popupContent"></div><button class="btn btn-blue" style="width:100%;padding:12px;font-size:15px;margin-top:14px;" onclick="closePopup()">Confirm</button></div></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════════
-// FIREBASE CONFIG
+// CONFIG
 // ═══════════════════════════════════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyAxYweveDEZugb4lJk4_BuCCroMEtJgM0Q",
@@ -367,6 +523,7 @@ const REFERRALS_REQUIRED = 5;
 const TOTAL_CHANNELS = 3;
 const MIN_JOIN_WAIT_MS = 15000;
 const AUTO_AD_DELAY_MS = 60000;
+const AUTO_EARN_MAX = 20;
 
 let currentUserKey = null;
 let currentUserData = null;
@@ -379,36 +536,27 @@ let autoAdTimer = null;
 let withdrawPageActive = false;
 let shieldActive = false;
 let tgCheckInterval = null;
+let autoEarnRunning = false;
+let autoEarnSessionCount = 0;
+let autoEarnSessionEarnings = 0;
+let autoEarnLoopId = 0;
 let tgWebApp = null;
 
 try { tgWebApp = window.Telegram?.WebApp; if(tgWebApp){tgWebApp.ready();tgWebApp.expand();} } catch(e) {}
 
-// ═══════════════════════════════════════════════════════════════════
+function delay(ms){ return new Promise(res => setTimeout(res, ms)); }
+
 // SCREENSHOT SHIELD
-// ═══════════════════════════════════════════════════════════════════
 function activateShield() {
   if (!withdrawPageActive) return;
   const shield = document.getElementById('screenShield');
-  if (shield && !shieldActive) {
-    shield.classList.add('active');
-    shieldActive = true;
-    const app = document.getElementById('app');
-    if (app) app.style.filter = 'blur(30px)';
-  }
+  if (shield && !shieldActive) { shield.classList.add('active'); shieldActive = true; const app = document.getElementById('app'); if (app) app.style.filter = 'blur(30px)'; }
 }
 function deactivateShield() {
   const shield = document.getElementById('screenShield');
-  if (shield && shieldActive) {
-    shield.classList.remove('active');
-    shieldActive = false;
-    const app = document.getElementById('app');
-    if (app) app.style.filter = '';
-  }
+  if (shield && shieldActive) { shield.classList.remove('active'); shieldActive = false; const app = document.getElementById('app'); if (app) app.style.filter = ''; }
 }
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { if (withdrawPageActive) activateShield(); }
-  else { deactivateShield(); }
-});
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (withdrawPageActive) activateShield(); } else { deactivateShield(); } });
 window.addEventListener('blur', () => { if (withdrawPageActive) activateShield(); });
 window.addEventListener('focus', () => { deactivateShield(); });
 document.addEventListener('keyup', (e) => {
@@ -416,65 +564,39 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'PrintScreen' || e.keyCode === 44) {
     e.preventDefault(); activateShield(); setTimeout(deactivateShield, 4000);
     try { navigator.clipboard.writeText(''); } catch(err){}
-    showToastSafe('🔒 Blocked', 'এই পেজে স্ক্রিনশট নিষিদ্ধ');
-    return false;
-  }
-});
-document.addEventListener('keydown', (e) => {
-  if (!withdrawPageActive) return;
-  if ((e.ctrlKey && e.shiftKey && (e.key === 'S' || e.key === 's' || e.key === '4')) ||
-      (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5'))) {
-    e.preventDefault(); activateShield(); setTimeout(deactivateShield, 4000);
-    showToastSafe('🔒 Blocked', 'এই পেজে স্ক্রিনশট নিষিদ্ধ');
+    showToastSafe('🔒 Blocked','এই পেজে স্ক্রিনশট নিষিদ্ধ');
     return false;
   }
 });
 
-// ═══════════════════════════════════════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════════════════════════════════════
 function sanitizeKey(k){ return String(k).replace(/[.#$\[\]\/]/g,'_'); }
 function showLoading(show=true){ document.getElementById('loadingOverlay').classList.toggle('active', show); }
 function getActiveUser(){ return currentUserData; }
 function getDeviceId(){ try{ let d = localStorage.getItem('ad_earn_device_id'); if(!d){ d = 'DEV_' + Math.random().toString(36).substring(2,15); localStorage.setItem('ad_earn_device_id', d); } return d; }catch(e){ return 'DEV_FALLBACK'; } }
 function getUrlRefCode(){ try{ const tg=window.Telegram?.WebApp; if(tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) return tg.initDataUnsafe.start_param.trim(); return (new URLSearchParams(window.location.search).get('ref')||'').trim(); }catch(e){ return ''; } }
 
-// ═══════════════════════════════════════════════════════════════════
 // AUTH
-// ═══════════════════════════════════════════════════════════════════
 async function initAuth() {
   let user = window.Telegram?.WebApp?.initDataUnsafe?.user;
   let isBrowser = false;
-
   if (!user || !user.id) {
     let stored = localStorage.getItem('ad_earn_browser_user');
-    if (stored) {
-      try { user = JSON.parse(stored); isBrowser = true; } catch(e) { user = null; }
-    }
+    if (stored) { try { user = JSON.parse(stored); isBrowser = true; } catch(e) { user = null; } }
     if (!user) {
       const did = getDeviceId().replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
-      user = {
-        id: 'BR_' + did,
-        first_name: 'Guest',
-        last_name: 'User',
-        username: 'guest_' + did.substring(0,6),
-        photo_url: '',
-        is_browser: true
-      };
+      user = { id: 'BR_' + did, first_name: 'Guest', last_name: 'User', username: 'guest_' + did.substring(0,6), photo_url: '', is_browser: true };
       localStorage.setItem('ad_earn_browser_user', JSON.stringify(user));
       isBrowser = true;
     }
   }
-
   const tgId = String(user.id);
   const tgInfo = {
     id: tgId,
     nick: ((user.first_name||'') + (user.last_name?' '+user.last_name:'')).trim() || 'User',
-    photo: user.photo_url || '',
-    username: user.username || '',
+    photo: user.photo_url || '', username: user.username || '',
     is_browser: isBrowser || user.is_browser === true
   };
-
   showLoading(true);
   try {
     await auth.signInAnonymously();
@@ -482,30 +604,16 @@ async function initAuth() {
     const loginId = sanitizeKey(tgId);
     const docRef = db.collection('users').doc(loginId);
     const snap = await docRef.get();
-
     if (snap.exists) {
       const data = snap.data();
-      if (data.isBlocked === true) {
-        showLoading(false);
-        showBlockedScreen(data.blockReason || 'নিয়ম লঙ্ঘন');
-        return false;
-      }
+      if (data.isBlocked === true) { showLoading(false); showBlockedScreen(data.blockReason || 'নিয়ম লঙ্ঘন'); return false; }
       currentUserKey = loginId;
       currentUserData = { ...data, loginId };
       let changed = false;
-      // ✅ Migrate/add authUid if missing
       if (!data.authUid) { currentUserData.authUid = authUid; changed = true; }
       if (!data.profileImg && tgInfo.photo) { currentUserData.profileImg = tgInfo.photo; changed = true; }
       if (typeof data.adsSinceLastRef !== 'number') { currentUserData.adsSinceLastRef = 0; changed = true; }
-      if (changed) {
-        try {
-          await docRef.update({
-            authUid: currentUserData.authUid,
-            profileImg: currentUserData.profileImg,
-            adsSinceLastRef: currentUserData.adsSinceLastRef
-          });
-        } catch(e) { console.log('Update failed:', e); }
-      }
+      if (changed) { try { await docRef.update({ authUid: currentUserData.authUid, profileImg: currentUserData.profileImg, adsSinceLastRef: currentUserData.adsSinceLastRef }); } catch(e) {} }
     } else {
       const refCode = getUrlRefCode();
       const assignedUserId = 'USR' + Math.floor(100000 + Math.random() * 900000);
@@ -513,40 +621,18 @@ async function initAuth() {
       if (refCode) {
         const upper = refCode.toUpperCase();
         if (upper !== assignedUserId.toUpperCase() && upper !== loginId.toUpperCase()) {
-          try {
-            const q = await db.collection('users').where('userId', '==', upper).limit(1).get();
-            if (!q.empty) {
-              const refData = q.docs[0].data();
-              if (refData.loginId !== loginId) referredBy = refData.loginId;
-            }
-          } catch(e) { console.log('Ref lookup failed:', e); }
+          try { const q = await db.collection('users').where('userId', '==', upper).limit(1).get(); if (!q.empty) { const rd = q.docs[0].data(); if (rd.loginId !== loginId) referredBy = rd.loginId; } } catch(e) {}
         }
       }
       const newUser = {
-        nick: tgInfo.nick,
-        loginId: loginId,
-        userId: assignedUserId,
-        authUid: authUid,  // ✅ NEW
-        telegramId: tgId,
-        telegramUsername: tgInfo.username,
-        telegramFirstName: user.first_name || '',
+        nick: tgInfo.nick, loginId, userId: assignedUserId, authUid,
+        telegramId: tgId, telegramUsername: tgInfo.username, telegramFirstName: user.first_name || '',
         isBrowserUser: tgInfo.is_browser,
-        balance: 0,
-        referCount: 0,
-        totalDeposit: 0,
-        totalWithdraw: 0,
-        totalAdsWatched: 0,
-        adsToday: 0,
-        lastAdDate: '',
-        adsSinceLastRef: 0,
-        referredBy: referredBy,
-        referredUsers: [],
-        referralBonusGivenForTelegram: false,
-        history: [],
-        usedGifts: [],
-        giftHistory: [],
-        profileImg: tgInfo.photo || '',
-        deviceId: getDeviceId(),
+        balance: 0, referCount: 0, totalDeposit: 0, totalWithdraw: 0, totalAdsWatched: 0,
+        adsToday: 0, lastAdDate: '', adsSinceLastRef: 0,
+        referredBy, referredUsers: [], referralBonusGivenForTelegram: false,
+        history: [], usedGifts: [], giftHistory: [],
+        profileImg: tgInfo.photo || '', deviceId: getDeviceId(),
         linkedNumbers: { bKash: '', Nagad: '' },
         telegramStatus: { tg1: false, tg2: false, tg3: false },
         telegramJoinBonuses: { tg1: false, tg2: false, tg3: false },
@@ -558,38 +644,26 @@ async function initAuth() {
       currentUserKey = loginId;
       currentUserData = { ...newUser, loginId };
     }
-
     await enterApp();
     listenUserChanges(currentUserKey);
     showLoading(false);
     return true;
-  } catch(e) {
-    console.error('Auth error:', e);
-    showLoading(false);
-    showPopup('Login Error', e.message || 'অজানা সমস্যা');
-    return false;
-  }
+  } catch(e) { console.error(e); showLoading(false); showPopup('Login Error', e.message || 'অজানা সমস্যা'); return false; }
 }
 
 function listenUserChanges(loginId) {
   db.collection('users').doc(loginId).onSnapshot(snap => {
     if (snap.exists) {
       currentUserData = { ...snap.data(), loginId: snap.id };
-      if (currentUserData.isBlocked === true) {
-        showBlockedScreen(currentUserData.blockReason || 'নিয়ম লঙ্ঘন');
-        return;
-      }
+      if (currentUserData.isBlocked === true) { showBlockedScreen(currentUserData.blockReason || 'নিয়ম লঙ্ঘন'); return; }
       updateUI();
     }
-  }, err => { console.log('Snapshot error:', err); });
+  }, err => console.log(err));
 }
 
 async function saveUserData(updates) {
   if (!currentUserKey) return;
-  try {
-    await db.collection('users').doc(currentUserKey).update(updates);
-    currentUserData = { ...currentUserData, ...updates };
-  } catch(e) { console.log('Save error:', e); }
+  try { await db.collection('users').doc(currentUserKey).update(updates); currentUserData = { ...currentUserData, ...updates }; } catch(e) { console.log(e); }
 }
 
 function showBlockedScreen(reason) {
@@ -598,33 +672,17 @@ function showBlockedScreen(reason) {
   document.getElementById('app').style.display = 'none';
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// TELEGRAM API
-// ═══════════════════════════════════════════════════════════════════
+// TELEGRAM
 async function tgApi(method, params = {}) {
-  try {
-    const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`, {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(params)
-    });
-    return await r.json();
-  } catch(e) { return { ok: false }; }
+  try { const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(params) }); return await r.json(); } catch(e) { return { ok: false }; }
 }
-
 async function checkChannel(uid, cid) {
-  try {
-    const r = await tgApi('getChatMember', { chat_id: cid, user_id: uid });
-    if (r.ok) {
-      const s = r.result.status;
-      return s === 'member' || s === 'administrator' || s === 'creator';
-    }
-  } catch(e) {}
+  try { const r = await tgApi('getChatMember', { chat_id: cid, user_id: uid }); if (r.ok) { const s = r.result.status; return s === 'member' || s === 'administrator' || s === 'creator'; } } catch(e) {}
   return null;
 }
-
 async function verifyAllChannels() {
   const u = getActiveUser();
   if (!u || !u.telegramId || u.isBrowserUser === true) return;
-
   try {
     const docRef = db.collection('users').doc(currentUserKey);
     const snap = await docRef.get();
@@ -633,98 +691,53 @@ async function verifyAllChannels() {
     if (!user.telegramStatus) user.telegramStatus = { tg1:false, tg2:false, tg3:false };
     if (!user.telegramJoinBonuses) user.telegramJoinBonuses = { tg1:false, tg2:false, tg3:false };
     if (!user.telegramPendingJoins) user.telegramPendingJoins = {};
-
-    let changed = false;
-    let newlyJoined = [];
-    let newBalance = user.balance || 0;
+    let changed = false, newlyJoined = [], newBalance = user.balance || 0;
     const history = user.history || [];
-
     for (const [k, ch] of Object.entries(CHANNELS)) {
       const apiResult = await checkChannel(user.telegramId, ch.id);
       let isMember = false;
       if (apiResult === true) isMember = true;
       else if (apiResult === false) isMember = false;
       else {
-        const pendingTime = user.telegramPendingJoins[k] || 0;
-        if (pendingTime && (Date.now() - pendingTime) > MIN_JOIN_WAIT_MS) isMember = true;
+        const pt = user.telegramPendingJoins[k] || 0;
+        if (pt && (Date.now() - pt) > MIN_JOIN_WAIT_MS) isMember = true;
         else isMember = user.telegramStatus[k] || false;
       }
-
       const old = user.telegramStatus[k] || false;
       if (old !== isMember) { user.telegramStatus[k] = isMember; changed = true; }
       if (isMember && !old) newlyJoined.push(k);
-
       if (isMember && !user.telegramJoinBonuses[k]) {
         user.telegramJoinBonuses[k] = true;
         newBalance += TG_JOIN_BONUS;
-        history.push({
-          id: 'TGJOIN_' + k + '_' + Date.now(),
-          type: 'Channel Join Bonus',
-          amount: TG_JOIN_BONUS,
-          status: 'Completed',
-          time: new Date().toLocaleString('bn-BD')
-        });
+        history.push({ id:'TGJOIN_'+k+'_'+Date.now(), type:'Channel Join Bonus', amount:TG_JOIN_BONUS, status:'Completed', time: new Date().toLocaleString('bn-BD') });
         changed = true;
       }
-      if (!isMember && user.telegramJoinBonuses[k] && apiResult === false) {
-        user.telegramJoinBonuses[k] = false;
-        newBalance -= TG_JOIN_BONUS;
-        changed = true;
-      }
+      if (!isMember && user.telegramJoinBonuses[k] && apiResult === false) { user.telegramJoinBonuses[k] = false; newBalance -= TG_JOIN_BONUS; changed = true; }
     }
-
     const allNow = Object.keys(CHANNELS).every(k => user.telegramStatus[k] === true);
     if (allNow && !user.referralBonusGivenForTelegram && user.referredBy) {
       try {
         const refDoc = await db.collection('users').doc(user.referredBy).get();
         if (refDoc.exists) {
           const ref = refDoc.data();
-          const newRefBalance = (ref.balance || 0) + TG_REF_BONUS;
-          const newRefCount = (ref.referCount || 0) + 1;
-          const refReferredUsers = ref.referredUsers || [];
-          if (!refReferredUsers.includes(user.userId)) refReferredUsers.push(user.userId);
-          const refHistory = ref.history || [];
-          refHistory.push({
-            id: 'REF_' + Date.now(),
-            type: 'রেফারেল বোনাস ৳' + TG_REF_BONUS,
-            amount: TG_REF_BONUS,
-            status: 'Completed',
-            time: new Date().toLocaleString('bn-BD')
-          });
-          await db.collection('users').doc(user.referredBy).update({
-            balance: newRefBalance,
-            referCount: newRefCount,
-            referredUsers: refReferredUsers,
-            history: refHistory
-          });
+          const nrb = (ref.balance || 0) + TG_REF_BONUS;
+          const nrc = (ref.referCount || 0) + 1;
+          const rru = ref.referredUsers || [];
+          if (!rru.includes(user.userId)) rru.push(user.userId);
+          const rh = ref.history || [];
+          rh.push({ id:'REF_'+Date.now(), type:'রেফারেল বোনাস ৳'+TG_REF_BONUS, amount:TG_REF_BONUS, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+          await db.collection('users').doc(user.referredBy).update({ balance: nrb, referCount: nrc, referredUsers: rru, history: rh });
           user.referralBonusGivenForTelegram = true;
           changed = true;
         }
-      } catch(e) { console.log('Ref bonus failed:', e); }
+      } catch(e) {}
     }
-
-    if (changed) {
-      try {
-        await docRef.update({
-          telegramStatus: user.telegramStatus,
-          telegramJoinBonuses: user.telegramJoinBonuses,
-          balance: newBalance,
-          history: history,
-          referralBonusGivenForTelegram: user.referralBonusGivenForTelegram
-        });
-      } catch(e) { console.log('Update failed:', e); }
-    }
-
-    if (newlyJoined.length > 0) {
-      const total = newlyJoined.length * TG_JOIN_BONUS;
-      showClaimSuccess(`✅ ${newlyJoined.length}টি চ্যানেল জয়েন!\n+৳${total} বোনাস!`);
-    }
+    if (changed) { try { await docRef.update({ telegramStatus: user.telegramStatus, telegramJoinBonuses: user.telegramJoinBonuses, balance: newBalance, history: history, referralBonusGivenForTelegram: user.referralBonusGivenForTelegram }); } catch(e) {} }
+    if (newlyJoined.length > 0) showClaimSuccess(`✅ ${newlyJoined.length}টি চ্যানেল জয়েন!\n+৳${newlyJoined.length * TG_JOIN_BONUS} বোনাস!`);
   } catch(e) { console.error(e); }
 }
 
-// ═══════════════════════════════════════════════════════════════════
 // UI UPDATE
-// ═══════════════════════════════════════════════════════════════════
 function updateUI(){
   const u = getActiveUser(); if(!u) return;
   document.getElementById('headerBalance').textContent = (u.balance||0).toFixed(2);
@@ -743,11 +756,8 @@ function updateUI(){
   document.getElementById('refLinkDisplay').textContent = `https://t.me/${BOT_USERNAME}?start=${u.userId}`;
 
   const av = document.getElementById('homeProfileAvatar');
-  if (u.profileImg) {
-    av.innerHTML = `<img src="${u.profileImg}" onerror="this.parentElement.innerHTML='<span>${(u.nick||'U').charAt(0).toUpperCase()}</span>'">`;
-  } else {
-    av.innerHTML = `<span>${(u.nick||'U').charAt(0).toUpperCase()}</span>`;
-  }
+  if (u.profileImg) av.innerHTML = `<img src="${u.profileImg}" onerror="this.parentElement.innerHTML='<span>${(u.nick||'U').charAt(0).toUpperCase()}</span>'">`;
+  else av.innerHTML = `<span>${(u.nick||'U').charAt(0).toUpperCase()}</span>`;
 
   const today = new Date().toDateString();
   let todayCount = u.adsToday || 0;
@@ -760,10 +770,8 @@ function updateUI(){
   document.getElementById('refProgressText').textContent = `🎁 পরবর্তী ফ্রি রেফার: ${rp} / ${ADS_PER_FREE_REF} অ্যাড`;
 
   const tgStatusEl = document.getElementById('tgIdStatus');
-  if (u.isBrowserUser === true) {
-    tgStatusEl.innerHTML = '🌐 Browser Mode - Guest';
-    tgStatusEl.style.color = '#3b82f6';
-  } else if (u.telegramId) {
+  if (u.isBrowserUser === true) { tgStatusEl.innerHTML = '🌐 Browser Mode - Guest'; tgStatusEl.style.color = '#3b82f6'; }
+  else if (u.telegramId) {
     const joined = Object.keys(CHANNELS).filter(k => u.telegramStatus?.[k] === true).length;
     const emoji = joined === TOTAL_CHANNELS ? '🟢' : (joined > 0 ? '🟡' : '🔴');
     tgStatusEl.innerHTML = `${emoji} Joined: ${joined}/${TOTAL_CHANNELS}`;
@@ -786,6 +794,7 @@ function updateUI(){
 
   renderTasks();
   renderWithdrawHistory(u.history);
+  renderGiftHistory();
 }
 
 function renderTasks(){
@@ -794,63 +803,36 @@ function renderTasks(){
   const today = new Date().toDateString();
   const adsInfo = { today: (u.lastAdDate === today ? (u.adsToday||0) : 0) };
   const adsDone = adsInfo.today >= DAILY_AD_LIMIT;
-  const t1 = u.telegramStatus?.tg1===true;
-  const t2 = u.telegramStatus?.tg2===true;
-  const t3 = u.telegramStatus?.tg3===true;
-
+  const t1 = u.telegramStatus?.tg1===true, t2 = u.telegramStatus?.tg2===true, t3 = u.telegramStatus?.tg3===true;
   const tasks = [];
-  tasks.push({
-    title: 'Watch Ads',
-    desc: `৳2/Ad • আজ: ${adsInfo.today}/${DAILY_AD_LIMIT}`,
-    icon: '🎬',
-    btn: `<button class="btn ${!adsDone?'btn-purple':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${adsDone?'disabled':''} onclick="openAdWatch()">${!adsDone?'Watch':'Limit'}</button>`
-  });
+  tasks.push({ title: 'Watch Ads', desc: `৳2/Ad • আজ: ${adsInfo.today}/${DAILY_AD_LIMIT}`, icon: '🎬',
+    btn: `<button class="btn ${!adsDone?'btn-purple':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${adsDone?'disabled':''} onclick="openAdWatch()">${!adsDone?'Watch':'Limit'}</button>` });
   if (!isBrowser) {
-    tasks.push({ title: CHANNELS.tg1.name, desc: 'জয়েন = ৳৫', icon: '📢',
-      btn: `<button class="btn ${!t1?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t1?'disabled':''} onclick="joinChannel('tg1')">${t1?'Joined':'Join'}</button>` });
-    tasks.push({ title: CHANNELS.tg2.name, desc: 'জয়েন = ৳৫', icon: '📢',
-      btn: `<button class="btn ${!t2?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t2?'disabled':''} onclick="joinChannel('tg2')">${t2?'Joined':'Join'}</button>` });
-    tasks.push({ title: CHANNELS.tg3.name, desc: 'জয়েন = ৳৫', icon: '📢',
-      btn: `<button class="btn ${!t3?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t3?'disabled':''} onclick="joinChannel('tg3')">${t3?'Joined':'Join'}</button>` });
+    tasks.push({ title: CHANNELS.tg1.name, desc: 'জয়েন = ৳৫', icon: '📢', btn: `<button class="btn ${!t1?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t1?'disabled':''} onclick="joinChannel('tg1')">${t1?'Joined':'Join'}</button>` });
+    tasks.push({ title: CHANNELS.tg2.name, desc: 'জয়েন = ৳৫', icon: '📢', btn: `<button class="btn ${!t2?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t2?'disabled':''} onclick="joinChannel('tg2')">${t2?'Joined':'Join'}</button>` });
+    tasks.push({ title: CHANNELS.tg3.name, desc: 'জয়েন = ৳৫', icon: '📢', btn: `<button class="btn ${!t3?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t3?'disabled':''} onclick="joinChannel('tg3')">${t3?'Joined':'Join'}</button>` });
   }
-
   const container = document.getElementById('taskListContainer');
-  if(container){
-    container.innerHTML = tasks.map(t => `
-      <div class="task-item">
-        <div class="task-info">
-          <div class="task-icon">${t.icon}</div>
-          <div><div class="task-title">${t.title}</div><div class="task-desc">${t.desc}</div></div>
-        </div>
-        ${t.btn}
-      </div>
-    `).join('');
-  }
+  if(container) container.innerHTML = tasks.map(t => `<div class="task-item"><div class="task-info"><div class="task-icon">${t.icon}</div><div><div class="task-title">${t.title}</div><div class="task-desc">${t.desc}</div></div></div>${t.btn}</div>`).join('');
 }
 
 function renderWithdrawHistory(history){
   const c = document.getElementById('withdrawHistoryList'); if(!c) return;
   const filtered = (history||[]).filter(h => (h.type||'').toLowerCase().includes('withdraw')).slice().reverse();
-  if(filtered.length === 0){
-    c.innerHTML = `<p style="color:var(--text);font-size:13px;text-align:center;padding:15px 0;opacity:.5;">কোনো হিস্টোরি নেই</p>`;
-    return;
-  }
+  if(filtered.length === 0){ c.innerHTML = `<p style="color:var(--text);font-size:13px;text-align:center;padding:15px 0;opacity:.5;">কোনো হিস্টোরি নেই</p>`; return; }
   c.innerHTML = filtered.map(item => {
     const amt = Math.abs(parseFloat(item.amount)||0);
     const st = (item.status||'Pending').toLowerCase();
     const cls = (st === 'completed' || st === 'approved') ? 'completed' : (st === 'rejected' ? 'rejected' : 'pending');
-    return `<div class="history-item">
-      <div class="history-info-left">
-        <div class="history-title">💸 Withdraw</div>
-        <div class="history-subtext">${item.number||''}</div>
-        <div class="history-time">${item.time||''}</div>
-      </div>
-      <div class="history-info-right">
-        <span class="status-badge ${cls}">${item.status||'Pending'}</span>
-        <div class="history-amount neg">-৳${amt.toFixed(2)}</div>
-      </div>
-    </div>`;
+    return `<div class="history-item"><div class="history-info-left"><div class="history-title">💸 Withdraw</div><div class="history-subtext">${item.number||''}</div><div class="history-time">${item.time||''}</div></div><div class="history-info-right"><span class="status-badge ${cls}">${item.status||'Pending'}</span><div class="history-amount neg">-৳${amt.toFixed(2)}</div></div></div>`;
   }).join('');
+}
+
+function renderGiftHistory(){
+  const u = getActiveUser(); if(!u) return;
+  const box = document.getElementById('giftHistoryList'); if(!box) return;
+  if(!u.giftHistory || u.giftHistory.length === 0){ box.innerHTML = `<div class="gift-history-empty"><div class="icon">📜</div><div>No data</div></div>`; return; }
+  box.innerHTML = u.giftHistory.slice().reverse().map(g => `<div class="history-item"><div><div class="history-title">${g.code}</div><div class="history-time">${g.time}</div></div><div class="history-amount pos">+৳${g.amount.toFixed(2)}</div></div>`).join('');
 }
 
 function showSection(name){
@@ -862,25 +844,18 @@ function showSection(name){
   else if(name === 'withdraw') document.querySelectorAll('.nav-item')[1].classList.add('active');
   else if(name === 'task') document.getElementById('navTaskItem').classList.add('active');
   else if(name === 'profile') document.getElementById('navProfileItem').classList.add('active');
-  const titles = { home:'Ad Earn Bot', withdraw:'Withdraw', task:'Tasks', profile:'Profile' };
-  document.getElementById('headerTitle').textContent = titles[name] || 'Ad Earn Bot';
   if (name === 'withdraw') { withdrawPageActive = true; } else { withdrawPageActive = false; deactivateShield(); }
+  if (name === 'profile') renderLeaderboard();
   const sc = document.getElementById('scrollableContent'); if (sc) sc.scrollTop = 0;
 }
 
-// ═══════════════════════════════════════════════════════════════════
 // AD SYSTEM
-// ═══════════════════════════════════════════════════════════════════
 function openAdWatch(){
   const u = getActiveUser(); if(!u) return;
   const today = new Date().toDateString();
   const todayCount = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-  if (todayCount >= DAILY_AD_LIMIT) {
-    showPopup('⏰ দৈনিক লিমিট শেষ', `আপনি আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`);
-    return;
-  }
-  adInProgress = true;
-  monetagAdFired = false;
+  if (todayCount >= DAILY_AD_LIMIT) { showPopup('⏰ দৈনিক লিমিট শেষ', `আপনি আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
+  adInProgress = true; monetagAdFired = false;
   document.getElementById('adOverlay').classList.add('active');
   document.getElementById('adSpinner').style.display = 'block';
   document.getElementById('adTitle').textContent = 'বিজ্ঞাপন লোড হচ্ছে...';
@@ -893,10 +868,7 @@ function openAdWatch(){
   document.getElementById('adCloseBtn').classList.remove('visible');
   document.getElementById('adProgressCircle').style.background = 'conic-gradient(#10b981 0deg,#6366f1 0deg,transparent 0deg)';
   adTimeLeft = AD_TIMER_SECONDS;
-  try {
-    if (tgWebApp?.BackButton) { tgWebApp.BackButton.show(); tgWebApp.BackButton.onClick(handleBackDuringAd); }
-    if (tgWebApp?.enableClosingConfirmation) tgWebApp.enableClosingConfirmation();
-  } catch(e) {}
+  try { if (tgWebApp?.BackButton) { tgWebApp.BackButton.show(); tgWebApp.BackButton.onClick(handleBackDuringAd); } if (tgWebApp?.enableClosingConfirmation) tgWebApp.enableClosingConfirmation(); } catch(e) {}
   try { history.pushState({ adOverlay: true }, ''); } catch(e) {}
   setTimeout(() => fireMonetagAd(), 400);
   setTimeout(() => {
@@ -908,24 +880,17 @@ function openAdWatch(){
     startAdTimer();
   }, 2500);
 }
-
 function fireMonetagAd(){
   if (monetagAdFired) return;
   monetagAdFired = true;
   try {
     if (typeof window.show_11891042 === 'function') {
       const r = window.show_11891042('pop');
-      if (r && typeof r.then === 'function') {
-        r.then(() => {}).catch(() => {
-          try { window.show_11891042(); } catch(e) {}
-        });
-      } else {
-        try { window.show_11891042(); } catch(e) {}
-      }
+      if (r && typeof r.then === 'function') { r.then(() => {}).catch(() => { try { window.show_11891042(); } catch(e) {} }); }
+      else { try { window.show_11891042(); } catch(e) {} }
     }
   } catch(e) { console.log(e); }
 }
-
 function startAdTimer(){
   adTimeLeft = AD_TIMER_SECONDS;
   const timerText = document.getElementById('adTimerText');
@@ -941,8 +906,7 @@ function startAdTimer(){
     circle.style.background = `conic-gradient(#10b981 0deg,#6366f1 ${deg}deg,transparent ${deg}deg)`;
     if (adTimeLeft <= 0) {
       clearInterval(adTimerInterval); adTimerInterval = null;
-      timerText.textContent = '0';
-      chip.classList.add('done');
+      timerText.textContent = '0'; chip.classList.add('done');
       document.getElementById('adBigIcon').textContent = '✅';
       document.getElementById('adTitle').textContent = 'বিজ্ঞাপন সম্পন্ন!';
       document.getElementById('adDesc').textContent = `আপনি ৳${AD_REWARD.toFixed(2)} পেয়েছেন`;
@@ -955,22 +919,12 @@ function startAdTimer(){
     }
   }, 1000);
 }
-
-function forceCloseAd(){
-  if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা', 'টাইমার শেষ হয়নি'); return; }
-  closeAdOverlay();
-}
-
+function forceCloseAd(){ if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); return; } closeAdOverlay(); }
 function handleBackDuringAd(){
-  if (adInProgress) {
-    showToastSafe('⏳ অপেক্ষা', 'টাইমার শেষ হয়নি');
-    try { history.pushState({ adOverlay: true }, ''); } catch(e){}
-    return;
-  }
+  if (adInProgress) { showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); try { history.pushState({ adOverlay: true }, ''); } catch(e){} return; }
   try { if (tgWebApp?.BackButton) tgWebApp.BackButton.hide(); } catch(e){}
   closeAdOverlay();
 }
-
 function closeAdOverlay(){
   adInProgress = false;
   document.getElementById('adOverlay').classList.remove('active');
@@ -979,150 +933,155 @@ function closeAdOverlay(){
   try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
 }
 
-async function claimAdReward(){
-  const u = getActiveUser(); if(!u) return;
-  if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা', 'টাইমার শেষ হয়নি'); return; }
+async function awardAdToUser(user) {
   const today = new Date().toDateString();
-  const todayCount = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-  if (todayCount >= DAILY_AD_LIMIT) { closeAdOverlay(); showPopup('⏰ লিমিট শেষ', `আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
-
+  let todayCount = user.adsToday || 0;
+  if (user.lastAdDate !== today) todayCount = 0;
+  todayCount++;
   const userReward = AD_REWARD;
   const companyShare = (userReward * COMPANY_SHARE_PERCENT) / (100 - COMPANY_SHARE_PERCENT);
-
-  const newBalance = (u.balance || 0) + userReward;
-  const newTotal = (u.totalAdsWatched || 0) + 1;
-  const newTodayCount = todayCount + 1;
-  let adsSinceRef = (u.adsSinceLastRef || 0) + 1;
-  let newRefCount = u.referCount || 0;
+  const newBalance = (user.balance || 0) + userReward;
+  const newTotal = (user.totalAdsWatched || 0) + 1;
+  let adsSinceRef = (user.adsSinceLastRef || 0) + 1;
+  let newRefCount = user.referCount || 0;
   let gotFreeRef = false;
   if (adsSinceRef >= ADS_PER_FREE_REF) { newRefCount++; adsSinceRef = 0; gotFreeRef = true; }
+  const hist = user.history || [];
+  hist.push({ id:'AD_'+Date.now()+'_'+Math.random().toString(36).substr(2,5), type:'Ad Watched', amount:userReward, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+  if (gotFreeRef) hist.push({ id:'FREEREF_'+Date.now(), type:'🎁 ফ্রি রেফার বোনাস', amount:0, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+  await saveUserData({ balance: newBalance, adsToday: todayCount, lastAdDate: today, totalAdsWatched: newTotal, adsSinceLastRef: adsSinceRef, referCount: newRefCount, history: hist });
+  try { await db.collection('company_earnings').add({ userId: user.userId, userReward, companyShare, timestamp: new Date().toLocaleString('bn-BD'), createdAt: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
+  return { gotFreeRef, newRefCount };
+}
 
-  const hist = u.history || [];
-  hist.push({
-    id: 'AD_' + Date.now() + '_' + Math.random().toString(36).substr(2,5),
-    type: 'Ad Watched',
-    amount: userReward,
-    status: 'Completed',
-    time: new Date().toLocaleString('bn-BD')
-  });
-  if (gotFreeRef) {
-    hist.push({
-      id: 'FREEREF_' + Date.now(),
-      type: '🎁 ফ্রি রেফার বোনাস',
-      amount: 0,
-      status: 'Completed',
-      time: new Date().toLocaleString('bn-BD')
-    });
+async function claimAdReward(){
+  const u = getActiveUser(); if(!u) return;
+  if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); return; }
+  const today = new Date().toDateString();
+  const todayCount = (u.lastAdDate === today ? (u.adsToday||0) : 0);
+  if (todayCount >= DAILY_AD_LIMIT) { closeAdOverlay(); showPopup('⏰ লিমিট শেষ',`আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
+  const r = await awardAdToUser(u);
+  closeAdOverlay(); updateUI();
+  if (r.gotFreeRef) setTimeout(() => showClaimSuccess(`🎉 ১৫টি অ্যাড সম্পন্ন!\n+১টি ফ্রি রেফার!\n\nমোট রেফার: ${r.newRefCount}`), 500);
+  else showClaimSuccess(`🎉 ৳${AD_REWARD.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে!`);
+}
+
+// AUTO EARN
+function updateAutoUI(){
+  document.getElementById('autoCountDisplay').textContent = autoEarnSessionCount;
+  document.getElementById('autoEarnDisplay').textContent = '৳' + autoEarnSessionEarnings.toFixed(2);
+  document.getElementById('autoProgressBar').style.width = Math.min(100, (autoEarnSessionCount / AUTO_EARN_MAX) * 100) + '%';
+  document.getElementById('autoProgressText').textContent = autoEarnSessionCount + ' / ' + AUTO_EARN_MAX + ' অ্যাড';
+  const u = getActiveUser();
+  if (u) {
+    const today = new Date().toDateString();
+    const tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
+    document.getElementById('autoDailyUsed').textContent = tc;
   }
+}
+function updateAutoStatus(msg){ document.getElementById('autoStatus').textContent = msg; }
 
-  await saveUserData({
-    balance: newBalance,
-    adsToday: newTodayCount,
-    lastAdDate: today,
-    totalAdsWatched: newTotal,
-    adsSinceLastRef: adsSinceRef,
-    referCount: newRefCount,
-    history: hist
-  });
+async function startAutoEarn(){
+  const u = getActiveUser(); if(!u) return;
+  const today = new Date().toDateString();
+  const tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
+  if (tc >= DAILY_AD_LIMIT) { showPopup('⏰ দৈনিক লিমিট শেষ', `আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
+  autoEarnRunning = true;
+  autoEarnSessionCount = 0;
+  autoEarnSessionEarnings = 0;
+  autoEarnLoopId++;
+  const myLoopId = autoEarnLoopId;
+  showSection('auto');
+  updateAutoUI();
+  updateAutoStatus('অ্যাড লোড হচ্ছে...');
+  try { if (tgWebApp?.enableClosingConfirmation) tgWebApp.enableClosingConfirmation(); } catch(e){}
+  runAutoEarnLoop(myLoopId);
+}
 
-  try {
-    await db.collection('company_earnings').add({
-      userId: u.userId,
-      userReward: userReward,
-      companyShare: companyShare,
-      timestamp: new Date().toLocaleString('bn-BD'),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  } catch(e) { console.log(e); }
-
-  closeAdOverlay();
-  updateUI();
-
-  if (gotFreeRef) {
-    setTimeout(() => showClaimSuccess(`🎉 ১৫টি অ্যাড সম্পন্ন!\n+১টি ফ্রি রেফার!\n\nমোট রেফার: ${newRefCount}`), 500);
-  } else {
-    showClaimSuccess(`🎉 ৳${userReward.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে!`);
+async function runAutoEarnLoop(myLoopId){
+  while(autoEarnRunning && myLoopId === autoEarnLoopId){
+    const u = getActiveUser();
+    if (!u) break;
+    const today = new Date().toDateString();
+    let tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
+    if (tc >= DAILY_AD_LIMIT) { updateAutoStatus('✅ দৈনিক লিমিট শেষ!'); await delay(1500); stopAutoEarn(true); return; }
+    if (autoEarnSessionCount >= AUTO_EARN_MAX) { updateAutoStatus('✅ সেশন সম্পূর্ণ!'); await delay(1500); stopAutoEarn(true); return; }
+    updateAutoStatus('⏳ পরবর্তী অ্যাড লোড হচ্ছে...');
+    await delay(1500);
+    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) return;
+    updateAutoStatus('🎬 অ্যাড চলছে...');
+    try {
+      if (typeof window.show_11891042 === 'function') {
+        const r = window.show_11891042('pop');
+        if (r && typeof r.then === 'function') { await Promise.race([r, delay(25000)]); }
+        else { await delay(15000); }
+      } else { await delay(10000); }
+    } catch(e) { console.log(e); }
+    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) return;
+    const user = getActiveUser();
+    if (user) {
+      await awardAdToUser(user);
+      autoEarnSessionCount++;
+      autoEarnSessionEarnings += AD_REWARD;
+      updateAutoUI(); updateUI();
+      try { if (navigator.vibrate) navigator.vibrate(30); } catch(e){}
+    }
+    updateAutoStatus('✅ অ্যাড সম্পন্ন! পরের অ্যাড আসছে...');
+    await delay(2500);
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════
+function stopAutoEarn(silent){
+  const wasRunning = autoEarnRunning;
+  autoEarnRunning = false;
+  autoEarnLoopId++;
+  try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
+  showSection('home');
+  if (silent && wasRunning) showClaimSuccess(`🎉 সেশন সম্পন্ন!\n${autoEarnSessionCount}টি • ৳${autoEarnSessionEarnings.toFixed(2)}`);
+  else if (wasRunning && autoEarnSessionCount > 0) showClaimSuccess(`✅ থেমে গেছে\n${autoEarnSessionCount}টি • ৳${autoEarnSessionEarnings.toFixed(2)}`);
+}
+
 // JOIN CHANNEL
-// ═══════════════════════════════════════════════════════════════════
 async function joinChannel(k){
   const u = getActiveUser(); if(!u) return;
-  if (u.isBrowserUser === true) {
-    showPopup('🌐 Browser Mode', 'Telegram এ @' + BOT_USERNAME + ' থেকে অ্যাপ খুলুন।');
-    return;
-  }
+  if (u.isBrowserUser === true) { showPopup('🌐 Browser Mode','Telegram এ @'+BOT_USERNAME+' থেকে খুলুন।'); return; }
   const ch = CHANNELS[k]; if(!ch) return;
   const pending = u.telegramPendingJoins || {};
   pending[k] = Date.now();
   await saveUserData({ telegramPendingJoins: pending });
-
-  try {
-    if (tgWebApp?.openTelegramLink) tgWebApp.openTelegramLink(ch.link);
-    else window.open(ch.link, '_blank');
-  } catch(e) { window.open(ch.link, '_blank'); }
-
-  showPopup('📢 ' + ch.name, '১️⃣ Telegram এ চ্যানেল ওপেন হচ্ছে\n২️⃣ "Join" ক্লিক করুন\n৩️⃣ ফিরে আসুন\n\n⏳ ১৫ সেকেন্ড পর অটো ভেরিফাই হবে।');
-  setTimeout(verifyAllChannels, 7000);
-  setTimeout(verifyAllChannels, 15000);
-  setTimeout(verifyAllChannels, 25000);
+  try { if (tgWebApp?.openTelegramLink) tgWebApp.openTelegramLink(ch.link); else window.open(ch.link,'_blank'); } catch(e) { window.open(ch.link,'_blank'); }
+  showPopup('📢 '+ch.name,'১️⃣ Telegram এ চ্যানেল ওপেন হচ্ছে\n২️⃣ "Join" ক্লিক করুন\n৩️⃣ ফিরে আসুন\n\n⏳ ১৫ সেকেন্ড পর অটো ভেরিফাই।');
+  setTimeout(verifyAllChannels, 7000); setTimeout(verifyAllChannels, 15000); setTimeout(verifyAllChannels, 25000);
 }
 
-// ═══════════════════════════════════════════════════════════════════
 // WITHDRAW
-// ═══════════════════════════════════════════════════════════════════
 function selectWdMethod(m){
   selectedWdMethodName = m;
   document.getElementById('wdMethodBkash').classList.toggle('active', m==='bKash');
   document.getElementById('wdMethodNagad').classList.toggle('active', m==='Nagad');
   const u = getActiveUser();
-  if (u && u.linkedNumbers) {
-    const f = document.getElementById('wdNumber');
-    if (f && u.linkedNumbers[m]) f.value = u.linkedNumbers[m];
-    else if (f) f.value = '';
-  }
+  if (u && u.linkedNumbers) { const f = document.getElementById('wdNumber'); if (f && u.linkedNumbers[m]) f.value = u.linkedNumbers[m]; else if (f) f.value = ''; }
 }
 
 async function doWithdraw(){
   const u = getActiveUser(); if(!u) return;
-
   const refs = u.referCount || 0;
   if (refs < REFERRALS_REQUIRED) {
     const remaining = REFERRALS_REQUIRED - refs;
-    showPopup('🔒 Withdraw Locked',
-      `Withdraw করতে ${REFERRALS_REQUIRED}টি রেফার বাধ্যতামূলক।\n\n` +
-      `📊 আপনার প্রোগ্রেস: ${refs}/${REFERRALS_REQUIRED}\n` +
-      `🔴 বাকি: ${remaining}টি\n\n` +
-      `💡 প্রতি রেফারে ৳${TG_REF_BONUS} বোনাস পাবেন।\n` +
-      `📌 Home থেকে রেফার লিংক শেয়ার করুন।`);
+    showPopup('🔒 Withdraw Locked', `Withdraw করতে ${REFERRALS_REQUIRED}টি রেফার বাধ্যতামূলক।\n\n📊 প্রোগ্রেস: ${refs}/${REFERRALS_REQUIRED}\n🔴 বাকি: ${remaining}টি\n\n💡 প্রতি রেফারে ৳${TG_REF_BONUS} পাবেন।`);
     return;
   }
-
   if (u.isBrowserUser !== true) {
     const allJoined = Object.keys(CHANNELS).every(k => u.telegramStatus?.[k] === true);
-    if (!allJoined) {
-      showPopup('❌ Telegram এ জয়েন করেননি!', '৩টি চ্যানেলেই জয়েন করুন।');
-      return;
-    }
+    if (!allJoined) { showPopup('❌ Telegram এ জয়েন করেননি!','৩টি চ্যানেলেই জয়েন করুন।'); return; }
   }
-
   const amt = parseFloat(document.getElementById('wdAmount').value);
   const wn = document.getElementById('wdNumber').value.trim();
-  if (!amt || amt < MIN_WITHDRAW || amt > MAX_WITHDRAW) {
-    showPopup('Error', `উইথড্র ৳${MIN_WITHDRAW} থেকে ৳${MAX_WITHDRAW}!`);
-    return;
-  }
-  if (!wn || wn.length < 11) { showPopup('Error', 'সঠিক ১১ digit নম্বর দিন'); return; }
-
+  if (!amt || amt < MIN_WITHDRAW || amt > MAX_WITHDRAW) { showPopup('Error',`উইথড্র ৳${MIN_WITHDRAW} থেকে ৳${MAX_WITHDRAW}!`); return; }
+  if (!wn || wn.length < 11) { showPopup('Error','সঠিক ১১ digit নম্বর দিন'); return; }
   const wc = WITHDRAW_CHARGE;
   const totalDeduct = amt + wc;
-  if (totalDeduct > (u.balance || 0)) {
-    showPopup('Error', `পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন: ৳${totalDeduct.toFixed(2)}`);
-    return;
-  }
-
+  if (totalDeduct > (u.balance || 0)) { showPopup('Error',`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন: ৳${totalDeduct.toFixed(2)}`); return; }
   showLoading(true);
   try {
     const newBalance = u.balance - totalDeduct;
@@ -1130,97 +1089,127 @@ async function doWithdraw(){
     const linkedNumbers = u.linkedNumbers || { bKash:'', Nagad:'' };
     linkedNumbers[selectedWdMethodName] = wn;
     const hist = u.history || [];
-    hist.push({
-      id: 'WD_' + Date.now(),
-      type: `Withdraw (${selectedWdMethodName})`,
-      method: selectedWdMethodName,
-      amount: -amt,
-      charge: wc,
-      withdrawAmount: amt,
-      status: 'Pending',
-      number: wn,
-      time: new Date().toLocaleString('bn-BD')
-    });
-
-    await saveUserData({
-      balance: newBalance,
-      totalWithdraw: newTotalWithdraw,
-      linkedNumbers: linkedNumbers,
-      history: hist
-    });
-
-    try {
-      await db.collection('withdraw_requests').add({
-        userId: u.userId,
-        loginId: currentUserKey,
-        authUid: auth.currentUser.uid,
-        nick: u.nick,
-        telegramId: u.telegramId || 'browser',
-        method: selectedWdMethodName,
-        amount: amt,
-        charge: wc,
-        number: wn,
-        status: 'Pending',
-        createdAt: new Date().toLocaleString('bn-BD'),
-        createdAtTs: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    } catch(e) { console.log('Withdraw req save failed:', e); }
-
+    hist.push({ id:'WD_'+Date.now(), type:`Withdraw (${selectedWdMethodName})`, method:selectedWdMethodName, amount:-amt, charge:wc, withdrawAmount:amt, status:'Pending', number:wn, time: new Date().toLocaleString('bn-BD') });
+    await saveUserData({ balance: newBalance, totalWithdraw: newTotalWithdraw, linkedNumbers, history: hist });
+    try { await db.collection('withdraw_requests').add({ userId: u.userId, loginId: currentUserKey, authUid: auth.currentUser.uid, nick: u.nick, telegramId: u.telegramId || 'browser', method: selectedWdMethodName, amount: amt, charge: wc, number: wn, status: 'Pending', createdAt: new Date().toLocaleString('bn-BD'), createdAtTs: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
     document.getElementById('wdAmount').value = '';
     updateUI();
-    showPopup('✅ উইথড্র সফল!',
-      `৳${amt.toFixed(2)} রিকোয়েস্ট সফল!\nচার্জ: ৳${wc.toFixed(2)}\n\n⏳ ২-২৪ ঘণ্টায় পেমেন্ট পাবেন।`);
-  } catch(e) {
-    showPopup('Error', e.message);
-  } finally {
-    showLoading(false);
-  }
+    showPopup('✅ উইথড্র সফল!', `৳${amt.toFixed(2)} রিকোয়েস্ট সফল!\nচার্জ: ৳${wc.toFixed(2)}\n\n⏳ ২-২৪ ঘণ্টায় পেমেন্ট।`);
+  } catch(e) { showPopup('Error', e.message); } finally { showLoading(false); }
 }
 
-// ═══════════════════════════════════════════════════════════════════
+// GIFT
+async function redeemGift(){
+  const u = getActiveUser(); if(!u) return;
+  const code = document.getElementById('giftCode').value.trim().toUpperCase();
+  if (!code) { showPopup('Error','কোড দিন'); return; }
+  if (u.usedGifts && u.usedGifts.includes(code)) { showPopup('সতর্কতা','আগে ব্যবহার করেছেন!'); return; }
+  showLoading(true);
+  try {
+    const snap = await db.collection('gift_codes').doc(sanitizeKey(code)).get();
+    const gd = snap.data();
+    if (!gd) { showPopup('Error','ভুল গিফট কোড!'); showLoading(false); return; }
+    if (gd.totalUsed >= gd.maxUses) { showPopup('Error','লিমিট শেষ!'); showLoading(false); return; }
+    const rw = parseFloat(gd.amount);
+    const newBalance = u.balance + rw;
+    const usedGifts = u.usedGifts || []; usedGifts.push(code);
+    const giftHistory = u.giftHistory || []; giftHistory.push({ code, amount: rw, time: new Date().toLocaleString('bn-BD') });
+    const hist = u.history || []; hist.push({ id:'GIFT_'+Date.now(), type:`Gift Code (${code})`, amount: rw, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+    await saveUserData({ balance: newBalance, usedGifts, giftHistory, history: hist });
+    try { await db.collection('gift_codes').doc(sanitizeKey(code)).update({ totalUsed: (gd.totalUsed||0) + 1 }); } catch(e) {}
+    document.getElementById('giftCode').value = '';
+    updateUI();
+    showClaimSuccess(`🎉 ৳ ${rw.toFixed(2)} গিফট পেয়েছেন!`);
+  } catch(e) { showPopup('Error', e.message); } finally { showLoading(false); }
+}
+
+// LEADERBOARD
+function renderLeaderboard(){
+  const c = document.getElementById('leaderboardContainer'); if(!c) return;
+  const fakeNames = ["Rakib Hasan","Anika Akter","Riyad Khan","Shohag Ali","Kausar Ahmed","Moumita Islam","Rasel Mia","Tania Sultana","Sumaiya Akter","Nusrat Jahan","Mamun Hossain","Sabrina Akter","Faruk Ahmed","Karim Uddin","Nasrin Sultana","Tanvir Ahmed","Rina Begum","Imran Khan","Sagor Hossain","Mostafa Lima","Ripon Ahmed","Mitu Akter","Ashraful Islam","Salma Khatun","Zahir Rayhan","Habibur Rahman","Nargis Akter","Rubel Mia","Priya Das","Sultana Parvin"];
+  const menIds = [1,3,7,11,12,17,20,22,25,27,32,33,36,41,45,52,55,60,67,70,75,78,80,85,90,91,95];
+  const womenIds = [5,9,11,14,18,20,22,26,28,32,35,38,40,44,48,52,56,60,65,68,70,75,80,85,90,95];
+  const now = Date.now(), lu = parseInt(localStorage.getItem('lb_update')||'0'), od = 86400000;
+  if (now - lu > od || !window._lbData) {
+    const users = [], usedNames = new Set();
+    for (let i = 0; i < 30; i++) {
+      let name, att = 0;
+      do { name = fakeNames[Math.floor(Math.random() * fakeNames.length)]; att++; } while (usedNames.has(name) && att < 80);
+      usedNames.add(name);
+      const isF = Math.random() > 0.5;
+      const id = isF ? womenIds[Math.floor(Math.random()*womenIds.length)] : menIds[Math.floor(Math.random()*menIds.length)];
+      users.push({ name, avatar: `https://randomuser.me/api/portraits/${isF?'women':'men'}/${id}.jpg`, amount: Math.floor(Math.random()*500)+100 });
+    }
+    users.sort((a,b) => b.amount - a.amount);
+    window._lbData = users;
+    localStorage.setItem('lb_update', now.toString());
+  }
+  const lb = window._lbData;
+  document.getElementById('lbTotalCount').textContent = lb.length + ' Users';
+  c.innerHTML = lb.map((u, i) => {
+    const r = i + 1;
+    let rankHtml = '';
+    if (r === 1) rankHtml = '<span class="lb-rank medal">🥇</span>';
+    else if (r === 2) rankHtml = '<span class="lb-rank medal">🥈</span>';
+    else if (r === 3) rankHtml = '<span class="lb-rank medal">🥉</span>';
+    else rankHtml = `<span class="lb-rank">#${r}</span>`;
+    const initial = (u.name||'U').charAt(0).toUpperCase();
+    const av = u.avatar ? `<img src="${u.avatar}" onerror="this.outerHTML='${initial}'">` : initial;
+    return `<div class="lb-item">${rankHtml}<div class="lb-user"><div class="lb-avatar">${av}</div><div class="lb-name">${u.name}</div></div><div class="lb-amount">${u.amount} <span>Refers</span></div></div>`;
+  }).join('');
+}
+
+// NOTICES
+function showNoticePopup(){
+  db.collection('admin_notices').orderBy('timestamp','desc').limit(20).get().then(s => {
+    const notices = [];
+    if (!s.empty) s.forEach(c => { const n = c.data(); n.id = c.id; notices.push(n); });
+    const popup = document.getElementById('popup'), title = document.getElementById('popupTitle'), content = document.getElementById('popupContent');
+    title.textContent = '📢 সকল নোটিশ';
+    if (notices.length === 0) content.innerHTML = `<p style="color:var(--text);opacity:.6;text-align:center;padding:20px 0;">📭 কোন নোটিশ নেই</p>`;
+    else content.innerHTML = notices.map(n => `<div class="notice-item"><div class="notice-title">${n.title||'নোটিশ'}</div><div class="notice-body">${n.body||''}</div><div class="notice-time">📅 ${n.time||''}</div></div>`).join('');
+    popup.style.display = 'flex';
+  }).catch(() => {});
+}
+function showNotificationPopup(){ showPopup('🔔 নোটিফিকেশন','এই মুহূর্তে কোনো নতুন নোটিফিকেশন নেই।'); }
+function checkNoticeDot(){
+  db.collection('admin_notices').onSnapshot(s => {
+    const d = document.getElementById('noticeDot');
+    if (d) { if (!s.empty) d.classList.remove('hidden'); else d.classList.add('hidden'); }
+  });
+}
+
 // COPY / POPUP / TOAST
-// ═══════════════════════════════════════════════════════════════════
+function openReferLink(box){
+  const u = getActiveUser();
+  const link = u ? `https://t.me/${BOT_USERNAME}?start=${u.userId}` : '';
+  if (link) window.open(link,'_blank');
+}
 function copyReferLink(){
   const link = document.getElementById('refLinkDisplay').textContent;
-  if (!link || link === 'লোড হচ্ছে...') { showToastSafe('⚠️ অপেক্ষা', 'লিংক লোড হয়নি'); return; }
+  if (!link || link === 'লোড হচ্ছে...') { showToastSafe('⚠️ অপেক্ষা','লিংক লোড হয়নি'); return; }
   const box = document.getElementById('refCopyBox');
   const btn = document.getElementById('refCopyBtn');
   const btnText = document.getElementById('refCopyBtnText');
   const done = () => {
     box.classList.add('copied'); btn.classList.add('success'); btnText.textContent = '✓ কপি হয়েছে!';
     if (navigator.vibrate) navigator.vibrate(50);
-    setTimeout(() => {
-      box.classList.remove('copied'); btn.classList.remove('success'); btnText.textContent = 'Copy Link';
-    }, 2000);
+    setTimeout(() => { box.classList.remove('copied'); btn.classList.remove('success'); btnText.textContent = 'Copy Link'; }, 2000);
   };
-  const fb = () => {
-    const ta = document.createElement('textarea');
-    ta.value = link; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); done(); } catch(e){}
-    document.body.removeChild(ta);
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done).catch(fb);
-  else fb();
+  const fb = () => { const ta = document.createElement('textarea'); ta.value = link; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch(e){} document.body.removeChild(ta); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done).catch(fb); else fb();
 }
-
-function showClaimSuccess(msg){
-  document.getElementById('claimPopupText').textContent = msg;
-  document.getElementById('claimSuccessPopup').classList.add('active');
-}
-function closeClaimPopup(){
-  document.getElementById('claimSuccessPopup').classList.remove('active');
-}
+function showClaimSuccess(msg){ document.getElementById('claimPopupText').textContent = msg; document.getElementById('claimSuccessPopup').classList.add('active'); }
+function closeClaimPopup(){ document.getElementById('claimSuccessPopup').classList.remove('active'); }
 function showPopup(title, msg){
   document.getElementById('popupTitle').textContent = title;
-  document.getElementById('popupContent').innerHTML = `<p style="color:var(--text);margin-bottom:16px;font-size:14px;font-weight:600;line-height:1.5;white-space:pre-line;opacity:.8">${msg}</p>`;
+  document.getElementById('popupContent').innerHTML = `<p style="color:var(--text);margin-bottom:14px;font-size:14px;font-weight:600;line-height:1.5;white-space:pre-line;opacity:.8">${msg}</p>`;
   document.getElementById('popup').style.display = 'flex';
 }
 function closePopup(){ document.getElementById('popup').style.display = 'none'; }
 function showToastSafe(title, msg){
   let t = document.getElementById('_inline_toast');
-  if (!t) {
-    t = document.createElement('div'); t.id = '_inline_toast';
+  if (!t) { t = document.createElement('div'); t.id = '_inline_toast';
     t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.95);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:999999;box-shadow:0 10px 25px rgba(0,0,0,.4);border:1px solid #334155;max-width:90%;text-align:center;transition:opacity .3s;pointer-events:none;';
     document.body.appendChild(t);
   }
@@ -1229,60 +1218,41 @@ function showToastSafe(title, msg){
   clearTimeout(window._toastTimer);
   window._toastTimer = setTimeout(() => { t.style.opacity = '0'; }, 2500);
 }
+function toggleDarkMode(){ document.body.classList.toggle('dark-mode'); const isDark = document.body.classList.contains('dark-mode'); const icon = document.getElementById('darkModeIcon'); if (isDark) { icon.textContent='☀️'; localStorage.setItem('darkMode','enabled'); } else { icon.textContent='🌙'; localStorage.setItem('darkMode','disabled'); } }
+function loadDarkModePreference(){ const dm = localStorage.getItem('darkMode'); if (dm === 'enabled') { document.body.classList.add('dark-mode'); document.getElementById('darkModeIcon').textContent = '☀️'; } }
 
-function toggleDarkMode(){
-  document.body.classList.toggle('dark-mode');
-  const isDark = document.body.classList.contains('dark-mode');
-  const icon = document.getElementById('darkModeIcon');
-  if (isDark) { icon.textContent = '☀️'; localStorage.setItem('darkMode','enabled'); }
-  else { icon.textContent = '🌙'; localStorage.setItem('darkMode','disabled'); }
-}
-function loadDarkModePreference(){
-  const dm = localStorage.getItem('darkMode');
-  if (dm === 'enabled') { document.body.classList.add('dark-mode'); document.getElementById('darkModeIcon').textContent = '☀️'; }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// AUTO AD TRIGGER
-// ═══════════════════════════════════════════════════════════════════
+// AUTO AD + TOTAL USERS
 function startAutoAdTrigger(){
   clearTimeout(autoAdTimer);
   autoAdTimer = setTimeout(() => {
-    if (adInProgress) { startAutoAdTrigger(); return; }
-    if (withdrawPageActive) { startAutoAdTrigger(); return; }
+    if (adInProgress || autoEarnRunning || withdrawPageActive) { startAutoAdTrigger(); return; }
     const u = getActiveUser(); if(!u) return;
     const today = new Date().toDateString();
-    const todayCount = (u.lastAdDate === today ? (u.adsToday||0) : 0);
-    if (todayCount >= DAILY_AD_LIMIT) return;
-    showToastSafe('💰 Auto Ad', '৩ সেকেন্ডে অ্যাড আসছে...');
-    setTimeout(() => {
-      if (!adInProgress && !withdrawPageActive) openAdWatch();
-    }, 3000);
+    const tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
+    if (tc >= DAILY_AD_LIMIT) return;
+    showToastSafe('💰 Auto Ad','৩ সেকেন্ডে অ্যাড আসছে...');
+    setTimeout(() => { if (!adInProgress && !autoEarnRunning && !withdrawPageActive) openAdWatch(); }, 3000);
   }, AUTO_AD_DELAY_MS);
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// POPSTATE
-// ═══════════════════════════════════════════════════════════════════
+function loadTotalUsers(){
+  db.collection('users').onSnapshot(s => {
+    const count = s.size || 0;
+    document.getElementById('totalUserCount').textContent = count.toLocaleString('bn-BD');
+    document.getElementById('cardTotalUsers').textContent = count.toLocaleString('bn-BD');
+  }, err => {});
+}
+
 window.addEventListener('popstate', function(e){
-  if (adInProgress) {
-    try { history.pushState({ adOverlay: true }, ''); } catch(err){}
-    showToastSafe('⏳ অপেক্ষা', 'টাইমার শেষ হয়নি');
-  } else if (document.getElementById('adOverlay').classList.contains('active')) {
-    closeAdOverlay();
-  }
+  if (autoEarnRunning) { try { history.pushState({autoEarn:true},''); } catch(err){} showToastSafe('⏳ থামুন','প্রথমে "থামুন" বাটনে ক্লিক করুন'); return; }
+  if (adInProgress) { try { history.pushState({ adOverlay: true },''); } catch(err){} showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); }
+  else if (document.getElementById('adOverlay').classList.contains('active')) { closeAdOverlay(); }
 });
 
-// ═══════════════════════════════════════════════════════════════════
-// ENTER APP
-// ═══════════════════════════════════════════════════════════════════
 async function enterApp(){
   document.getElementById('app').style.display = 'flex';
   document.getElementById('blockedScreen').classList.remove('active');
-  updateUI();
-  loadDarkModePreference();
-  startAutoAdTrigger();
-
+  updateUI(); loadDarkModePreference(); checkNoticeDot(); loadTotalUsers(); startAutoAdTrigger();
   if (currentUserData && currentUserData.isBrowserUser !== true) {
     setTimeout(verifyAllChannels, 2000);
     if (tgCheckInterval) clearInterval(tgCheckInterval);
@@ -1290,14 +1260,10 @@ async function enterApp(){
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', async () => {
   try { if (window.Telegram?.WebApp) { window.Telegram.WebApp.ready(); window.Telegram.WebApp.expand(); } } catch(e){}
   await initAuth();
 });
-
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e => {});
 </script>
 </body>
