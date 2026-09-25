@@ -329,7 +329,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 
 <script>
 // ═══════════════════════════════════════════════════════════════════
-// FIREBASE CONFIG - সঠিক
+// FIREBASE CONFIG
 // ═══════════════════════════════════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyAxYweveDEZugb4lJk4_BuCCroMEtJgM0Q",
@@ -346,7 +346,6 @@ const db = firebase.firestore();
 
 const BOT_USERNAME = 'add_arbe_bot';
 const TELEGRAM_BOT_TOKEN = '8457688801:AAHmmGkqFfFRYzaBq_ZZKQZpH4SElUjE0JY';
-const ADMIN_TELEGRAM_ID = '7122586787';
 
 const CHANNELS = {
   tg1: { id:'-1004471208794', link:'https://t.me/trueplaychannel1', name:'Payment Proofs' },
@@ -354,7 +353,6 @@ const CHANNELS = {
   tg3: { id:'-1004427257866', link:'https://t.me/trueplaychannel3', name:'Gift Codes' }
 };
 
-// 💰 REWARDS
 const AD_REWARD = 2.00;
 const COMPANY_SHARE_PERCENT = 30;
 const TG_JOIN_BONUS = 5;
@@ -362,13 +360,10 @@ const TG_REF_BONUS = 10;
 const DAILY_AD_LIMIT = 100;
 const AD_TIMER_SECONDS = 20;
 const ADS_PER_FREE_REF = 15;
-
-// 💸 WITHDRAW
 const MIN_WITHDRAW = 500;
 const MAX_WITHDRAW = 50000;
 const WITHDRAW_CHARGE = 5;
 const REFERRALS_REQUIRED = 5;
-
 const TOTAL_CHANNELS = 3;
 const MIN_JOIN_WAIT_MS = 15000;
 const AUTO_AD_DELAY_MS = 60000;
@@ -445,7 +440,7 @@ function getDeviceId(){ try{ let d = localStorage.getItem('ad_earn_device_id'); 
 function getUrlRefCode(){ try{ const tg=window.Telegram?.WebApp; if(tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) return tg.initDataUnsafe.start_param.trim(); return (new URLSearchParams(window.location.search).get('ref')||'').trim(); }catch(e){ return ''; } }
 
 // ═══════════════════════════════════════════════════════════════════
-// AUTH - ONE TELEGRAM ID = ONE ACCOUNT
+// AUTH
 // ═══════════════════════════════════════════════════════════════════
 async function initAuth() {
   let user = window.Telegram?.WebApp?.initDataUnsafe?.user;
@@ -483,6 +478,7 @@ async function initAuth() {
   showLoading(true);
   try {
     await auth.signInAnonymously();
+    const authUid = auth.currentUser.uid;
     const loginId = sanitizeKey(tgId);
     const docRef = db.collection('users').doc(loginId);
     const snap = await docRef.get();
@@ -497,12 +493,19 @@ async function initAuth() {
       currentUserKey = loginId;
       currentUserData = { ...data, loginId };
       let changed = false;
+      // ✅ Migrate/add authUid if missing
+      if (!data.authUid) { currentUserData.authUid = authUid; changed = true; }
       if (!data.profileImg && tgInfo.photo) { currentUserData.profileImg = tgInfo.photo; changed = true; }
       if (typeof data.adsSinceLastRef !== 'number') { currentUserData.adsSinceLastRef = 0; changed = true; }
-      if (changed) await docRef.update({
-        profileImg: currentUserData.profileImg,
-        adsSinceLastRef: currentUserData.adsSinceLastRef
-      });
+      if (changed) {
+        try {
+          await docRef.update({
+            authUid: currentUserData.authUid,
+            profileImg: currentUserData.profileImg,
+            adsSinceLastRef: currentUserData.adsSinceLastRef
+          });
+        } catch(e) { console.log('Update failed:', e); }
+      }
     } else {
       const refCode = getUrlRefCode();
       const assignedUserId = 'USR' + Math.floor(100000 + Math.random() * 900000);
@@ -510,17 +513,20 @@ async function initAuth() {
       if (refCode) {
         const upper = refCode.toUpperCase();
         if (upper !== assignedUserId.toUpperCase() && upper !== loginId.toUpperCase()) {
-          const q = await db.collection('users').where('userId', '==', upper).limit(1).get();
-          if (!q.empty) {
-            const refData = q.docs[0].data();
-            if (refData.loginId !== loginId) referredBy = refData.loginId;
-          }
+          try {
+            const q = await db.collection('users').where('userId', '==', upper).limit(1).get();
+            if (!q.empty) {
+              const refData = q.docs[0].data();
+              if (refData.loginId !== loginId) referredBy = refData.loginId;
+            }
+          } catch(e) { console.log('Ref lookup failed:', e); }
         }
       }
       const newUser = {
         nick: tgInfo.nick,
         loginId: loginId,
         userId: assignedUserId,
+        authUid: authUid,  // ✅ NEW
         telegramId: tgId,
         telegramUsername: tgInfo.username,
         telegramFirstName: user.first_name || '',
@@ -575,7 +581,7 @@ function listenUserChanges(loginId) {
       }
       updateUI();
     }
-  });
+  }, err => { console.log('Snapshot error:', err); });
 }
 
 async function saveUserData(updates) {
@@ -669,40 +675,44 @@ async function verifyAllChannels() {
 
     const allNow = Object.keys(CHANNELS).every(k => user.telegramStatus[k] === true);
     if (allNow && !user.referralBonusGivenForTelegram && user.referredBy) {
-      const refDoc = await db.collection('users').doc(user.referredBy).get();
-      if (refDoc.exists) {
-        const ref = refDoc.data();
-        const newRefBalance = (ref.balance || 0) + TG_REF_BONUS;
-        const newRefCount = (ref.referCount || 0) + 1;
-        const refReferredUsers = ref.referredUsers || [];
-        if (!refReferredUsers.includes(user.userId)) refReferredUsers.push(user.userId);
-        const refHistory = ref.history || [];
-        refHistory.push({
-          id: 'REF_' + Date.now(),
-          type: 'রেফারেল বোনাস ৳' + TG_REF_BONUS,
-          amount: TG_REF_BONUS,
-          status: 'Completed',
-          time: new Date().toLocaleString('bn-BD')
-        });
-        await db.collection('users').doc(user.referredBy).update({
-          balance: newRefBalance,
-          referCount: newRefCount,
-          referredUsers: refReferredUsers,
-          history: refHistory
-        });
-        user.referralBonusGivenForTelegram = true;
-        changed = true;
-      }
+      try {
+        const refDoc = await db.collection('users').doc(user.referredBy).get();
+        if (refDoc.exists) {
+          const ref = refDoc.data();
+          const newRefBalance = (ref.balance || 0) + TG_REF_BONUS;
+          const newRefCount = (ref.referCount || 0) + 1;
+          const refReferredUsers = ref.referredUsers || [];
+          if (!refReferredUsers.includes(user.userId)) refReferredUsers.push(user.userId);
+          const refHistory = ref.history || [];
+          refHistory.push({
+            id: 'REF_' + Date.now(),
+            type: 'রেফারেল বোনাস ৳' + TG_REF_BONUS,
+            amount: TG_REF_BONUS,
+            status: 'Completed',
+            time: new Date().toLocaleString('bn-BD')
+          });
+          await db.collection('users').doc(user.referredBy).update({
+            balance: newRefBalance,
+            referCount: newRefCount,
+            referredUsers: refReferredUsers,
+            history: refHistory
+          });
+          user.referralBonusGivenForTelegram = true;
+          changed = true;
+        }
+      } catch(e) { console.log('Ref bonus failed:', e); }
     }
 
     if (changed) {
-      await docRef.update({
-        telegramStatus: user.telegramStatus,
-        telegramJoinBonuses: user.telegramJoinBonuses,
-        balance: newBalance,
-        history: history,
-        referralBonusGivenForTelegram: user.referralBonusGivenForTelegram
-      });
+      try {
+        await docRef.update({
+          telegramStatus: user.telegramStatus,
+          telegramJoinBonuses: user.telegramJoinBonuses,
+          balance: newBalance,
+          history: history,
+          referralBonusGivenForTelegram: user.referralBonusGivenForTelegram
+        });
+      } catch(e) { console.log('Update failed:', e); }
     }
 
     if (newlyJoined.length > 0) {
@@ -796,11 +806,11 @@ function renderTasks(){
     btn: `<button class="btn ${!adsDone?'btn-purple':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${adsDone?'disabled':''} onclick="openAdWatch()">${!adsDone?'Watch':'Limit'}</button>`
   });
   if (!isBrowser) {
-    tasks.push({ title: CHANNELS.tg1.name, desc: 'জয়েন = ৳৫', icon: '📢', isDone: t1,
+    tasks.push({ title: CHANNELS.tg1.name, desc: 'জয়েন = ৳৫', icon: '📢',
       btn: `<button class="btn ${!t1?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t1?'disabled':''} onclick="joinChannel('tg1')">${t1?'Joined':'Join'}</button>` });
-    tasks.push({ title: CHANNELS.tg2.name, desc: 'জয়েন = ৳৫', icon: '📢', isDone: t2,
+    tasks.push({ title: CHANNELS.tg2.name, desc: 'জয়েন = ৳৫', icon: '📢',
       btn: `<button class="btn ${!t2?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t2?'disabled':''} onclick="joinChannel('tg2')">${t2?'Joined':'Join'}</button>` });
-    tasks.push({ title: CHANNELS.tg3.name, desc: 'জয়েন = ৳৫', icon: '📢', isDone: t3,
+    tasks.push({ title: CHANNELS.tg3.name, desc: 'জয়েন = ৳৫', icon: '📢',
       btn: `<button class="btn ${!t3?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t3?'disabled':''} onclick="joinChannel('tg3')">${t3?'Joined':'Join'}</button>` });
   }
 
@@ -1139,19 +1149,22 @@ async function doWithdraw(){
       history: hist
     });
 
-    await db.collection('withdraw_requests').add({
-      userId: u.userId,
-      loginId: currentUserKey,
-      nick: u.nick,
-      telegramId: u.telegramId || 'browser',
-      method: selectedWdMethodName,
-      amount: amt,
-      charge: wc,
-      number: wn,
-      status: 'Pending',
-      createdAt: new Date().toLocaleString('bn-BD'),
-      createdAtTs: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    try {
+      await db.collection('withdraw_requests').add({
+        userId: u.userId,
+        loginId: currentUserKey,
+        authUid: auth.currentUser.uid,
+        nick: u.nick,
+        telegramId: u.telegramId || 'browser',
+        method: selectedWdMethodName,
+        amount: amt,
+        charge: wc,
+        number: wn,
+        status: 'Pending',
+        createdAt: new Date().toLocaleString('bn-BD'),
+        createdAtTs: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch(e) { console.log('Withdraw req save failed:', e); }
 
     document.getElementById('wdAmount').value = '';
     updateUI();
