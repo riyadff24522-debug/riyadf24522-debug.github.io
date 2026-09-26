@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Taste Wallet | Official</title>
+<title>Ads To Earn | Official</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src='//libtl.com/sdk.js' data-zone='11891042' data-sdk='show_11891042'></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -216,10 +216,6 @@ body.dark-mode .condition-bar-wrap{background:rgba(255,255,255,.1)}
 .condition-sub{display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--text);opacity:.75}
 .condition-sub b{color:#4f46e5}
 body.dark-mode .condition-sub b{color:#a78bfa}
-
-/* ========================================= */
-/* FULLSCREEN IN-APP AD OVERLAY */
-/* ========================================= */
 .ad-overlay{position:fixed;inset:0;background:linear-gradient(180deg,#000 0%,#0a0a1a 100%);display:none;flex-direction:column;z-index:999999}
 .ad-overlay.active{display:flex}
 .ad-top-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;background:linear-gradient(180deg,rgba(0,0,0,.9),transparent);position:relative;z-index:10}
@@ -249,7 +245,6 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 .ad-close-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2);font-size:18px;font-weight:900;cursor:pointer;display:none;align-items:center;justify-content:center;position:absolute;top:16px;right:16px;z-index:20}
 .ad-close-btn.visible{display:flex}
 .ad-warning-tag{font-size:11px;color:#f59e0b;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:8px 14px;margin-top:16px;font-weight:800;max-width:340px}
-
 @media(max-width:400px){.header h1{font-size:13px}.balance-badge{font-size:11px;padding:3px 8px}.header-icon-btn{width:30px;height:30px;font-size:14px}}
 </style>
 </head>
@@ -292,7 +287,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 
 <div id="app">
   <div class="header">
-    <h1>Taste Wallet | Official</h1>
+    <h1>Ads To Earn | Official</h1>
     <div class="header-right">
       <div class="balance-badge">৳ <span id="headerBalance">0.00</span></div>
       <button onclick="toggleDarkMode()" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:30px;padding:4px 8px;cursor:pointer;color:#fff;font-weight:700;font-size:12px"><span id="darkModeIcon">🌙</span></button>
@@ -377,16 +372,6 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           <div id="tgIdStatus" style="font-size:11px;color:var(--text);opacity:.7;margin-top:2px;font-weight:600;">লোড হচ্ছে...</div>
         </div>
         <div style="margin-top:16px;">
-          <div id="referBox1" class="refer-premium rp-blue" onclick="openReferLink('box1')">
-            <div class="rp-icon">📹</div>
-            <div class="rp-content"><span class="rp-tag">টিউটোরিয়াল</span><div class="rp-title">কিভাবে এই অ্যাপ এ কাজ করে</div><div class="rp-subtitle">🎬 বিস্তারিত ভিডিও দেখুন</div></div>
-            <div class="rp-arrow">▶</div>
-          </div>
-          <div id="referBox2" class="refer-premium rp-purple" onclick="openReferLink('box2')">
-            <div class="rp-icon">💰</div>
-            <div class="rp-content"><span class="rp-tag">গাইড</span><div class="rp-title">কিভাবে রেফার করে</div><div class="rp-subtitle">📖 স্টেপ বাই স্টেপ</div></div>
-            <div class="rp-arrow">▶</div>
-          </div>
           <div id="totalUserBox" class="total-user-premium">
             <div><div class="tu-label">মোট ইউজার</div><div class="tu-count" id="totalUserCount">০</div></div>
             <div class="tu-icon">👥</div>
@@ -457,7 +442,6 @@ body.dark-mode .condition-sub b{color:#a78bfa}
   </div>
 </div>
 
-<!-- FULLSCREEN IN-APP AD OVERLAY -->
 <div class="ad-overlay" id="adOverlay">
   <button class="ad-close-btn" id="adCloseBtn" onclick="forceCloseAd()">✕</button>
   <div class="ad-top-bar">
@@ -501,7 +485,9 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 <div class="popup-overlay" id="popup"><div class="popup"><h3 id="popupTitle">Success</h3><div id="popupContent"></div><button class="btn btn-blue" style="width:100%;padding:12px;font-size:15px;margin-top:14px;" onclick="closePopup()">Confirm</button></div></div>
 
 <script>
-// CONFIG
+// ============================================
+// CONFIG — NO BOT TOKEN HERE ✅
+// ============================================
 const firebaseConfig = {
   apiKey: "AIzaSyAxYweveDEZugb4lJk4_BuCCroMEtJgM0Q",
   authDomain: "ad-earn-bot-be8c6.firebaseapp.com",
@@ -516,7 +502,9 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 const BOT_USERNAME = 'add_arbe_bot';
-const TELEGRAM_BOT_TOKEN = '8457688801:AAHmmGkqFfFRYzaBq_ZZKQZpH4SElUjE0JY';
+
+// 🔐 Cloudflare Worker — token hidden inside!
+const WORKER_URL = 'https://ads-to-earn-api.riyadking24522.workers.dev';
 
 const CHANNELS = {
   tg1: { id:'-1004471208794', link:'https://t.me/trueplaychannel1', name:'Payment Proofs', icon:'📢' },
@@ -525,7 +513,6 @@ const CHANNELS = {
 };
 
 const AD_REWARD = 2.00;
-const USER_SHARE_PERCENT = 80;
 const COMPANY_SHARE_PERCENT = 20;
 const TG_JOIN_BONUS = 5;
 const TG_REF_BONUS = 10;
@@ -560,31 +547,26 @@ try { tgWebApp = window.Telegram?.WebApp; if(tgWebApp){tgWebApp.ready();tgWebApp
 
 function delay(ms){ return new Promise(res => setTimeout(res, ms)); }
 
-// ============================================
-// TELEGRAM LINK OPENER (multi-fallback)
-// ============================================
+// Telegram link opener
 function openTgLink(link) {
   try {
     if (tgWebApp && typeof tgWebApp.openTelegramLink === 'function') {
       tgWebApp.openTelegramLink(link);
       return true;
     }
-  } catch(e) { console.log('openTelegramLink failed:', e); }
+  } catch(e) {}
   try {
     if (tgWebApp && typeof tgWebApp.openLink === 'function') {
       tgWebApp.openLink(link);
       return true;
     }
-  } catch(e) { console.log('openLink failed:', e); }
-  try {
-    const w = window.open(link, '_blank');
-    if (w) return true;
-  } catch(e) { console.log('window.open failed:', e); }
-  try { window.location.href = link; } catch(e) { console.log('location.href failed:', e); }
+  } catch(e) {}
+  try { const w = window.open(link, '_blank'); if (w) return true; } catch(e) {}
+  try { window.location.href = link; } catch(e) {}
   return true;
 }
 
-// GLOBAL SCREENSHOT PROTECTION
+// SCREENSHOT PROTECTION
 function activateShield() {
   const shield = document.getElementById('screenShield');
   if (shield && !shieldActive) {
@@ -603,16 +585,11 @@ function deactivateShield() {
     if (app) app.style.filter = '';
   }
 }
-
-// ============================================
-// VISIBILITY CHANGE — auto re-verify on return
-// ============================================
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     activateShield();
   } else {
     deactivateShield();
-    // User ফিরে আসলে auto re-verify
     setTimeout(async () => {
       if (!currentUserKey) return;
       const gate = document.getElementById('joinGateScreen');
@@ -625,7 +602,6 @@ document.addEventListener('visibilitychange', () => {
     }, 1500);
   }
 });
-
 window.addEventListener('blur', () => activateShield());
 window.addEventListener('focus', () => deactivateShield());
 document.addEventListener('keyup', (e) => {
@@ -650,7 +626,32 @@ function sanitizeKey(k){ return String(k).replace(/[.#$\[\]\/]/g,'_'); }
 function showLoading(show=true){ document.getElementById('loadingOverlay').classList.toggle('active', show); }
 function getActiveUser(){ return currentUserData; }
 function getDeviceId(){ try{ let d = localStorage.getItem('ad_earn_device_id'); if(!d){ d = 'DEV_' + Math.random().toString(36).substring(2,15); localStorage.setItem('ad_earn_device_id', d); } return d; }catch(e){ return 'DEV_FALLBACK'; } }
-function getUrlRefCode(){ try{ const tg=window.Telegram?.WebApp; if(tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) return tg.initDataUnsafe.start_param.trim(); return (new URLSearchParams(window.location.search).get('ref')||'').trim(); }catch(e){ return ''; } }
+function getUrlRefCode(){
+  try {
+    const urlRef = new URLSearchParams(window.location.search).get('ref');
+    if (urlRef && urlRef.trim()) return urlRef.trim();
+    const tg = window.Telegram?.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+      return tg.initDataUnsafe.start_param.trim();
+    }
+    return '';
+  } catch(e) { return ''; }
+}
+
+// SECURE CHANNEL CHECK
+async function checkChannel(uid, cid) {
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'checkChannel', telegramId: uid, channelId: cid })
+    });
+    const json = await res.json();
+    if (json.joined === true) return true;
+    if (json.joined === false) return false;
+    return null;
+  } catch(e) { return null; }
+}
 
 // AUTH
 async function initAuth() {
@@ -752,22 +753,6 @@ function showBlockedScreen(reason) {
   document.getElementById('app').style.display = 'none';
 }
 
-async function tgApi(method, params = {}) {
-  try { const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(params) }); return await r.json(); } catch(e) { return { ok: false }; }
-}
-
-// STRICT CHANNEL CHECK
-async function checkChannel(uid, cid) {
-  try {
-    const r = await tgApi('getChatMember', { chat_id: cid, user_id: uid });
-    if (r && r.ok && r.result) {
-      const s = r.result.status;
-      return (s === 'member' || s === 'administrator' || s === 'creator');
-    }
-    return null;
-  } catch(e) { return null; }
-}
-
 // JOIN GATE
 function showJoinGate() {
   document.getElementById('app').style.display = 'none';
@@ -775,8 +760,6 @@ function showJoinGate() {
   updateGateUI();
 }
 function hideJoinGate() { document.getElementById('joinGateScreen').classList.remove('active'); }
-
-// STRICT: null মানে not joined
 async function checkGateChannels() {
   const u = getActiveUser();
   if (!u || !u.telegramId || u.isBrowserUser === true) return true;
@@ -785,11 +768,7 @@ async function checkGateChannels() {
     for (const [k, ch] of Object.entries(CHANNELS)) {
       results[k] = await checkChannel(u.telegramId, ch.id);
     }
-    const status = {
-      tg1: results.tg1 === true,
-      tg2: results.tg2 === true,
-      tg3: results.tg3 === true
-    };
+    const status = { tg1: results.tg1 === true, tg2: results.tg2 === true, tg3: results.tg3 === true };
     if (currentUserKey) { try { await db.collection('users').doc(currentUserKey).update({ telegramStatus: status }); } catch(e) {} }
     if (currentUserData) currentUserData.telegramStatus = status;
     return status.tg1 && status.tg2 && status.tg3;
@@ -808,8 +787,6 @@ function updateGateUI() {
   document.getElementById('jgVerifyBtn').disabled = !allJoined;
   document.getElementById('jgVerifyBtn').textContent = allJoined ? '✅ চ্যানেল জয়েন ভেরিফাই করুন' : 'চ্যানেল জয়েন করে ভেরিফাই করুন';
 }
-
-// FIXED: openTgLink ব্যবহার
 async function joinGateChannel(k) {
   const ch = CHANNELS[k]; if(!ch) return;
   const u = getActiveUser();
@@ -825,7 +802,6 @@ async function joinGateChannel(k) {
   setTimeout(async () => { await checkGateChannels(); updateGateUI(); }, 7000);
   setTimeout(async () => { await checkGateChannels(); updateGateUI(); }, 12000);
 }
-
 async function verifyGateChannels() {
   if (gateCheckInProgress) return;
   gateCheckInProgress = true;
@@ -982,9 +958,7 @@ function showSection(name){
   const sc = document.getElementById('scrollableContent'); if (sc) sc.scrollTop = 0;
 }
 
-// ============================================
 // AD SYSTEM
-// ============================================
 function openAdWatch(){
   const u = getActiveUser(); if(!u) return;
   const today = new Date().toDateString();
@@ -1019,7 +993,6 @@ function openAdWatch(){
     startAdTimer();
   }, 2000);
 }
-
 function fireMonetagAd(){
   if (monetagAdFired) return;
   monetagAdFired = true;
@@ -1034,7 +1007,6 @@ function fireMonetagAd(){
     }
   } catch(e) { console.log('Monetag call error:', e); }
 }
-
 function startAdTimer(){
   adTimeLeft = AD_TIMER_SECONDS;
   const timerText = document.getElementById('adTimerText');
@@ -1068,7 +1040,6 @@ function startAdTimer(){
     }
   }, 1000);
 }
-
 function forceCloseAd(){
   if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); return; }
   closeAdOverlay();
@@ -1085,14 +1056,13 @@ function closeAdOverlay(){
   try { if (tgWebApp?.BackButton) tgWebApp.BackButton.hide(); } catch(e){}
   try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
 }
-
 async function awardAdToUser(user, isAutoAd) {
   const today = new Date().toDateString();
   let todayCount = user.adsToday || 0;
   if (user.lastAdDate !== today) todayCount = 0;
   todayCount++;
   const userReward = AD_REWARD;
-  const companyShare = (userReward * COMPANY_SHARE_PERCENT) / USER_SHARE_PERCENT;
+  const companyShare = (userReward * COMPANY_SHARE_PERCENT) / (100 - COMPANY_SHARE_PERCENT);
   const newBalance = (user.balance || 0) + userReward;
   const newTotal = (user.totalAdsWatched || 0) + 1;
   const hist = user.history || [];
@@ -1102,8 +1072,6 @@ async function awardAdToUser(user, isAutoAd) {
   await processCommissions(user, userReward);
   return { newBalance, newTodayCount: todayCount };
 }
-
-// MULTI-LEVEL COMMISSION (5% + 2%)
 async function processCommissions(user, earningAmount) {
   if (!user || !user.referredBy) return;
   try {
@@ -1115,7 +1083,6 @@ async function processCommissions(user, earningAmount) {
     const l1History = l1User.history || [];
     l1History.push({ id:'COMM_L1_'+Date.now(), type:'💰 L1 কমিশন (৫%)', amount: c1, status:'Completed', time: new Date().toLocaleString('bn-BD') });
     await db.collection('users').doc(l1).update({ commission: (l1User.commission || 0) + c1, balance: (l1User.balance || 0) + c1, history: l1History });
-
     if (l1User.referredBy) {
       const l2 = l1User.referredBy;
       const c2 = (earningAmount * COMMISSION_L2) / 100;
@@ -1129,7 +1096,6 @@ async function processCommissions(user, earningAmount) {
     }
   } catch(e) { console.log('Commission error:', e); }
 }
-
 async function claimAdReward(){
   const u = getActiveUser(); if(!u) return;
   if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); return; }
@@ -1141,9 +1107,7 @@ async function claimAdReward(){
   showClaimSuccess(`🎉 ৳${AD_REWARD.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে!`);
 }
 
-// ============================================
 // AUTO EARN
-// ============================================
 async function startAutoEarn(){
   const u = getActiveUser(); if(!u) return;
   autoEarnRunning = true;
@@ -1155,7 +1119,6 @@ async function startAutoEarn(){
   try { history.pushState({ autoAd: true }, ''); } catch(e) {}
   runAutoEarnLoop(myLoopId);
 }
-
 async function runAutoEarnLoop(myLoopId){
   while(autoEarnRunning && myLoopId === autoEarnLoopId){
     const u = getActiveUser();
@@ -1164,7 +1127,6 @@ async function runAutoEarnLoop(myLoopId){
     let tc = (u.lastAdDate === today ? (u.adsToday||0) : 0);
     if (tc >= DAILY_AD_LIMIT) { stopAutoEarn(true); return; }
     if (autoEarnSessionCount >= AUTO_EARN_MAX) { stopAutoEarn(true); return; }
-
     const overlay = document.getElementById('adOverlay');
     overlay.classList.add('active');
     document.getElementById('adBigIcon').textContent = '🎬';
@@ -1179,14 +1141,12 @@ async function runAutoEarnLoop(myLoopId){
     const circle = document.getElementById('adProgressCircle');
     circle.style.strokeDasharray = 283;
     circle.style.strokeDashoffset = 0;
-
     try {
       if (typeof window.show_11891042 === 'function') {
         const r = window.show_11891042('pop');
         if (r && typeof r.catch === 'function') r.catch(() => { try { window.show_11891042(); } catch(e){} });
       }
     } catch(e) {}
-
     await new Promise(resolve => {
       let tl = AD_TIMER_SECONDS;
       const timerText = document.getElementById('adTimerText');
@@ -1213,9 +1173,7 @@ async function runAutoEarnLoop(myLoopId){
         }
       }, 1000);
     });
-
     if (!autoEarnRunning || myLoopId !== autoEarnLoopId) { overlay.classList.remove('active'); return; }
-
     const user = getActiveUser();
     if (user) {
       await awardAdToUser(user, true);
@@ -1224,7 +1182,6 @@ async function runAutoEarnLoop(myLoopId){
       updateUI();
       try { if (navigator.vibrate) navigator.vibrate(40); } catch(e){}
     }
-
     await delay(1200);
     if (!autoEarnRunning || myLoopId !== autoEarnLoopId) { overlay.classList.remove('active'); return; }
     overlay.classList.remove('active');
@@ -1232,7 +1189,6 @@ async function runAutoEarnLoop(myLoopId){
   }
   document.getElementById('adOverlay').classList.remove('active');
 }
-
 function stopAutoEarn(silent){
   const wasRunning = autoEarnRunning;
   autoEarnRunning = false;
@@ -1242,7 +1198,7 @@ function stopAutoEarn(silent){
   if (silent && wasRunning && autoEarnSessionCount > 0) showClaimSuccess(`🎉 সেশন সম্পন্ন!\n${autoEarnSessionCount}টি অ্যাড • ৳${autoEarnSessionEarnings.toFixed(2)}`);
 }
 
-// FIXED: openTgLink ব্যবহার
+// JOIN CHANNEL
 async function joinChannel(k){
   const u = getActiveUser(); if(!u) return;
   if (u.isBrowserUser === true) { showPopup('🌐 Browser Mode','Telegram এ @'+BOT_USERNAME+' থেকে খুলুন।'); return; }
@@ -1256,8 +1212,6 @@ async function joinChannel(k){
   setTimeout(verifyAllChannels, 15000);
   setTimeout(verifyAllChannels, 25000);
 }
-
-// STRICT: pending bypass বাদ
 async function verifyAllChannels() {
   const u = getActiveUser();
   if (!u || !u.telegramId || u.isBrowserUser === true) return;
@@ -1272,7 +1226,6 @@ async function verifyAllChannels() {
     const history = user.history || [];
     for (const [k, ch] of Object.entries(CHANNELS)) {
       const apiResult = await checkChannel(user.telegramId, ch.id);
-      // STRICT: শুধু true হলে joined। null/false = not joined
       const isMember = apiResult === true;
       const old = user.telegramStatus[k] || false;
       if (old !== isMember) { user.telegramStatus[k] = isMember; changed = true; }
