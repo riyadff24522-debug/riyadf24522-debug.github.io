@@ -14,12 +14,19 @@
 body.dark-mode{--bg:#0f172a;--text:#f1f5f9;--card:#1e293b;--cardB:#334155;--shadow:0 10px 25px -5px rgba(0,0,0,.3);--input:#1e293b;--inputB:#334155;--nav:#1e293b;--navB:#334155;--header:linear-gradient(135deg,#1e1b4b,#312e81);--noticeB:#451a03;--noticeBd:#78350f;--noticeC:#fcd34d;--depNtB:#064e3b;--depNtBd:#065f46;--depNtC:#86efac;--popup:#1e293b;--popupT:#f1f5f9;--hist:#1e293b;--histB:#334155;--histT:#f1f5f9;--pendB:#451a03;--pendT:#fcd34d;--compB:#064e3b;--compT:#86efac;--rejB:#7f1d1d;--rejT:#fca5a5;--msgUB:#1e1b4b;--msgUBd:#818cf8;--blkB:#7f1d1d;--blkBd:#991b1b;--blkC:#fca5a5;--gift:linear-gradient(135deg,#451a03,#78350f);--giftBd:#92400e}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
 body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transition:background .3s,color .3s}
-#blockedScreen,#joinGateScreen{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:99999;padding:20px;overflow-y:auto}
-#blockedScreen.active,#joinGateScreen.active{display:flex}
+#blockedScreen,#joinGateScreen,#tgOnlyScreen{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:99999;padding:20px;overflow-y:auto}
+#blockedScreen.active,#joinGateScreen.active,#tgOnlyScreen.active{display:flex}
 .blocked-box{background:var(--popup);max-width:420px;width:100%;border-radius:28px;padding:32px 24px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,.3);border:2px solid var(--blkBd)}
 .blocked-box .icon{font-size:64px;margin-bottom:12px}
 .blocked-box h2{color:var(--blkC);font-size:24px;font-weight:900;margin-bottom:8px}
 .blocked-box .reason{background:var(--input);padding:12px;border-radius:12px;margin:16px 0;font-size:14px;color:var(--blkC);font-weight:700;border:1px solid var(--blkBd)}
+#tgOnlyScreen{background:linear-gradient(135deg,#0f172a,#1e1b4b)}
+.tg-only-box{background:linear-gradient(135deg,#1e293b,#0f172a);max-width:420px;width:100%;border-radius:28px;padding:36px 24px;text-align:center;border:2px solid #3b82f6;box-shadow:0 25px 60px rgba(59,130,246,.3)}
+.tg-only-box .tg-icon{font-size:80px;margin-bottom:16px;animation:tgPulse 2s infinite}
+@keyframes tgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.tg-only-box h2{color:#60a5fa;font-size:24px;font-weight:900;margin-bottom:12px}
+.tg-only-box p{color:#94a3b8;font-size:14px;line-height:1.7;margin-bottom:20px;font-weight:600}
+.tg-only-box .tg-btn{display:inline-block;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;padding:14px 28px;border-radius:14px;font-weight:900;font-size:15px;text-decoration:none;margin-top:10px;box-shadow:0 8px 25px rgba(59,130,246,.4)}
 .join-gate-box{background:var(--popup);max-width:440px;width:100%;border-radius:28px;padding:28px 22px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,.3);border:2px solid var(--msgUBd)}
 .join-gate-box .jg-icon{font-size:64px;margin-bottom:10px}
 .join-gate-box h2{color:#4f46e5;font-size:22px;font-weight:900;margin-bottom:8px}
@@ -42,6 +49,13 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 #screenShield .shield-icon{font-size:80px;margin-bottom:20px}
 #screenShield .shield-text{font-size:18px;font-weight:900;color:#ef4444;margin-bottom:8px;letter-spacing:1px}
 #screenShield .shield-sub{font-size:13px;color:#64748b;font-weight:700}
+#withdrawShield{position:fixed;inset:0;background:#000;z-index:9999998;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;padding:20px;text-align:center}
+#withdrawShield.active{display:flex}
+#withdrawShield .ws-icon{font-size:90px;margin-bottom:20px;animation:wsPulse 1.5s infinite}
+@keyframes wsPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.1)}}
+#withdrawShield .ws-title{font-size:20px;font-weight:900;color:#ef4444;margin-bottom:10px;letter-spacing:1px}
+#withdrawShield .ws-sub{font-size:14px;color:#94a3b8;font-weight:700;line-height:1.6;max-width:300px}
+#withdrawShield .ws-badge{margin-top:24px;background:rgba(239,68,68,.15);border:2px solid #ef4444;padding:10px 20px;border-radius:30px;font-size:12px;color:#fca5a5;font-weight:800;letter-spacing:.5px}
 .header{background:var(--header);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 12px rgba(79,70,229,.15);min-height:60px;position:relative;z-index:95}
 .header h1{font-size:15px;font-weight:800;letter-spacing:.3px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .header-right{display:flex;align-items:center;gap:6px}
@@ -131,55 +145,6 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .loading-overlay.active{display:flex}
 .spinner{width:36px;height:36px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.refer-premium{position:relative;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;cursor:pointer;overflow:hidden;border:1px solid transparent;margin-bottom:12px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
-.refer-premium .rp-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:2px solid rgba(255,255,255,.5)}
-.refer-premium .rp-content{flex:1;min-width:0}
-.refer-premium .rp-tag{display:inline-block;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;text-transform:uppercase;margin-bottom:4px}
-.refer-premium .rp-title{font-size:14px;font-weight:800;line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.refer-premium .rp-subtitle{font-size:11px;font-weight:600;opacity:.7}
-.refer-premium .rp-arrow{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;background:rgba(0,0,0,.06)}
-.refer-premium.rp-blue{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-color:#93c5fd}
-.refer-premium.rp-blue .rp-icon{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
-.refer-premium.rp-blue .rp-tag{background:#3b82f6;color:#fff}
-.refer-premium.rp-blue .rp-title{color:#1e3a8a}
-.refer-premium.rp-blue .rp-arrow{background:rgba(59,130,246,.15);color:#2563eb}
-.refer-premium.rp-purple{background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border-color:#c4b5fd}
-.refer-premium.rp-purple .rp-icon{background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff}
-.refer-premium.rp-purple .rp-tag{background:#8b5cf6;color:#fff}
-.refer-premium.rp-purple .rp-title{color:#4c1d95}
-.refer-premium.rp-purple .rp-arrow{background:rgba(139,92,246,.15);color:#7c3aed}
-.total-user-premium{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fbbf24;border-radius:18px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.total-user-premium .tu-label{font-size:11px;font-weight:800;color:#92400e;text-transform:uppercase}
-.total-user-premium .tu-count{font-size:26px;font-weight:900;color:#78350f;margin-top:2px}
-.total-user-premium .tu-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0}
-.leaderboard-card{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1px solid #334155;border-radius:20px;padding:18px 14px;margin-top:10px}
-.leaderboard-card h4{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#f1f5f9;padding-bottom:12px;border-bottom:1px solid #334155;flex-wrap:wrap;gap:8px}
-.leaderboard-card h4 .lb-count{font-size:12px;font-weight:700;color:#a78bfa;background:rgba(139,92,246,.15);padding:3px 10px;border-radius:20px}
-.lb-item{display:grid;grid-template-columns:40px 1fr 80px;gap:10px;align-items:center;padding:10px 8px;border-radius:12px}
-.lb-rank{font-size:14px;font-weight:900;text-align:center;color:#64748b}
-.lb-rank.medal{font-size:22px;line-height:1}
-.lb-user{display:flex;align-items:center;gap:10px;min-width:0}
-.lb-avatar{width:38px;height:38px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid #334155;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
-.lb-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.lb-name{font-weight:700;color:#f1f5f9;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-amount{font-size:13px;font-weight:800;color:#a78bfa;text-align:right;white-space:nowrap}
-.watch-ad-card{background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:20px;padding:18px;margin-bottom:14px;color:#fff;box-shadow:0 10px 30px -10px rgba(16,185,129,.5);position:relative;overflow:hidden;cursor:pointer}
-.watch-ad-card h3{font-size:16px;font-weight:900;margin-bottom:6px;position:relative}
-.watch-ad-card .wa-desc{font-size:12px;font-weight:700;opacity:.9;margin-bottom:12px;position:relative}
-.watch-ad-card .wa-stats{display:flex;justify-content:space-between;align-items:center;position:relative}
-.watch-ad-card .wa-reward{background:rgba(255,255,255,.25);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:900;border:1px solid rgba(255,255,255,.3)}
-.watch-ad-card .wa-limit{font-size:11px;font-weight:700;opacity:.9}
-.watch-ad-card .wa-btn{background:#fff;color:#059669;border:none;padding:8px 18px;border-radius:20px;font-weight:900;font-size:13px;cursor:pointer}
-.auto-earn-card{position:relative;background:linear-gradient(135deg,#7c3aed 0%,#4f46e5 100%);border-radius:20px;padding:18px;margin-bottom:14px;cursor:pointer;overflow:hidden;box-shadow:0 10px 30px -10px rgba(124,58,237,.6);color:#fff}
-.ae-glow{position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,.3) 0%,transparent 70%);border-radius:50%;animation:aeRotate 8s linear infinite}
-@keyframes aeRotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.ae-content{position:relative;display:flex;align-items:center;gap:14px}
-.ae-icon{width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid rgba(255,255,255,.4);flex-shrink:0;animation:aeBounce 1.5s infinite}
-@keyframes aeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.ae-info{flex:1;min-width:0}
-.ae-title{font-size:16px;font-weight:900;margin-bottom:4px}
-.ae-sub{font-size:11px;font-weight:700;opacity:.9}
-.ae-arrow{width:36px;height:36px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
 .ref-copy-box{position:relative;background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:2px dashed #818cf8;border-radius:16px;padding:14px}
 .ref-copy-box.copied{background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%);border-color:#10b981}
 .ref-copy-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
@@ -245,6 +210,24 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 .ad-close-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2);font-size:18px;font-weight:900;cursor:pointer;display:none;align-items:center;justify-content:center;position:absolute;top:16px;right:16px;z-index:20}
 .ad-close-btn.visible{display:flex}
 .ad-warning-tag{font-size:11px;color:#f59e0b;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:8px 14px;margin-top:16px;font-weight:800;max-width:340px}
+.wd-complete-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99999;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;padding:20px}
+.wd-complete-overlay.active{opacity:1;visibility:visible}
+.wd-complete-card{background:linear-gradient(135deg,#064e3b 0%,#065f46 100%);border-radius:24px;padding:28px 22px;width:100%;max-width:340px;text-align:center;transform:scale(.7);transition:transform .4s cubic-bezier(.175,.885,.32,1.275);border:2px solid #10b981;box-shadow:0 25px 60px rgba(16,185,129,.4)}
+.wd-complete-overlay.active .wd-complete-card{transform:scale(1)}
+.wd-complete-card .wd-check{width:80px;height:80px;margin:0 auto 16px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;animation:wdCheckPop .6s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes wdCheckPop{0%{transform:scale(0) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+.wd-complete-card h2{color:#fff;font-size:22px;margin-bottom:8px;font-weight:900}
+.wd-complete-card .wd-amt{color:#fbbf24;font-size:32px;font-weight:900;margin:12px 0 16px;letter-spacing:-1px}
+.wd-complete-card p{color:#a7f3d0;font-size:13px;margin-bottom:20px;line-height:1.6;font-weight:600}
+.wd-complete-card .wd-info{background:rgba(255,255,255,.1);border-radius:12px;padding:12px;margin-bottom:20px;font-size:12px;color:#fff;font-weight:700}
+.wd-complete-card .wd-info-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.15)}
+.wd-complete-card .wd-info-row:last-child{border-bottom:none}
+.wd-complete-card button{background:#fff;color:#059669;border:none;width:100%;padding:14px;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit}
+.wd-complete-card.rejected{background:linear-gradient(135deg,#7f1d1d 0%,#991b1b 100%);border-color:#ef4444;box-shadow:0 25px 60px rgba(239,68,68,.4)}
+.wd-complete-card.rejected h2{color:#fca5a5}
+.wd-complete-card.rejected .wd-amt{color:#fca5a5}
+.wd-complete-card.rejected p{color:#fecaca}
+.wd-complete-card.rejected button{color:#dc2626}
 @media(max-width:400px){.header h1{font-size:13px}.balance-badge{font-size:11px;padding:3px 8px}.header-icon-btn{width:30px;height:30px;font-size:14px}}
 </style>
 </head>
@@ -254,6 +237,23 @@ body.dark-mode .condition-sub b{color:#a78bfa}
   <div class="shield-icon">🔒</div>
   <div class="shield-text">SCREENSHOT BLOCKED</div>
   <div class="shield-sub">এই পেজে স্ক্রিনশট নিষিদ্ধ</div>
+</div>
+
+<div id="withdrawShield">
+  <div class="ws-icon">🛡️</div>
+  <div class="ws-title">🔒 SECURE MODE</div>
+  <div class="ws-sub">Withdraw পেজে স্ক্রিনশট নেওয়া সম্পূর্ণ নিষিদ্ধ। পেজে ফিরে এলে আবার দেখতে পাবেন।</div>
+  <div class="ws-badge">⚠️ SUSPICIOUS ACTIVITY BLOCKED</div>
+</div>
+
+<!-- TELEGRAM ONLY SCREEN -->
+<div id="tgOnlyScreen">
+  <div class="tg-only-box">
+    <div class="tg-icon">📱</div>
+    <h2>Telegram Only App</h2>
+    <p>এই অ্যাপ শুধু <b>Telegram</b> এর ভেতরে খোলা যাবে।<br><br>👉 Telegram এ যান → <b>@add_arbe_bot</b> খুলুন → <b>Open App</b> ক্লিক করুন।<br><br>❌ Browser এ সরাসরি লিংক দিয়ে খোলা যাবে না।</p>
+    <a href="https://t.me/add_arbe_bot" class="tg-btn">📱 Telegram এ যান</a>
+  </div>
 </div>
 
 <div id="joinGateScreen">
@@ -284,6 +284,17 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div style="font-weight:700;font-size:15px;">লোড হচ্ছে...</div></div>
 
 <div class="claim-popup-overlay" id="claimSuccessPopup"><div class="claim-popup-card"><div class="claim-icon-wrapper"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div><h3>Reward Claimed!</h3><p id="claimPopupText">সফলভাবে ব্যালেন্স যোগ হয়েছে।</p><button class="claim-close-btn" onclick="closeClaimPopup()">Awesome</button></div></div>
+
+<div class="wd-complete-overlay" id="wdCompletePopup">
+  <div class="wd-complete-card" id="wdCompleteCard">
+    <div class="wd-check" id="wdCheckIcon">✅</div>
+    <h2 id="wdCompleteTitle">Withdraw Complete!</h2>
+    <div class="wd-amt" id="wdCompleteAmt">৳0</div>
+    <div class="wd-info" id="wdCompleteInfo"></div>
+    <p id="wdCompleteMsg">আপনার টাকা সফলভাবে পাঠানো হয়েছে।</p>
+    <button onclick="closeWdComplete()">🎉 ঠিক আছে</button>
+  </div>
+</div>
 
 <div id="app">
   <div class="header">
@@ -322,15 +333,14 @@ body.dark-mode .condition-sub b{color:#a78bfa}
         </div>
       </div>
 
-      <div class="auto-earn-card" onclick="startAutoEarn()">
-        <div class="ae-glow"></div>
-        <div class="ae-content">
-          <div class="ae-icon">⚡</div>
-          <div class="ae-info">
-            <div class="ae-title">Auto Earn Zone</div>
-            <div class="ae-sub">একটার পর একটা অ্যাড অটো চলবে</div>
+      <div class="auto-earn-card" onclick="startAutoEarn()" style="position:relative;background:linear-gradient(135deg,#7c3aed 0%,#4f46e5 100%);border-radius:20px;padding:18px;margin-bottom:14px;cursor:pointer;overflow:hidden;box-shadow:0 10px 30px -10px rgba(124,58,237,.6);color:#fff">
+        <div style="position:relative;display:flex;align-items:center;gap:14px">
+          <div style="width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid rgba(255,255,255,.4);flex-shrink:0">⚡</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:16px;font-weight:900;margin-bottom:4px">Auto Earn Zone</div>
+            <div style="font-size:11px;font-weight:700;opacity:.9">একটার পর একটা অ্যাড অটো চলবে</div>
           </div>
-          <div class="ae-arrow">▶</div>
+          <div style="width:36px;height:36px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">▶</div>
         </div>
       </div>
 
@@ -349,13 +359,16 @@ body.dark-mode .condition-sub b{color:#a78bfa}
       <div class="commission-info">
         <h4>💎 রেফার কমিশন সিস্টেম</h4>
         <div class="commission-row"><span>Level 1 (আপনার সরাসরি রেফার)</span><span>৫%</span></div>
-        <div class="commission-row"><span>Level 2 (তার রেফার)</span><span>২%</span></div>
+        <div class="commission-row"><span>Level 2 (তার রেফার)</span><span>৫%</span></div>
         <div style="font-size:10px;color:#78350f;margin-top:6px;opacity:.8;font-weight:600">যখন আপনার রেফার আয় করে, তার ৫% আপনার অ্যাকাউন্টে আসবে।</div>
       </div>
 
       <div class="card">
         <div style="margin-bottom:8px;font-size:12px;color:#4f46e5;font-weight:800;">🎁 প্রতি রেফারে ৳১০ • প্রতি Telegram চ্যানেলে জয়েন = ৳৫ (মোট ৳১৫)</div>
         <div style="margin-bottom:8px;font-size:11px;color:#ef4444;font-weight:800;">⚠️ Withdraw আনলক: ৫টি রেফার বাধ্যতামূলক</div>
+        <div class="notice-box" style="background:#e0e7ff;border-color:#6366f1;color:#3730a3;">
+          ℹ️ <strong>রেফারেল নিয়ম:</strong> নতুন user আপনার লিংকে ক্লিক করে ঢুকলে <strong>সে ৩টি চ্যানেলেই জয়েন করলে</strong> তখনই আপনার refer count +1 হবে এবং ৳১০ বোনাস পাবেন।
+        </div>
         <div class="ref-copy-box" id="refCopyBox">
           <div class="ref-copy-header">
             <span style="font-size:11px;font-weight:800;color:#4f46e5;">🔗 আপনার রেফার লিংক</span>
@@ -372,9 +385,9 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           <div id="tgIdStatus" style="font-size:11px;color:var(--text);opacity:.7;margin-top:2px;font-weight:600;">লোড হচ্ছে...</div>
         </div>
         <div style="margin-top:16px;">
-          <div id="totalUserBox" class="total-user-premium">
-            <div><div class="tu-label">মোট ইউজার</div><div class="tu-count" id="totalUserCount">০</div></div>
-            <div class="tu-icon">👥</div>
+          <div id="totalUserBox" style="background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fbbf24;border-radius:18px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div><div style="font-size:11px;font-weight:800;color:#92400e;text-transform:uppercase">মোট ইউজার</div><div style="font-size:26px;font-weight:900;color:#78350f;margin-top:2px" id="totalUserCount">০</div></div>
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0">👥</div>
           </div>
         </div>
       </div>
@@ -397,6 +410,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
         </div>
         <div class="notice-box" style="background:var(--depNtB);border-color:var(--depNtBd);color:var(--depNtC);">⚠️ প্রতি উইথড্রতে <strong>৳৫</strong> চার্জ। সর্বনিম্ন ৳১০০০।</div>
         <div class="notice-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">⚠️ Withdraw করতে <strong>৫টি রেফার</strong> বাধ্যতামূলক।</div>
+        <div class="notice-box" style="background:#e0e7ff;border-color:#6366f1;color:#3730a3;font-weight:800;">🔒 এই পেজে Screenshot নিষিদ্ধ — স্ক্রিনশট নিলে ব্লক হয়ে যাবে</div>
         <div class="method-grid">
           <div class="method-option active" id="wdMethodBkash" onclick="selectWdMethod('bKash')">bKash</div>
           <div class="method-option" id="wdMethodNagad" onclick="selectWdMethod('Nagad')">Nagad</div>
@@ -427,8 +441,8 @@ body.dark-mode .condition-sub b{color:#a78bfa}
         <div class="stat-row"><span>Commission</span><span id="profCommission">৳ 0.00</span></div>
         <div class="stat-row"><span>Total Referrals</span><span id="profRefCount">0</span></div>
       </div>
-      <div class="card leaderboard-card">
-        <h4><span>🏆 Top Referral Leaderboard</span><span class="lb-count" id="lbTotalCount">30 Users</span></h4>
+      <div class="card" style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1px solid #334155;border-radius:20px;padding:18px 14px;margin-top:10px">
+        <h4 style="font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#f1f5f9;padding-bottom:12px;border-bottom:1px solid #334155;flex-wrap:wrap;gap:8px"><span>🏆 Top Referral Leaderboard</span><span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(139,92,246,.15);padding:3px 10px;border-radius:20px" id="lbTotalCount">30 Users</span></h4>
         <div id="leaderboardContainer"></div>
       </div>
     </div>
@@ -486,7 +500,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 
 <script>
 // ============================================
-// CONFIG — NO BOT TOKEN HERE ✅
+// CONFIG
 // ============================================
 const firebaseConfig = {
   apiKey: "AIzaSyAxYweveDEZugb4lJk4_BuCCroMEtJgM0Q",
@@ -502,8 +516,6 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 const BOT_USERNAME = 'add_arbe_bot';
-
-// 🔐 Cloudflare Worker — token hidden inside!
 const WORKER_URL = 'https://ads-to-earn-api.riyadking24522.workers.dev';
 
 const CHANNELS = {
@@ -519,7 +531,7 @@ const TG_REF_BONUS = 10;
 const DAILY_AD_LIMIT = 100;
 const AD_TIMER_SECONDS = 20;
 const COMMISSION_L1 = 5;
-const COMMISSION_L2 = 2;
+const COMMISSION_L2 = 5;
 const MIN_WITHDRAW = 1000;
 const MAX_WITHDRAW = 50000;
 const WITHDRAW_CHARGE = 5;
@@ -534,7 +546,11 @@ let adTimerInterval = null;
 let adTimeLeft = AD_TIMER_SECONDS;
 let adInProgress = false;
 let monetagAdFired = false;
+let monetagAdCompleted = false;
+let adAbandoned = false;
+let adWatchStartTime = 0;
 let shieldActive = false;
+let withdrawShieldActive = false;
 let tgCheckInterval = null;
 let autoEarnRunning = false;
 let autoEarnSessionCount = 0;
@@ -542,28 +558,35 @@ let autoEarnSessionEarnings = 0;
 let autoEarnLoopId = 0;
 let gateCheckInProgress = false;
 let tgWebApp = null;
+let currentSection = 'home';
+let lastWithdrawStatuses = {};
 
 try { tgWebApp = window.Telegram?.WebApp; if(tgWebApp){tgWebApp.ready();tgWebApp.expand();} } catch(e) {}
 
 function delay(ms){ return new Promise(res => setTimeout(res, ms)); }
 
-// Telegram link opener
 function openTgLink(link) {
-  try {
-    if (tgWebApp && typeof tgWebApp.openTelegramLink === 'function') {
-      tgWebApp.openTelegramLink(link);
-      return true;
-    }
-  } catch(e) {}
-  try {
-    if (tgWebApp && typeof tgWebApp.openLink === 'function') {
-      tgWebApp.openLink(link);
-      return true;
-    }
-  } catch(e) {}
+  try { if (tgWebApp && typeof tgWebApp.openTelegramLink === 'function') { tgWebApp.openTelegramLink(link); return true; } } catch(e) {}
+  try { if (tgWebApp && typeof tgWebApp.openLink === 'function') { tgWebApp.openLink(link); return true; } } catch(e) {}
   try { const w = window.open(link, '_blank'); if (w) return true; } catch(e) {}
   try { window.location.href = link; } catch(e) {}
   return true;
+}
+
+// ============================================
+// TELEGRAM ONLY CHECK
+// ============================================
+function isInsideTelegram() {
+  try {
+    const tg = window.Telegram?.WebApp;
+    if (!tg) return false;
+    // Real Telegram WebApp has initData OR a valid platform
+    if (tg.initData && tg.initData.length > 0) return true;
+    if (tg.platform && tg.platform !== 'unknown' && tg.platform !== 'web') return true;
+    // Fallback: check user data
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) return true;
+    return false;
+  } catch(e) { return false; }
 }
 
 // SCREENSHOT PROTECTION
@@ -585,11 +608,55 @@ function deactivateShield() {
     if (app) app.style.filter = '';
   }
 }
+function activateWithdrawShield() {
+  const ws = document.getElementById('withdrawShield');
+  if (ws && !withdrawShieldActive) {
+    ws.classList.add('active');
+    withdrawShieldActive = true;
+    try { if (navigator.vibrate) navigator.vibrate([100,50,100,50,100]); } catch(e){}
+  }
+}
+function deactivateWithdrawShield() {
+  const ws = document.getElementById('withdrawShield');
+  if (ws && withdrawShieldActive) {
+    ws.classList.remove('active');
+    withdrawShieldActive = false;
+  }
+}
+
+// ============================================
+// VISIBILITY CHANGE — AD ABANDON DETECTION
+// ============================================
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    activateShield();
+    // ✅ If ad is running and not finished → mark as abandoned
+    if (adInProgress && adTimeLeft > 0) {
+      adAbandoned = true;
+    }
+    // Auto earn stops when leaving
+    if (autoEarnRunning) {
+      stopAutoEarn(false);
+    }
+    if (currentSection === 'withdraw' && !adInProgress && !autoEarnRunning && document.getElementById('app').style.display === 'flex') {
+      activateWithdrawShield();
+    } else {
+      activateShield();
+    }
   } else {
     deactivateShield();
+    deactivateWithdrawShield();
+    
+    // ✅ If ad was abandoned during ad
+    if (adInProgress && adAbandoned) {
+      clearInterval(adTimerInterval); adTimerInterval = null;
+      adInProgress = false;
+      adAbandoned = false;
+      document.getElementById('adOverlay').classList.remove('active');
+      try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e) {}
+      showPopup('❌ Ad বাতিল', 'Ad চলার সময় আপনি অ্যাপ থেকে বের হয়ে গিয়েছিলেন।\n\n💡 সম্পূর্ণ ad দেখলেই ৳2 পাবেন।');
+      return;
+    }
+    
     setTimeout(async () => {
       if (!currentUserKey) return;
       const gate = document.getElementById('joinGateScreen');
@@ -602,11 +669,27 @@ document.addEventListener('visibilitychange', () => {
     }, 1500);
   }
 });
-window.addEventListener('blur', () => activateShield());
-window.addEventListener('focus', () => deactivateShield());
+window.addEventListener('blur', () => {
+  if (adInProgress && adTimeLeft > 0) adAbandoned = true;
+  if (currentSection === 'withdraw' && !adInProgress && !autoEarnRunning && document.getElementById('app').style.display === 'flex') {
+    activateWithdrawShield();
+  } else {
+    activateShield();
+  }
+});
+window.addEventListener('focus', () => {
+  deactivateShield();
+  deactivateWithdrawShield();
+});
 document.addEventListener('keyup', (e) => {
   if (e.key === 'PrintScreen' || e.keyCode === 44) {
-    e.preventDefault(); activateShield(); setTimeout(deactivateShield, 4000);
+    e.preventDefault();
+    if (currentSection === 'withdraw') {
+      activateWithdrawShield();
+      setTimeout(() => { if (currentSection !== 'withdraw') deactivateWithdrawShield(); }, 5000);
+    } else {
+      activateShield(); setTimeout(deactivateShield, 4000);
+    }
     try { navigator.clipboard.writeText(''); } catch(err){}
     showToastSafe('🔒 Blocked','স্ক্রিনশট নিষিদ্ধ');
     return false;
@@ -615,7 +698,13 @@ document.addEventListener('keyup', (e) => {
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey && e.shiftKey && (e.key === 'S' || e.key === 's' || e.key === '4')) ||
       (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5'))) {
-    e.preventDefault(); activateShield(); setTimeout(deactivateShield, 4000);
+    e.preventDefault();
+    if (currentSection === 'withdraw') {
+      activateWithdrawShield();
+      setTimeout(() => { if (currentSection !== 'withdraw') deactivateWithdrawShield(); }, 5000);
+    } else {
+      activateShield(); setTimeout(deactivateShield, 4000);
+    }
     showToastSafe('🔒 Blocked','স্ক্রিনশট নিষিদ্ধ');
     return false;
   }
@@ -653,20 +742,34 @@ async function checkChannel(uid, cid) {
   } catch(e) { return null; }
 }
 
-// AUTH
+// ============================================
+// AUTH — with Telegram only check
+// ============================================
 async function initAuth() {
+  // 🔒 STRICT: Telegram only
+  const urlParams = new URLSearchParams(window.location.search);
+  const isAdminTest = urlParams.get('test') === 'admin123';
+  
+  if (!isInsideTelegram() && !isAdminTest) {
+    document.getElementById('tgOnlyScreen').classList.add('active');
+    return false;
+  }
+  
   let user = window.Telegram?.WebApp?.initDataUnsafe?.user;
   let isBrowser = false;
-  if (!user || !user.id) {
-    let stored = localStorage.getItem('ad_earn_browser_user');
-    if (stored) { try { user = JSON.parse(stored); isBrowser = true; } catch(e) { user = null; } }
-    if (!user) {
-      const did = getDeviceId().replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
-      user = { id: 'BR_' + did, first_name: 'Guest', last_name: 'User', username: 'guest_' + did.substring(0,6), photo_url: '', is_browser: true };
-      localStorage.setItem('ad_earn_browser_user', JSON.stringify(user));
-      isBrowser = true;
-    }
+  
+  // For admin test, use guest
+  if (isAdminTest && (!user || !user.id)) {
+    const did = getDeviceId().replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
+    user = { id: 'ADMIN_' + did, first_name: 'Admin', last_name: 'Test', username: 'admin_test', photo_url: '', is_browser: true };
+    isBrowser = true;
   }
+  
+  if (!user || !user.id) {
+    document.getElementById('tgOnlyScreen').classList.add('active');
+    return false;
+  }
+  
   const tgId = String(user.id);
   const tgInfo = {
     id: tgId,
@@ -692,13 +795,20 @@ async function initAuth() {
       if (typeof data.commission !== 'number') { currentUserData.commission = 0; changed = true; }
       if (changed) { try { await docRef.update({ authUid: currentUserData.authUid, profileImg: currentUserData.profileImg, commission: currentUserData.commission }); } catch(e) {} }
     } else {
+      // NEW USER
       const refCode = getUrlRefCode();
       const assignedUserId = 'USR' + Math.floor(100000 + Math.random() * 900000);
       let referredBy = null;
       if (refCode) {
         const upper = refCode.toUpperCase();
         if (upper !== assignedUserId.toUpperCase() && upper !== loginId.toUpperCase()) {
-          try { const q = await db.collection('users').where('userId', '==', upper).limit(1).get(); if (!q.empty) { const rd = q.docs[0].data(); if (rd.loginId !== loginId) referredBy = rd.loginId; } } catch(e) {}
+          try {
+            const q = await db.collection('users').where('userId', '==', upper).limit(1).get();
+            if (!q.empty) {
+              const rd = q.docs[0].data();
+              if (rd.loginId !== loginId) referredBy = rd.loginId;
+            }
+          } catch(e) {}
         }
       }
       const newUser = {
@@ -707,7 +817,8 @@ async function initAuth() {
         isBrowserUser: tgInfo.is_browser,
         balance: 0, commission: 0, referCount: 0, totalWithdraw: 0, totalAdsWatched: 0,
         adsToday: 0, lastAdDate: '',
-        referredBy, referredUsers: [], referralBonusGivenForTelegram: false,
+        referredBy, referredUsers: [],
+        referralBonusGivenForTelegram: false,
         history: [], usedGifts: [], giftHistory: [],
         profileImg: tgInfo.photo || '', deviceId: getDeviceId(),
         linkedNumbers: { bKash: '', Nagad: '' },
@@ -740,9 +851,61 @@ function listenUserChanges(loginId) {
       currentUserData = { ...snap.data(), loginId: snap.id };
       if (currentUserData.isBlocked === true) { showBlockedScreen(currentUserData.blockReason || 'নিয়ম লঙ্ঘন'); return; }
       if (document.getElementById('app').style.display === 'flex') updateUI();
+      detectWithdrawChanges(currentUserData.history || []);
     }
   }, err => console.log(err));
 }
+
+// WITHDRAW STATUS CHANGE DETECTION
+function detectWithdrawChanges(history) {
+  const withdraws = (history || []).filter(h => (h.type || '').toLowerCase().includes('withdraw') && (h.id || '').startsWith('WD_'));
+  withdraws.forEach(w => {
+    const prevStatus = lastWithdrawStatuses[w.id];
+    if (!prevStatus) { lastWithdrawStatuses[w.id] = w.status; return; }
+    if (prevStatus === 'Pending' && w.status === 'Completed') {
+      showWithdrawCompletePopup(w);
+      lastWithdrawStatuses[w.id] = w.status;
+    } else if (prevStatus === 'Pending' && w.status === 'Rejected') {
+      showWithdrawRejectedPopup(w);
+      lastWithdrawStatuses[w.id] = w.status;
+    } else if (prevStatus !== w.status) {
+      lastWithdrawStatuses[w.id] = w.status;
+    }
+  });
+}
+function showWithdrawCompletePopup(w) {
+  const card = document.getElementById('wdCompleteCard');
+  card.classList.remove('rejected');
+  document.getElementById('wdCheckIcon').textContent = '✅';
+  document.getElementById('wdCompleteTitle').textContent = 'Withdraw Complete!';
+  document.getElementById('wdCompleteAmt').textContent = '৳' + Math.abs(parseFloat(w.amount) || 0).toFixed(2);
+  document.getElementById('wdCompleteInfo').innerHTML = `
+    <div class="wd-info-row"><span>Method</span><span>${w.method || 'bKash'}</span></div>
+    <div class="wd-info-row"><span>Number</span><span>${w.number || 'N/A'}</span></div>
+    <div class="wd-info-row"><span>Time</span><span>${w.time || ''}</span></div>
+  `;
+  document.getElementById('wdCompleteMsg').textContent = '🎉 আপনার টাকা সফলভাবে পাঠানো হয়েছে!';
+  document.getElementById('wdCompletePopup').classList.add('active');
+  try { if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]); } catch(e){}
+}
+function showWithdrawRejectedPopup(w) {
+  const card = document.getElementById('wdCompleteCard');
+  card.classList.add('rejected');
+  document.getElementById('wdCheckIcon').textContent = '❌';
+  document.getElementById('wdCompleteTitle').textContent = 'Withdraw Rejected';
+  document.getElementById('wdCompleteAmt').textContent = '৳' + Math.abs(parseFloat(w.amount) || 0).toFixed(2);
+  document.getElementById('wdCompleteInfo').innerHTML = `
+    <div class="wd-info-row"><span>Method</span><span>${w.method || 'bKash'}</span></div>
+    <div class="wd-info-row"><span>Reason</span><span>${w.rejectReason || 'নিয়ম লঙ্ঘন'}</span></div>
+  `;
+  document.getElementById('wdCompleteMsg').textContent = '⚠️ আপনার Withdraw বাতিল হয়েছে। টাকা ফেরত দেওয়া হয়েছে।';
+  document.getElementById('wdCompletePopup').classList.add('active');
+  try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch(e){}
+}
+function closeWdComplete() {
+  document.getElementById('wdCompletePopup').classList.remove('active');
+}
+
 async function saveUserData(updates) {
   if (!currentUserKey) return;
   try { await db.collection('users').doc(currentUserKey).update(updates); currentUserData = { ...currentUserData, ...updates }; } catch(e) { console.log(e); }
@@ -751,6 +914,53 @@ function showBlockedScreen(reason) {
   document.getElementById('blockReason').textContent = 'কারণ: ' + (reason || 'নিয়ম লঙ্ঘন');
   document.getElementById('blockedScreen').classList.add('active');
   document.getElementById('app').style.display = 'none';
+}
+
+// ============================================
+// REFERRAL BONUS — শুধু ৩টি চ্যানেল জয়েন করলে
+// ============================================
+async function processReferralBonus() {
+  const u = getActiveUser();
+  if (!u || !u.referredBy) return;
+  try {
+    const snap = await db.collection('users').doc(currentUserKey).get();
+    const user = snap.data();
+    if (user.referralBonusGivenForTelegram === true) return;
+    
+    // Check if ALL 3 channels are joined
+    const allNow = Object.keys(CHANNELS).every(k => user.telegramStatus?.[k] === true);
+    if (!allNow) return;
+    
+    const refDoc = await db.collection('users').doc(user.referredBy).get();
+    if (!refDoc.exists) return;
+    const ref = refDoc.data();
+    
+    const alreadyReferred = (ref.referredUsers || []).includes(user.userId);
+    if (alreadyReferred) {
+      await db.collection('users').doc(currentUserKey).update({ referralBonusGivenForTelegram: true });
+      return;
+    }
+    
+    const nrb = (ref.balance || 0) + TG_REF_BONUS;
+    const nrc = (ref.referCount || 0) + 1;
+    const rru = ref.referredUsers || [];
+    rru.push(user.userId);
+    const rh = ref.history || [];
+    rh.push({ 
+      id:'REF_'+Date.now(), 
+      type:'রেফারেল বোনাস ৳'+TG_REF_BONUS + ' (' + (user.nick || 'User') + ')', 
+      amount: TG_REF_BONUS, 
+      status:'Completed', 
+      time: new Date().toLocaleString('bn-BD') 
+    });
+    await db.collection('users').doc(user.referredBy).update({ 
+      balance: nrb, 
+      referCount: nrc, 
+      referredUsers: rru, 
+      history: rh 
+    });
+    await db.collection('users').doc(currentUserKey).update({ referralBonusGivenForTelegram: true });
+  } catch(e) { console.log('Referral bonus error:', e); }
 }
 
 // JOIN GATE
@@ -809,7 +1019,12 @@ async function verifyGateChannels() {
   try {
     const ok = await checkGateChannels();
     updateGateUI();
-    if (ok) { hideJoinGate(); await awardJoinBonuses(); await enterApp(); }
+    if (ok) { 
+      hideJoinGate(); 
+      await awardJoinBonuses(); 
+      await processReferralBonus();
+      await enterApp(); 
+    }
     else { showPopup('❌ এখনো জয়েন হয়নি', 'সবগুলো চ্যানেলে "Join" ক্লিক করে আবার চেষ্টা করুন।'); }
   } finally { gateCheckInProgress = false; showLoading(false); }
 }
@@ -836,29 +1051,6 @@ async function awardJoinBonuses() {
       await db.collection('users').doc(currentUserKey).update({ telegramJoinBonuses: user.telegramJoinBonuses, balance: newBalance, history });
       if (bonusCount > 0) setTimeout(() => showClaimSuccess(`🎉 ${bonusCount}টি চ্যানেল জয়েন!\n+৳${bonusCount * TG_JOIN_BONUS} বোনাস!`), 500);
     }
-    await processReferralBonus();
-  } catch(e) { console.log(e); }
-}
-async function processReferralBonus() {
-  const u = getActiveUser();
-  if (!u || !u.referredBy) return;
-  try {
-    const snap = await db.collection('users').doc(currentUserKey).get();
-    const user = snap.data();
-    if (user.referralBonusGivenForTelegram === true) return;
-    const allNow = Object.keys(CHANNELS).every(k => user.telegramStatus?.[k] === true);
-    if (!allNow) return;
-    const refDoc = await db.collection('users').doc(user.referredBy).get();
-    if (!refDoc.exists) return;
-    const ref = refDoc.data();
-    const nrb = (ref.balance || 0) + TG_REF_BONUS;
-    const nrc = (ref.referCount || 0) + 1;
-    const rru = ref.referredUsers || [];
-    if (!rru.includes(user.userId)) rru.push(user.userId);
-    const rh = ref.history || [];
-    rh.push({ id:'REF_'+Date.now(), type:'রেফারেল বোনাস ৳'+TG_REF_BONUS, amount: TG_REF_BONUS, status:'Completed', time: new Date().toLocaleString('bn-BD') });
-    await db.collection('users').doc(user.referredBy).update({ balance: nrb, referCount: nrc, referredUsers: rru, history: rh });
-    await db.collection('users').doc(currentUserKey).update({ referralBonusGivenForTelegram: true });
   } catch(e) { console.log(e); }
 }
 
@@ -946,6 +1138,7 @@ function renderGiftHistory(){
   box.innerHTML = u.giftHistory.slice().reverse().map(g => `<div class="history-item"><div><div class="history-title">${g.code}</div><div class="history-time">${g.time}</div></div><div class="history-amount pos">+৳${g.amount.toFixed(2)}</div></div>`).join('');
 }
 function showSection(name){
+  currentSection = name;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('sec-'+name);
   if (target) target.classList.add('active');
@@ -955,10 +1148,13 @@ function showSection(name){
   else if(name === 'task') document.getElementById('navTaskItem').classList.add('active');
   else if(name === 'profile') document.getElementById('navProfileItem').classList.add('active');
   if (name === 'profile') renderLeaderboard();
+  if (name !== 'withdraw') deactivateWithdrawShield();
   const sc = document.getElementById('scrollableContent'); if (sc) sc.scrollTop = 0;
 }
 
+// ============================================
 // AD SYSTEM
+// ============================================
 function openAdWatch(){
   const u = getActiveUser(); if(!u) return;
   const today = new Date().toDateString();
@@ -966,6 +1162,9 @@ function openAdWatch(){
   if (todayCount >= DAILY_AD_LIMIT) { showPopup('⏰ দৈনিক লিমিট শেষ', `আপনি আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
   adInProgress = true;
   monetagAdFired = false;
+  monetagAdCompleted = false;
+  adAbandoned = false;
+  adWatchStartTime = Date.now();
   document.getElementById('adOverlay').classList.add('active');
   document.getElementById('adBigIcon').textContent = '🎬';
   document.getElementById('adTitle').textContent = 'বিজ্ঞাপন লোড হচ্ছে...';
@@ -993,20 +1192,33 @@ function openAdWatch(){
     startAdTimer();
   }, 2000);
 }
+
+// ============================================
+// MONETAG — Rewarded Interstitial (highest CPM)
+// ============================================
 function fireMonetagAd(){
   if (monetagAdFired) return;
   monetagAdFired = true;
+  monetagAdCompleted = false;
   try {
     if (typeof window.show_11891042 === 'function') {
-      const r = window.show_11891042('pop');
-      if (r && typeof r.then === 'function') {
-        r.then(() => {}).catch(() => { try { window.show_11891042(); } catch(e) {} });
-      } else {
-        try { window.show_11891042(); } catch(e) {}
-      }
+      window.show_11891042().then(() => {
+        console.log('✅ Monetag ad completed');
+        monetagAdCompleted = true;
+      }).catch((err) => {
+        console.log('⚠️ Monetag error:', err);
+        monetagAdCompleted = true;
+      });
+    } else {
+      console.log('⚠️ SDK not loaded');
+      monetagAdCompleted = true;
     }
-  } catch(e) { console.log('Monetag call error:', e); }
+  } catch(e) {
+    console.log('Monetag error:', e);
+    monetagAdCompleted = true;
+  }
 }
+
 function startAdTimer(){
   adTimeLeft = AD_TIMER_SECONDS;
   const timerText = document.getElementById('adTimerText');
@@ -1019,6 +1231,11 @@ function startAdTimer(){
   ringText.textContent = adTimeLeft;
   clearInterval(adTimerInterval);
   adTimerInterval = setInterval(() => {
+    // Check abandon during timer
+    if (adAbandoned) {
+      clearInterval(adTimerInterval); adTimerInterval = null;
+      return;
+    }
     adTimeLeft--;
     timerText.textContent = adTimeLeft;
     ringText.textContent = adTimeLeft > 0 ? adTimeLeft : '✓';
@@ -1026,6 +1243,13 @@ function startAdTimer(){
     circle.style.strokeDashoffset = offset;
     if (adTimeLeft <= 0) {
       clearInterval(adTimerInterval); adTimerInterval = null;
+      if (adAbandoned) {
+        adInProgress = false;
+        adAbandoned = false;
+        document.getElementById('adOverlay').classList.remove('active');
+        showPopup('❌ Ad বাতিল', 'Ad চলার সময় আপনি অ্যাপ থেকে বের হয়ে গিয়েছিলেন।\n\n💡 সম্পূর্ণ ad দেখলেই ৳2 পাবেন।');
+        return;
+      }
       timerChip.classList.add('done');
       document.getElementById('adBigIcon').textContent = '✅';
       document.getElementById('adTitle').textContent = 'বিজ্ঞাপন সম্পন্ন!';
@@ -1056,7 +1280,20 @@ function closeAdOverlay(){
   try { if (tgWebApp?.BackButton) tgWebApp.BackButton.hide(); } catch(e){}
   try { if (tgWebApp?.disableClosingConfirmation) tgWebApp.disableClosingConfirmation(); } catch(e){}
 }
+
 async function awardAdToUser(user, isAutoAd) {
+  // Verify min duration
+  const now = Date.now();
+  const elapsed = (now - adWatchStartTime) / 1000;
+  const requiredTime = AD_TIMER_SECONDS - 3;
+  
+  if (!isAutoAd && elapsed < requiredTime) {
+    return { failed: true, reason: 'Ad সম্পূর্ণ দেখেননি' };
+  }
+  if (adAbandoned) {
+    return { failed: true, reason: 'App থেকে বের হয়েছিলেন' };
+  }
+  
   const today = new Date().toDateString();
   let todayCount = user.adsToday || 0;
   if (user.lastAdDate !== today) todayCount = 0;
@@ -1066,12 +1303,29 @@ async function awardAdToUser(user, isAutoAd) {
   const newBalance = (user.balance || 0) + userReward;
   const newTotal = (user.totalAdsWatched || 0) + 1;
   const hist = user.history || [];
-  hist.push({ id:'AD_'+Date.now()+'_'+Math.random().toString(36).substr(2,5), type: isAutoAd ? 'Auto Ad Watched' : 'Ad Watched', amount: userReward, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+  hist.push({ 
+    id:'AD_'+Date.now()+'_'+Math.random().toString(36).substr(2,5), 
+    type: isAutoAd ? 'Auto Ad Watched' : 'Ad Watched', 
+    amount: userReward, 
+    status:'Completed', 
+    time: new Date().toLocaleString('bn-BD'),
+    duration: Math.round(elapsed)
+  });
   await saveUserData({ balance: newBalance, adsToday: todayCount, lastAdDate: today, totalAdsWatched: newTotal, history: hist });
-  try { await db.collection('company_earnings').add({ userId: user.userId, userReward, companyShare, timestamp: new Date().toLocaleString('bn-BD'), createdAt: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
+  try { 
+    await db.collection('company_earnings').add({ 
+      userId: user.userId, 
+      userReward, 
+      companyShare, 
+      adDuration: Math.round(elapsed),
+      timestamp: new Date().toLocaleString('bn-BD'), 
+      createdAt: firebase.firestore.FieldValue.serverTimestamp() 
+    }); 
+  } catch(e) {}
   await processCommissions(user, userReward);
   return { newBalance, newTodayCount: todayCount };
 }
+
 async function processCommissions(user, earningAmount) {
   if (!user || !user.referredBy) return;
   try {
@@ -1090,19 +1344,30 @@ async function processCommissions(user, earningAmount) {
       if (l2Doc.exists) {
         const l2User = l2Doc.data();
         const l2History = l2User.history || [];
-        l2History.push({ id:'COMM_L2_'+Date.now(), type:'💰 L2 কমিশন (২%)', amount: c2, status:'Completed', time: new Date().toLocaleString('bn-BD') });
+        l2History.push({ id:'COMM_L2_'+Date.now(), type:'💰 L2 কমিশন (৫%)', amount: c2, status:'Completed', time: new Date().toLocaleString('bn-BD') });
         await db.collection('users').doc(l2).update({ commission: (l2User.commission || 0) + c2, balance: (l2User.balance || 0) + c2, history: l2History });
       }
     }
   } catch(e) { console.log('Commission error:', e); }
 }
+
 async function claimAdReward(){
   const u = getActiveUser(); if(!u) return;
   if (adTimeLeft > 0) { showToastSafe('⏳ অপেক্ষা','টাইমার শেষ হয়নি'); return; }
+  if (adAbandoned) {
+    closeAdOverlay();
+    showPopup('❌ Ad Fail', 'Ad চলার সময় আপনি অ্যাপ থেকে বের হয়ে গিয়েছিলেন।');
+    return;
+  }
   const today = new Date().toDateString();
   const todayCount = (u.lastAdDate === today ? (u.adsToday||0) : 0);
   if (todayCount >= DAILY_AD_LIMIT) { closeAdOverlay(); showPopup('⏰ লিমিট শেষ',`আজ ${DAILY_AD_LIMIT}টি অ্যাড দেখেছেন!`); return; }
-  await awardAdToUser(u, false);
+  const result = await awardAdToUser(u, false);
+  if (result && result.failed) {
+    closeAdOverlay();
+    showPopup('❌ Ad Fail', result.reason || 'Ad count হয়নি');
+    return;
+  }
   closeAdOverlay(); updateUI();
   showClaimSuccess(`🎉 ৳${AD_REWARD.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে!`);
 }
@@ -1129,6 +1394,9 @@ async function runAutoEarnLoop(myLoopId){
     if (autoEarnSessionCount >= AUTO_EARN_MAX) { stopAutoEarn(true); return; }
     const overlay = document.getElementById('adOverlay');
     overlay.classList.add('active');
+    adAbandoned = false;
+    adWatchStartTime = Date.now();
+    adInProgress = true;
     document.getElementById('adBigIcon').textContent = '🎬';
     document.getElementById('adTitle').textContent = 'অটো বিজ্ঞাপন চলছে...';
     document.getElementById('adDesc').textContent = 'ভিডিওটি শেষ পর্যন্ত দেখুন';
@@ -1143,8 +1411,7 @@ async function runAutoEarnLoop(myLoopId){
     circle.style.strokeDashoffset = 0;
     try {
       if (typeof window.show_11891042 === 'function') {
-        const r = window.show_11891042('pop');
-        if (r && typeof r.catch === 'function') r.catch(() => { try { window.show_11891042(); } catch(e){} });
+        window.show_11891042().catch(() => {});
       }
     } catch(e) {}
     await new Promise(resolve => {
@@ -1156,6 +1423,7 @@ async function runAutoEarnLoop(myLoopId){
       timerText.textContent = tl;
       ringText.textContent = tl;
       const iv = setInterval(() => {
+        if (adAbandoned) { clearInterval(iv); resolve(); return; }
         tl--;
         timerText.textContent = tl;
         ringText.textContent = tl > 0 ? tl : '✓';
@@ -1173,14 +1441,21 @@ async function runAutoEarnLoop(myLoopId){
         }
       }, 1000);
     });
-    if (!autoEarnRunning || myLoopId !== autoEarnLoopId) { overlay.classList.remove('active'); return; }
+    adInProgress = false;
+    if (!autoEarnRunning || myLoopId !== autoEarnLoopId || adAbandoned) { 
+      overlay.classList.remove('active');
+      if (adAbandoned) { adAbandoned = false; showPopup('❌ Auto Ad বাতিল', 'অ্যাপ থেকে বের হওয়ার কারণে session বন্ধ হয়েছে।'); }
+      return; 
+    }
     const user = getActiveUser();
     if (user) {
-      await awardAdToUser(user, true);
-      autoEarnSessionCount++;
-      autoEarnSessionEarnings += AD_REWARD;
-      updateUI();
-      try { if (navigator.vibrate) navigator.vibrate(40); } catch(e){}
+      const result = await awardAdToUser(user, true);
+      if (result && !result.failed) {
+        autoEarnSessionCount++;
+        autoEarnSessionEarnings += AD_REWARD;
+        updateUI();
+        try { if (navigator.vibrate) navigator.vibrate(40); } catch(e){}
+      }
     }
     await delay(1200);
     if (!autoEarnRunning || myLoopId !== autoEarnLoopId) { overlay.classList.remove('active'); return; }
@@ -1337,13 +1612,20 @@ function renderLeaderboard(){
   c.innerHTML = lb.map((u, i) => {
     const r = i + 1;
     let rankHtml = '';
-    if (r === 1) rankHtml = '<span class="lb-rank medal">🥇</span>';
-    else if (r === 2) rankHtml = '<span class="lb-rank medal">🥈</span>';
-    else if (r === 3) rankHtml = '<span class="lb-rank medal">🥉</span>';
-    else rankHtml = `<span class="lb-rank">#${r}</span>`;
+    if (r === 1) rankHtml = '<span class="lb-rank medal" style="font-size:22px">🥇</span>';
+    else if (r === 2) rankHtml = '<span class="lb-rank medal" style="font-size:22px">🥈</span>';
+    else if (r === 3) rankHtml = '<span class="lb-rank medal" style="font-size:22px">🥉</span>';
+    else rankHtml = `<span class="lb-rank" style="font-size:14px;font-weight:900;text-align:center;color:#64748b">#${r}</span>`;
     const initial = (u.name||'U').charAt(0).toUpperCase();
-    const av = u.avatar ? `<img src="${u.avatar}" onerror="this.outerHTML='${initial}'">` : initial;
-    return `<div class="lb-item">${rankHtml}<div class="lb-user"><div class="lb-avatar">${av}</div><div class="lb-name">${u.name}</div></div><div class="lb-amount">${u.amount}</div></div>`;
+    const av = u.avatar ? `<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='${initial}'">` : initial;
+    return `<div style="display:grid;grid-template-columns:40px 1fr 80px;gap:10px;align-items:center;padding:10px 8px;border-radius:12px">
+      ${rankHtml}
+      <div style="display:flex;align-items:center;gap:10px;min-width:0">
+        <div style="width:38px;height:38px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid #334155;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px">${av}</div>
+        <div style="font-weight:700;color:#f1f5f9;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.name}</div>
+      </div>
+      <div style="font-size:13px;font-weight:800;color:#a78bfa;text-align:right">${u.amount}</div>
+    </div>`;
   }).join('');
 }
 
