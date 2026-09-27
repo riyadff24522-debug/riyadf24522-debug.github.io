@@ -44,11 +44,6 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .jg-verify-btn{width:100%;padding:14px;margin-top:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit}
 .jg-verify-btn:disabled{background:#475569;cursor:not-allowed}
 #app{display:none;height:100vh;flex-direction:column;position:relative}
-#screenShield{position:fixed;inset:0;background:#000;z-index:9999999;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff}
-#screenShield.active{display:flex}
-#screenShield .shield-icon{font-size:80px;margin-bottom:20px}
-#screenShield .shield-text{font-size:18px;font-weight:900;color:#ef4444;margin-bottom:8px;letter-spacing:1px}
-#screenShield .shield-sub{font-size:13px;color:#64748b;font-weight:700}
 .header{background:var(--header);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 12px rgba(79,70,229,.15);min-height:60px;position:relative;z-index:95}
 .header h1{font-size:15px;font-weight:800;letter-spacing:.3px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .header-right{display:flex;align-items:center;gap:6px}
@@ -242,12 +237,6 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 </style>
 </head>
 <body>
-
-<div id="screenShield">
-  <div class="shield-icon">🔒</div>
-  <div class="shield-text">SCREENSHOT BLOCKED</div>
-  <div class="shield-sub">এই পেজে স্ক্রিনশট নিষিদ্ধ</div>
-</div>
 
 <div id="tgOnlyScreen">
   <div class="tg-only-box">
@@ -565,10 +554,9 @@ let adTimeLeft = AD_TIMER_SECONDS;
 let adInProgress = false;
 let monetagAdFired = false;
 let monetagAdCompleted = false;
-let monetagAdPlaying = false;  // ✅ NEW
+let monetagAdPlaying = false;
 let adAbandoned = false;
 let adWatchStartTime = 0;
-let shieldActive = false;
 let tgCheckInterval = null;
 let autoEarnRunning = false;
 let autoEarnSessionCount = 0;
@@ -602,40 +590,16 @@ function isInsideTelegram() {
   } catch(e) { return false; }
 }
 
-// SCREENSHOT PROTECTION (only main screen shield)
-function activateShield() {
-  const shield = document.getElementById('screenShield');
-  if (shield && !shieldActive) {
-    shield.classList.add('active');
-    shieldActive = true;
-    const app = document.getElementById('app');
-    if (app) app.style.filter = 'blur(30px)';
-  }
-}
-function deactivateShield() {
-  const shield = document.getElementById('screenShield');
-  if (shield && shieldActive) {
-    shield.classList.remove('active');
-    shieldActive = false;
-    const app = document.getElementById('app');
-    if (app) app.style.filter = '';
-  }
-}
-
 // ============================================
-// VISIBILITY - Smart detection with Monetag check
+// VISIBILITY CHANGE — Ad Abandon Detection
 // ============================================
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // ✅ Only mark abandoned if Monetag ad is NOT playing
     if (adInProgress && adTimeLeft > 0 && !monetagAdPlaying) {
       adAbandoned = true;
     }
     if (autoEarnRunning) stopAutoEarn(false);
-    activateShield();
   } else {
-    deactivateShield();
-    // ✅ Only fail if user really left
     if (adInProgress && adAbandoned && !monetagAdPlaying) {
       clearInterval(adTimerInterval); adTimerInterval = null;
       adInProgress = false;
@@ -658,34 +622,14 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 window.addEventListener('blur', () => {
-  // ✅ Only mark abandoned if Monetag is NOT playing
   if (adInProgress && adTimeLeft > 0 && !monetagAdPlaying) {
     adAbandoned = true;
   }
-  activateShield();
-});
-window.addEventListener('focus', () => {
-  deactivateShield();
-});
-document.addEventListener('keyup', (e) => {
-  if (e.key === 'PrintScreen' || e.keyCode === 44) {
-    e.preventDefault();
-    activateShield(); setTimeout(deactivateShield, 4000);
-    try { navigator.clipboard.writeText(''); } catch(err){}
-    showToastSafe('🔒 Blocked','স্ক্রিনশট নিষিদ্ধ');
-    return false;
-  }
-});
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey && e.shiftKey && (e.key === 'S' || e.key === 's' || e.key === '4')) ||
-      (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5'))) {
-    e.preventDefault();
-    activateShield(); setTimeout(deactivateShield, 4000);
-    showToastSafe('🔒 Blocked','স্ক্রিনশট নিষিদ্ধ');
-    return false;
-  }
 });
 
+// ============================================
+// HELPERS
+// ============================================
 function sanitizeKey(k){ return String(k).replace(/[.#$\[\]\/]/g,'_'); }
 function showLoading(show=true){ document.getElementById('loadingOverlay').classList.toggle('active', show); }
 function getActiveUser(){ return currentUserData; }
@@ -716,6 +660,9 @@ async function checkChannel(uid, cid) {
   } catch(e) { return null; }
 }
 
+// ============================================
+// AUTH
+// ============================================
 async function initAuth() {
   const urlParams = new URLSearchParams(window.location.search);
   const isAdminTest = urlParams.get('test') === 'admin123';
@@ -824,6 +771,7 @@ function listenUserChanges(loginId) {
   }, err => console.log(err));
 }
 
+// WITHDRAW STATUS CHANGE DETECTION
 function detectWithdrawChanges(history) {
   const withdraws = (history || []).filter(h => (h.type || '').toLowerCase().includes('withdraw') && (h.id || '').startsWith('WD_'));
   withdraws.forEach(w => {
@@ -873,6 +821,7 @@ function closeWdComplete() {
   document.getElementById('wdCompletePopup').classList.remove('active');
 }
 
+// WELCOME POPUP
 function showWelcomePopup() {
   const u = getActiveUser();
   if (!u) return;
@@ -903,6 +852,7 @@ function showBlockedScreen(reason) {
   document.getElementById('app').style.display = 'none';
 }
 
+// REFERRAL BONUS
 async function processReferralBonus() {
   const u = getActiveUser();
   if (!u || !u.referredBy) return;
@@ -939,6 +889,7 @@ async function processReferralBonus() {
   } catch(e) { console.log('Referral bonus error:', e); }
 }
 
+// JOIN GATE
 function showJoinGate() {
   document.getElementById('app').style.display = 'none';
   document.getElementById('joinGateScreen').classList.add('active');
@@ -1029,6 +980,7 @@ async function awardJoinBonuses() {
   } catch(e) { console.log(e); }
 }
 
+// UI UPDATE
 function updateUI(){
   const u = getActiveUser(); if(!u) return;
   document.getElementById('headerBalance').textContent = (u.balance||0).toFixed(2);
@@ -1126,7 +1078,7 @@ function showSection(name){
 }
 
 // ============================================
-// AD SYSTEM
+// AD SYSTEM — Rewarded Interstitial
 // ============================================
 function openAdWatch(){
   const u = getActiveUser(); if(!u) return;
@@ -1145,7 +1097,6 @@ function openAdWatch(){
   document.getElementById('adDesc').textContent = 'অনুগ্রহ করে অপেক্ষা করুন';
   document.getElementById('adClaimBtn').classList.remove('active');
   document.getElementById('adWarningTag').style.display = 'block';
-  // ✅ X button always visible
   document.getElementById('adCloseBtn').classList.add('visible');
   document.getElementById('adTimerText').textContent = AD_TIMER_SECONDS;
   document.getElementById('adRingText').textContent = AD_TIMER_SECONDS;
@@ -1168,22 +1119,21 @@ function openAdWatch(){
   }, 2000);
 }
 
-// ✅ FIXED: Monetag ad playing lock
 function fireMonetagAd(){
   if (monetagAdFired) return;
   monetagAdFired = true;
   monetagAdCompleted = false;
-  monetagAdPlaying = true;  // ✅ Lock - prevent false abandon detection
+  monetagAdPlaying = true;
   try {
     if (typeof window.show_11891042 === 'function') {
       window.show_11891042().then(() => {
         monetagAdCompleted = true;
-        monetagAdPlaying = false;  // ✅ Unlock
-        console.log('✅ Monetag ad completed');
+        monetagAdPlaying = false;
+        console.log('✅ Rewarded Interstitial completed');
       }).catch(() => {
         monetagAdCompleted = true;
         monetagAdPlaying = false;
-        console.log('⚠️ Monetag ad error');
+        console.log('⚠️ Monetag error');
       });
     } else {
       monetagAdCompleted = true;
@@ -1213,6 +1163,13 @@ function startAdTimer(){
     circle.style.strokeDashoffset = offset;
     if (adTimeLeft <= 0) {
       clearInterval(adTimerInterval); adTimerInterval = null;
+      if (adAbandoned && !monetagAdPlaying) {
+        adInProgress = false;
+        adAbandoned = false;
+        document.getElementById('adOverlay').classList.remove('active');
+        showPopup('❌ Ad বাতিল', 'Ad চলার সময় আপনি অ্যাপ থেকে বের হয়ে গিয়েছিলেন।\n\n💡 সম্পূর্ণ ad দেখলেই ৳2 পাবেন।');
+        return;
+      }
       timerChip.classList.add('done');
       document.getElementById('adBigIcon').textContent = '✅';
       document.getElementById('adTitle').textContent = 'বিজ্ঞাপন সম্পন্ন!';
@@ -1227,7 +1184,6 @@ function startAdTimer(){
   }, 1000);
 }
 
-// ✅ FIXED: X button allows exit anytime (no reward if early)
 function forceCloseAd(){
   if (adTimeLeft > 0) {
     clearInterval(adTimerInterval); adTimerInterval = null;
@@ -1254,6 +1210,7 @@ async function awardAdToUser(user, isAutoAd) {
   const elapsed = (now - adWatchStartTime) / 1000;
   const requiredTime = AD_TIMER_SECONDS - 3;
   if (!isAutoAd && elapsed < requiredTime) return { failed: true, reason: 'Ad সম্পূর্ণ দেখেননি' };
+  if (adAbandoned && !monetagAdPlaying) return { failed: true, reason: 'App থেকে বের হয়েছিলেন' };
   const today = new Date().toDateString();
   let todayCount = user.adsToday || 0;
   if (user.lastAdDate !== today) todayCount = 0;
@@ -1404,6 +1361,7 @@ function stopAutoEarn(silent){
   if (silent && wasRunning && autoEarnSessionCount > 0) showClaimSuccess(`🎉 সেশন সম্পন্ন!\n${autoEarnSessionCount}টি অ্যাড • ৳${autoEarnSessionEarnings.toFixed(2)}`);
 }
 
+// JOIN CHANNEL (Task page)
 async function joinChannel(k){
   const u = getActiveUser(); if(!u) return;
   if (u.isBrowserUser === true) { showPopup('🌐 Browser Mode','Telegram এ @'+BOT_USERNAME+' থেকে খুলুন।'); return; }
@@ -1448,6 +1406,7 @@ async function verifyAllChannels() {
   } catch(e) { console.error(e); }
 }
 
+// WITHDRAW
 function selectWdMethod(m){
   selectedWdMethodName = m;
   document.getElementById('wdMethodBkash').classList.toggle('active', m==='bKash');
@@ -1490,6 +1449,7 @@ async function doWithdraw(){
   } catch(e) { showPopup('Error', e.message); } finally { showLoading(false); }
 }
 
+// GIFT
 async function redeemGift(){
   const u = getActiveUser(); if(!u) return;
   const code = document.getElementById('giftCode').value.trim().toUpperCase();
@@ -1514,6 +1474,7 @@ async function redeemGift(){
   } catch(e) { showPopup('Error', e.message); } finally { showLoading(false); }
 }
 
+// LEADERBOARD
 function renderLeaderboard(){
   const c = document.getElementById('leaderboardContainer'); if(!c) return;
   const fakeNames = ["Rakib Hasan","Anika Akter","Riyad Khan","Shohag Ali","Kausar Ahmed","Moumita Islam","Rasel Mia","Tania Sultana","Sumaiya Akter","Nusrat Jahan","Mamun Hossain","Sabrina Akter","Faruk Ahmed","Karim Uddin","Nasrin Sultana","Tanvir Ahmed","Rina Begum","Imran Khan","Sagor Hossain","Mostafa Lima","Ripon Ahmed","Mitu Akter","Ashraful Islam","Salma Khatun","Zahir Rayhan","Habibur Rahman","Nargis Akter","Rubel Mia","Priya Das","Sultana Parvin"];
@@ -1556,6 +1517,7 @@ function renderLeaderboard(){
   }).join('');
 }
 
+// NOTICES
 function showNoticePopup(){
   db.collection('admin_notices').orderBy('timestamp','desc').limit(20).get().then(s => {
     const notices = [];
@@ -1575,6 +1537,7 @@ function checkNoticeDot(){
   });
 }
 
+// COPY / POPUP / TOAST
 function openReferLink(box){
   const u = getActiveUser();
   const link = u ? `https://t.me/${BOT_USERNAME}?start=${u.userId}` : '';
@@ -1624,6 +1587,7 @@ function loadTotalUsers(){
   }, err => {});
 }
 
+// BACK BUTTON PROTECTION
 window.addEventListener('popstate', function(e){
   if (autoEarnRunning) {
     try { history.pushState({ autoAd: true },''); } catch(err){}
