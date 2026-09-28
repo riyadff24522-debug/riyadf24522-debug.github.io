@@ -1046,17 +1046,51 @@ function renderTasks(){
   const container = document.getElementById('taskListContainer');
   if(container) container.innerHTML = tasks.map(t => `<div class="task-item"><div class="task-info"><div class="task-icon">${t.icon}</div><div><div class="task-title">${t.title}</div><div class="task-desc">${t.desc}</div></div></div>${t.btn}</div>`).join('');
 }
+
+// ✅ WITHDRAW HISTORY — Number সম্পূর্ণ লুকানো (শুধু Completed হলে দেখা যাবে)
 function renderWithdrawHistory(history){
   const c = document.getElementById('withdrawHistoryList'); if(!c) return;
   const filtered = (history||[]).filter(h => (h.type||'').toLowerCase().includes('withdraw')).slice().reverse();
   if(filtered.length === 0){ c.innerHTML = `<p style="color:var(--text);font-size:13px;text-align:center;padding:15px 0;opacity:.5;">কোনো হিস্টোরি নেই</p>`; return; }
+  
   c.innerHTML = filtered.map(item => {
-    const amt = Math.abs(parseFloat(item.amount)||0);
-    const st = (item.status||'Pending').toLowerCase();
+    const amt = Math.abs(parseFloat(item.amount) || 0);
+    const st = (item.status || 'Pending').toLowerCase();
     const cls = (st === 'completed' || st === 'approved') ? 'completed' : (st === 'rejected' ? 'rejected' : 'pending');
-    return `<div class="history-item"><div class="history-info-left"><div class="history-title">💸 Withdraw</div><div class="history-subtext">${item.number||''}</div><div class="history-time">${item.time||''}</div></div><div class="history-info-right"><span class="status-badge ${cls}">${item.status||'Pending'}</span><div class="history-amount neg">-৳${amt.toFixed(2)}</div></div></div>`;
+    
+    // Method বের করুন
+    let method = item.method || '';
+    if (!method) {
+      const typeLower = (item.type || '').toLowerCase();
+      if (typeLower.includes('bkash')) method = 'bKash';
+      else if (typeLower.includes('nagad')) method = 'Nagad';
+    }
+    const methodIcon = method === 'Nagad' ? '🟠' : '🔵';
+    
+    // ✅ Number লাইন — শুধু Completed হলে দেখা যাবে
+    let numberLine = '';
+    if (st === 'completed' || st === 'approved') {
+      const num = item.number || '';
+      if (num) {
+        numberLine = `<div class="history-subtext" style="font-family:monospace">📱 ${num}</div>`;
+      }
+    }
+    // Pending/Rejected হলে numberLine খালি থাকবে
+    
+    return `<div class="history-item">
+      <div class="history-info-left">
+        <div class="history-title">💸 Withdraw (${methodIcon} ${method || 'Method'})</div>
+        ${numberLine}
+        <div class="history-time">${item.time || ''}</div>
+      </div>
+      <div class="history-info-right">
+        <span class="status-badge ${cls}">${item.status || 'Pending'}</span>
+        <div class="history-amount neg">-৳${amt.toFixed(2)}</div>
+      </div>
+    </div>`;
   }).join('');
 }
+
 function renderGiftHistory(){
   const u = getActiveUser(); if(!u) return;
   const box = document.getElementById('giftHistoryList'); if(!box) return;
