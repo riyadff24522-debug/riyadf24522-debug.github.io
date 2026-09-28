@@ -416,7 +416,10 @@ body.dark-mode .condition-sub b{color:#a78bfa}
             <div class="condition-sub"><span>📊 <b id="conditionRefProgress">0/5</b></span><span>🔴 বাকি: <b id="conditionRefRemaining">5</b></span></div>
           </div>
         </div>
-        <div class="notice-box" style="background:var(--depNtB);border-color:var(--depNtBd);color:var(--depNtC);">⚠️ প্রতি উইথড্রতে <strong>৳৫</strong> চার্জ। সর্বনিম্ন ৳১০০০।</div>
+        <div class="notice-box" style="background:var(--depNtB);border-color:var(--depNtBd);color:var(--depNtC);">
+          ⚠️ প্রতি উইথড্রতে <strong>৳৫</strong> চার্জ। সর্বনিম্ন <strong>৳১০০০</strong>।<br>
+          ⚡ পেমেন্ট <strong>১০ মিনিটের মধ্যে</strong> পেয়ে যাবেন ✅
+        </div>
         <div class="notice-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">⚠️ Withdraw করতে <strong>৫টি রেফার</strong> বাধ্যতামূলক।</div>
         <div class="method-grid">
           <div class="method-option active" id="wdMethodBkash" onclick="selectWdMethod('bKash')">bKash</div>
@@ -1440,14 +1443,16 @@ async function verifyAllChannels() {
   } catch(e) { console.error(e); }
 }
 
-// WITHDRAW
+// ✅ WITHDRAW — Auto-fill বন্ধ + 10 Minutes message
 function selectWdMethod(m){
   selectedWdMethodName = m;
   document.getElementById('wdMethodBkash').classList.toggle('active', m==='bKash');
   document.getElementById('wdMethodNagad').classList.toggle('active', m==='Nagad');
-  const u = getActiveUser();
-  if (u && u.linkedNumbers) { const f = document.getElementById('wdNumber'); if (f && u.linkedNumbers[m]) f.value = u.linkedNumbers[m]; else if (f) f.value = ''; }
+  // ✅ পুরনো নম্বর আর auto-fill হবে না — User নিজে টাইপ করবে
+  const f = document.getElementById('wdNumber');
+  if (f) f.value = '';
 }
+
 async function doWithdraw(){
   const u = getActiveUser(); if(!u) return;
   const refs = u.referCount || 0;
@@ -1477,9 +1482,14 @@ async function doWithdraw(){
     hist.push({ id:'WD_'+Date.now(), type:`Withdraw (${selectedWdMethodName})`, method:selectedWdMethodName, amount:-amt, charge:wc, withdrawAmount:amt, status:'Pending', number:wn, time: new Date().toLocaleString('bn-BD') });
     await saveUserData({ balance: newBalance, totalWithdraw: newTotalWithdraw, linkedNumbers, history: hist });
     try { await db.collection('withdraw_requests').add({ userId: u.userId, loginId: currentUserKey, authUid: auth.currentUser.uid, nick: u.nick, telegramId: u.telegramId || 'browser', method: selectedWdMethodName, amount: amt, charge: wc, number: wn, status: 'Pending', createdAt: new Date().toLocaleString('bn-BD'), createdAtTs: firebase.firestore.FieldValue.serverTimestamp() }); } catch(e) {}
+    
+    // ✅ Number + Amount field clear করুন
+    document.getElementById('wdNumber').value = '';
     document.getElementById('wdAmount').value = '';
     updateUI();
-    showPopup('✅ উইথড্র সফল!', `৳${amt.toFixed(2)} রিকোয়েস্ট সফল!\nচার্জ: ৳${wc.toFixed(2)}\n\n⏳ ২-২৪ ঘণ্টায় পেমেন্ট।`);
+    
+    // ✅ 10 Minutes message সহ popup
+    showPopup('✅ উইথড্র সফল!', `৳${amt.toFixed(2)} রিকোয়েস্ট সফল!\nচার্জ: ৳${wc.toFixed(2)}\n\n⚡ সর্বনিম্ন ১০ মিনিটের মধ্যে পেমেন্ট পেয়ে যাবেন ✅\n\n💡 আপনার নম্বর গোপন রাখা হয়েছে।`);
   } catch(e) { showPopup('Error', e.message); } finally { showLoading(false); }
 }
 
