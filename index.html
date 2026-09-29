@@ -444,6 +444,15 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           🎯 Admin verify করলে Gift Code পাবেন
         </div>
 
+        <!-- ✅ NEW: Niyom Warning Box -->
+        <div style="background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.5);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:11px;color:#991b1b;font-weight:800;line-height:1.7">
+          ⚠️ <strong>মূল্যবান নিয়ম:</strong><br>
+          • দিনে মাত্র <b>১ বার</b> Submit করা যাবে<br>
+          • প্রতিবার <b>নতুন Ad count</b> থাকতে হবে<br>
+          • একই Screenshot <b>Block</b> হয়ে যাবে<br>
+          • দুইবার Submit এর মধ্যে <b>৩০ মিনিট</b> Gap লাগবে
+        </div>
+
         <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:14px;font-size:11px;color:#92400e;font-weight:800;line-height:1.8">
           <div style="margin-bottom:6px;color:#78350f;font-size:12px">💰 Reward List:</div>
           100 Ad = ৳100 &nbsp;|&nbsp; 90 Ad = ৳90<br>
@@ -1075,10 +1084,22 @@ function showSection(name){
 }
 
 // ============================================
-// AD PROOF SCREENSHOT SYSTEM
+// AD PROOF SYSTEM with 4 Protection Rules
 // ============================================
 let proofImageBase64 = null;
 let proofSubmitting = false;
+
+// Simple Hash Function for Image
+function simpleHash(str) {
+  let hash = 0;
+  const sample = str.substring(0, 5000) + str.substring(str.length - 5000);
+  for (let i = 0; i < sample.length; i++) {
+    const chr = sample.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0;
+  }
+  return hash.toString(36);
+}
 
 function handleProofImage(event) {
   const file = event.target.files[0];
@@ -1111,31 +1132,105 @@ function handleProofImage(event) {
 async function submitAdProof() {
   if (!proofImageBase64) { showToastSafe('⚠️', 'Screenshot select করুন'); return; }
   if (proofSubmitting) return;
+  
   const u = getActiveUser();
   if (!u) { showPopup('Error', 'User পাওয়া যায়নি'); return; }
+  
   const today = new Date().toDateString();
   let adCount = u.adsToday || 0;
   if (u.lastAdDate !== today) adCount = 0;
+  
   if (adCount < 10) {
     showPopup('❌ কম Ad দেখা হয়েছে', `আপনি আজ মাত্র ${adCount}টি Ad দেখেছেন।\n\n💰 Minimum ১০টি Ad দেখতে হবে।\n\nআরো Ad দেখুন তারপর Screenshot দিন।`);
     return;
   }
+  
   proofSubmitting = true;
   const btn = document.getElementById('proofSubmitBtn');
   btn.disabled = true;
-  btn.innerHTML = '⏳ Submitting...';
+  btn.innerHTML = '⏳ Checking...';
+  
   try {
-    const existing = await db.collection('ad_proof_requests')
+    // Get all previous submissions
+    const snap = await db.collection('ad_proof_requests')
       .where('userId', '==', u.userId)
-      .where('status', '==', 'Pending')
-      .limit(1).get();
-    if (!existing.empty) {
-      showPopup('⏳ Already Pending', 'আপনার একটা request আগেই pending আছে।\n\nAdmin verify করার পর আবার submit করতে পারবেন।');
+      .get();
+    
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayTs = todayStart.getTime() / 1000;
+    
+    let todaySubmissions = 0;
+    let lastAdCount = 0;
+    let lastSubmitTime = 0;
+    let duplicateImage = false;
+    const imageHash = simpleHash(proofImageBase64);
+    
+    snap.forEach(d => {
+      const data = d.data();
+      const ts = data.createdAtTs?.seconds || 0;
+      if (ts >= todayTs) todaySubmissions++;
+      if ((data.adCount || 0) > lastAdCount) lastAdCount = data.adCount || 0;
+      if (ts > lastSubmitTime) lastSubmitTime = ts;
+      if (data.imageHash === imageHash) duplicateImage = true;
+    });
+    
+    // ✅ Rule 1: দিনে ১ বার
+    if (todaySubmissions >= 1) {
+      showPopup('❌ আজ হয়ে গেছে!', 
+        'আপনি আজ একটা Screenshot Submit করেছেন।\n\n' +
+        '⏰ পরের Submission আগামীকাল থেকে সম্ভব হবে।\n\n' +
+        '💡 আজ আরো Ad দেখুন — কাল সকালে Submit করুন।'
+      );
       proofSubmitting = false;
       btn.disabled = false;
       btn.innerHTML = '✅ Submit করুন';
       return;
     }
+    
+    // ✅ Rule 2: Same Screenshot
+    if (duplicateImage) {
+      showPopup('❌ Same Screenshot!', 
+        'এই Screenshot টা আগে দিয়েছেন।\n\n' +
+        '📸 নতুন Screenshot দিতে হবে।\n\n' +
+        '💡 Profile page এর Ad count দেখা যাবে এমন Screenshot দিন।'
+      );
+      proofSubmitting = false;
+      btn.disabled = false;
+      btn.innerHTML = '✅ Submit করুন';
+      return;
+    }
+    
+    // ✅ Rule 3: Ad Count বাড়তে হবে
+    if (lastAdCount > 0 && adCount <= lastAdCount) {
+      showPopup('❌ Ad Count বাড়েনি!', 
+        `আপনার শেষ submission ছিল ${lastAdCount} Ad এর।\n\n` +
+        `📊 এখন আছে ${adCount} Ad।\n\n` +
+        `👉 আরো Ad দেখুন, তারপর Submit করুন।\n\n` +
+        `💡 প্রতি বার নতুন Ad count লাগবে।`
+      );
+      proofSubmitting = false;
+      btn.disabled = false;
+      btn.innerHTML = '✅ Submit করুন';
+      return;
+    }
+    
+    // ✅ Rule 4: ৩০ মিনিট Cooldown
+    const now = Date.now() / 1000;
+    if (lastSubmitTime && (now - lastSubmitTime) < 1800) {
+      const waitSec = Math.ceil(1800 - (now - lastSubmitTime));
+      const waitMin = Math.ceil(waitSec / 60);
+      showPopup('⏰ অপেক্ষা করুন', 
+        `পরের Submit করতে ${waitMin} মিনিট বাকি।\n\n` +
+        `💡 একাধিক Submission কমপক্ষে ৩০ মিনিট পর করতে পারবেন।`
+      );
+      proofSubmitting = false;
+      btn.disabled = false;
+      btn.innerHTML = '✅ Submit করুন';
+      return;
+    }
+    
+    // Calculate Reward
     let reward = 0;
     if (adCount >= 100) reward = 100;
     else if (adCount >= 90) reward = 90;
@@ -1157,6 +1252,7 @@ async function submitAdProof() {
       adCount: adCount,
       expectedReward: reward,
       imageBase64: proofImageBase64,
+      imageHash: imageHash,
       imageSize: proofImageBase64.length,
       status: 'Pending',
       createdAt: new Date().toLocaleString('bn-BD'),
@@ -1168,7 +1264,12 @@ async function submitAdProof() {
     document.getElementById('proofPreviewBox').style.display = 'none';
     document.getElementById('proofSubmitBtn').style.display = 'none';
     
-    showClaimSuccess(`✅ Submit সফল!\n\n📊 আজকের Ad: ${adCount}টি\n💰 Expected Reward: ৳${reward}\n\n⏳ Admin verify করলে Gift Code পাবেন ✅`);
+    showClaimSuccess(
+      `✅ Submit সফল!\n\n` +
+      `📊 আজকের Ad: ${adCount}টি\n` +
+      `💰 Expected Reward: ৳${reward}\n\n` +
+      `⏳ Admin verify করলে Gift Code পাবেন ✅`
+    );
     loadProofHistory();
   } catch(e) {
     console.error(e);
@@ -1193,7 +1294,6 @@ async function loadProofHistory() {
       el.innerHTML = '<p style="text-align:center;color:#92400e;font-size:12px;padding:10px;font-weight:700">এখনো কিছু submit করেননি</p>';
       return;
     }
-    // Sort by newest
     const arr = [];
     snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
     arr.sort((a,b) => (b.createdAtTs?.seconds || 0) - (a.createdAtTs?.seconds || 0));
