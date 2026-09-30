@@ -37,6 +37,7 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .jg-icon-box{width:36px;height:36px;border-radius:10px;background:#3b82f6;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-size:16px}
 .jg-icon-box.g2{background:#8b5cf6}
 .jg-icon-box.g3{background:#f59e0b}
+.jg-icon-box.g4{background:#ec4899}
 .jg-name{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .jg-sub{font-size:10px;color:var(--text);opacity:.6;font-weight:600;margin-top:2px}
 .jg-btn{padding:8px 14px;border-radius:20px;border:none;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
@@ -129,10 +130,29 @@ body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transit
 .receive-btn{width:100%;padding:12px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer}
 .gift-history-empty{text-align:center;padding:20px 10px;color:var(--text);opacity:.5}
 .gift-history-empty .icon{font-size:34px;margin-bottom:6px;opacity:.5}
-.loading-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff}
+
+/* ============ UNIQUE LOADER SYSTEM ============ */
+.loading-overlay{position:fixed;inset:0;background:rgba(15,23,42,.85);backdrop-filter:blur(10px);z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;transition:opacity .3s}
 .loading-overlay.active{display:flex}
-.spinner{width:36px;height:36px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
-@keyframes spin{to{transform:rotate(360deg)}}
+.unique-loader{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.loader-orb{width:60px;height:60px;background:linear-gradient(135deg,#10b981,#3b82f6);border-radius:50%;box-shadow:0 0 20px rgba(16,185,129,0.6);animation:pulseOrb 1.5s infinite alternate;position:relative;z-index:2}
+.loader-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border:3px solid transparent;border-top-color:#10b981;border-bottom-color:#3b82f6;border-radius:50%;animation:spinRing 1.2s linear infinite;z-index:1}
+.loader-ring-2{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;border:2px solid transparent;border-left-color:#8b5cf6;border-right-color:#ec4899;border-radius:50%;animation:spinRing 2s linear infinite reverse;z-index:1;opacity:.6}
+.loader-text{margin-top:25px;color:#f1f5f9;font-weight:800;font-size:14px;letter-spacing:1px;animation:fadeText 1.5s infinite alternate;text-align:center;position:relative;z-index:3}
+@keyframes pulseOrb {
+  0% { transform: scale(0.9); box-shadow: 0 0 10px rgba(16,185,129,0.4); }
+  100% { transform: scale(1.1); box-shadow: 0 0 30px rgba(59,130,246,0.9); }
+}
+@keyframes spinRing {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to { transform: translate(-50%,-50%) rotate(360deg); }
+}
+@keyframes fadeText {
+  0% { opacity: 0.5; letter-spacing: 1px; }
+  100% { opacity: 1; letter-spacing: 2px; }
+}
+/* =============================================== */
+
 .ref-copy-box{position:relative;background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:2px dashed #818cf8;border-radius:16px;padding:14px}
 .ref-copy-box.copied{background:linear-gradient(135deg,#dcfce7 0%,#bbf7d0 100%);border-color:#10b981}
 .ref-copy-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
@@ -251,7 +271,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
   <div class="join-gate-box">
     <div class="jg-icon">🔒</div>
     <h2>চ্যানেল জয়েন করুন</h2>
-    <p>অ্যাপ ব্যবহার করতে হলে নিচের <strong>৩টি Telegram চ্যানেলে</strong> জয়েন করতে হবে।</p>
+    <p>অ্যাপ ব্যবহার করতে হলে নিচের <strong>৪টি Telegram চ্যানেলে</strong> জয়েন করতে হবে।</p>
     <div id="jgChannels">
       <div class="jg-channel" id="jg1">
         <div class="jg-left"><div class="jg-icon-box">📢</div><div><div class="jg-name">Payment Proofs</div><div class="jg-sub">@trueplaychannel1</div></div></div>
@@ -265,6 +285,11 @@ body.dark-mode .condition-sub b{color:#a78bfa}
         <div class="jg-left"><div class="jg-icon-box g3">🎁</div><div><div class="jg-name">Gift Codes</div><div class="jg-sub">@trueplaychannel3</div></div></div>
         <button class="jg-btn" onclick="joinGateChannel('tg3')">Join</button>
       </div>
+      <!-- NEW CHANNEL ADDED -->
+      <div class="jg-channel" id="jg4">
+        <div class="jg-left"><div class="jg-icon-box g4">💳</div><div><div class="jg-name">Tasr Wallet</div><div class="jg-sub">@tasr_wallet_chenel</div></div></div>
+        <button class="jg-btn" onclick="joinGateChannel('tg4')">Join</button>
+      </div>
     </div>
     <button class="jg-verify-btn" id="jgVerifyBtn" onclick="verifyGateChannels()" disabled>চ্যানেল জয়েন করে ভেরিফাই করুন</button>
     <p style="font-size:11px;margin-top:12px;opacity:.6">✅ ভেরিফাই হলে প্রতিটি চ্যানেলে ৳৫ পাবেন</p>
@@ -272,7 +297,17 @@ body.dark-mode .condition-sub b{color:#a78bfa}
 </div>
 
 <div id="blockedScreen"><div class="blocked-box"><div class="icon">🚫</div><h2>আপনি ব্লক হয়েছেন!</h2><p>আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে।</p><div class="reason" id="blockReason">কারণ: নিয়ম লঙ্ঘন</div></div></div>
-<div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div style="font-weight:700;font-size:15px;">লোড হচ্ছে...</div></div>
+
+<!-- ============ UNIQUE LOADER ============ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="unique-loader">
+    <div class="loader-ring-2"></div>
+    <div class="loader-ring"></div>
+    <div class="loader-orb"></div>
+    <div class="loader-text" id="loaderText">লোড হচ্ছে...</div>
+  </div>
+</div>
+<!-- ====================================== -->
 
 <div class="claim-popup-overlay" id="claimSuccessPopup"><div class="claim-popup-card"><div class="claim-icon-wrapper"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div><h3>Reward Claimed!</h3><p id="claimPopupText">সফলভাবে ব্যালেন্স যোগ হয়েছে।</p><button class="claim-close-btn" onclick="closeClaimPopup()">Awesome</button></div></div>
 
@@ -372,10 +407,10 @@ body.dark-mode .condition-sub b{color:#a78bfa}
       </div>
 
       <div class="card">
-        <div style="margin-bottom:8px;font-size:12px;color:#4f46e5;font-weight:800;">🎁 প্রতি রেফারে ৳১০ • প্রতি Telegram চ্যানেলে জয়েন = ৳৫ (মোট ৳১৫)</div>
-        <div style="margin-bottom:8px;font-size:11px;color:#ef4444;font-weight:800;">⚠️ Withdraw আনলক: ৫টি রেফার বাধ্যতামূলক</div>
+        <div style="margin-bottom:8px;font-size:12px;color:#4f46e5;font-weight:800;">🎁 প্রতি রেফারে ৳১০ • প্রতি Telegram চ্যানেলে জয়েন = ৳৫ (মোট ৳২০)</div>
+        <div style="margin-bottom:8px;font-size:11px;color:#ef4444;font-weight:800;">⚠️ Withdraw আনলক: প্রতি উইথড্রতে ৫টি নতুন রেফার বাধ্যতামূলক</div>
         <div class="notice-box" style="background:#e0e7ff;border-color:#6366f1;color:#3730a3;">
-          ℹ️ <strong>রেফারেল নিয়ম:</strong> নতুন user আপনার লিংকে ক্লিক করে ঢুকলে <strong>সে ৩টি চ্যানেলেই জয়েন করলে</strong> তখনই আপনার refer count +1 হবে এবং ৳১০ বোনাস পাবেন।
+          ℹ️ <strong>রেফারেল নিয়ম:</strong> নতুন user আপনার লিংকে ক্লিক করে ঢুকলে <strong>সে সবগুলো চ্যানেলে জয়েন করলে</strong> তখনই আপনার refer count +1 হবে এবং ৳১০ বোনাস পাবেন।
         </div>
         <div class="ref-copy-box" id="refCopyBox">
           <div class="ref-copy-header">
@@ -409,7 +444,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           <div class="dual-header"><span>🔓 Unlock Condition</span><span id="dualOverallStatus">Locked</span></div>
           <div class="condition-row" id="conditionRefRow">
             <div class="condition-top">
-              <div class="condition-label"><div class="condition-icon green">👥</div><span>৫টি রেফার বাধ্যতামূলক</span></div>
+              <div class="condition-label"><div class="condition-icon green">👥</div><span>৫টি নতুন রেফার বাধ্যতামূলক</span></div>
               <div class="condition-status" id="conditionRefStatus">Locked</div>
             </div>
             <div class="condition-bar-wrap"><div class="condition-bar-fill" id="conditionRefBar" style="width:0%"></div></div>
@@ -420,7 +455,7 @@ body.dark-mode .condition-sub b{color:#a78bfa}
           ⚠️ প্রতি উইথড্রতে <strong>৳৫</strong> চার্জ। সর্বনিম্ন <strong>৳১০০০</strong>।<br>
           ⚡ পেমেন্ট <strong>১০ মিনিটের মধ্যে</strong> পেয়ে যাবেন ✅
         </div>
-        <div class="notice-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">⚠️ Withdraw করতে <strong>৫টি রেফার</strong> বাধ্যতামূলক।</div>
+        <div class="notice-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">⚠️ প্রতি উইথড্রতে <strong>৫টি নতুন রেফার</strong> বাধ্যতামূলক।</div>
         <div class="method-grid">
           <div class="method-option active" id="wdMethodBkash" onclick="selectWdMethod('bKash')">bKash</div>
           <div class="method-option" id="wdMethodNagad" onclick="selectWdMethod('Nagad')">Nagad</div>
@@ -581,10 +616,12 @@ const db = firebase.firestore();
 const BOT_USERNAME = 'add_arbe_bot';
 const WORKER_URL = 'https://ads-to-earn-api.riyadking24522.workers.dev';
 
+// ✅ UPDATE 3: New channel added
 const CHANNELS = {
   tg1: { id:'-1004471208794', link:'https://t.me/trueplaychannel1', name:'Payment Proofs', icon:'📢' },
   tg2: { id:'-1004491956765', link:'https://t.me/trueplaychannel2', name:'Community', icon:'👥' },
-  tg3: { id:'-1004427257866', link:'https://t.me/trueplaychannel3', name:'Gift Codes', icon:'🎁' }
+  tg3: { id:'-1004427257866', link:'https://t.me/trueplaychannel3', name:'Gift Codes', icon:'🎁' },
+  tg4: { id:'-1002819430279', link:'https://t.me/tasr_wallet_chenel', name:'Tasr Wallet', icon:'💳' }
 };
 
 const AD_REWARD = 2.00;
@@ -598,8 +635,8 @@ const COMMISSION_L2 = 5;
 const MIN_WITHDRAW = 1000;
 const MAX_WITHDRAW = 50000;
 const WITHDRAW_CHARGE = 5;
-const REFERRALS_REQUIRED = 5;
-const TOTAL_CHANNELS = 3;
+const REFERRALS_REQUIRED = 5; // Base requirement per withdrawal
+const TOTAL_CHANNELS = Object.keys(CHANNELS).length; // Now 4
 const AUTO_EARN_MAX = 20;
 
 let currentUserKey = null;
@@ -670,7 +707,15 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('blur', () => { if (adInProgress && adTimeLeft > 0 && !monetagAdPlaying) adAbandoned = true; });
 
 function sanitizeKey(k){ return String(k).replace(/[.#$\[\]\/]/g,'_'); }
-function showLoading(show=true){ document.getElementById('loadingOverlay').classList.toggle('active', show); }
+
+// ✅ UPDATE 4: Unique Loader System
+function showLoading(show=true, text='লোড হচ্ছে...'){ 
+  const overlay = document.getElementById('loadingOverlay');
+  const textEl = document.getElementById('loaderText');
+  if (overlay) overlay.classList.toggle('active', show);
+  if (show && textEl) textEl.textContent = text;
+}
+
 function getActiveUser(){ return currentUserData; }
 function getDeviceId(){ try{ let d = localStorage.getItem('ad_earn_device_id'); if(!d){ d = 'DEV_' + Math.random().toString(36).substring(2,15); localStorage.setItem('ad_earn_device_id', d); } return d; }catch(e){ return 'DEV_FALLBACK'; } }
 function getUrlRefCode(){
@@ -712,13 +757,17 @@ async function initAuth() {
     photo: user.photo_url || '', username: user.username || '',
     is_browser: isBrowser || user.is_browser === true
   };
-  showLoading(true);
+  
+  showLoading(true, 'Connecting to Telegram...');
   try {
     await auth.signInAnonymously();
+    showLoading(true, 'Authenticating...');
     const authUid = auth.currentUser.uid;
     const loginId = sanitizeKey(tgId);
     const docRef = db.collection('users').doc(loginId);
     const snap = await docRef.get();
+    
+    showLoading(true, 'Loading your profile...');
     if (snap.exists) {
       const data = snap.data();
       if (data.isBlocked === true) { showLoading(false); showBlockedScreen(data.blockReason || 'নিয়ম লঙ্ঘন'); return false; }
@@ -752,8 +801,8 @@ async function initAuth() {
         history: [], usedGifts: [], giftHistory: [],
         profileImg: tgInfo.photo || '', deviceId: getDeviceId(),
         linkedNumbers: { bKash: '', Nagad: '' },
-        telegramStatus: { tg1: false, tg2: false, tg3: false },
-        telegramJoinBonuses: { tg1: false, tg2: false, tg3: false },
+        telegramStatus: { tg1: false, tg2: false, tg3: false, tg4: false },
+        telegramJoinBonuses: { tg1: false, tg2: false, tg3: false, tg4: false },
         telegramPendingJoins: {},
         isBlocked: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -762,15 +811,25 @@ async function initAuth() {
       currentUserKey = loginId;
       currentUserData = { ...newUser, loginId };
     }
-    showLoading(false);
-    if (currentUserData.isBrowserUser === true) { await enterApp(); listenUserChanges(currentUserKey); }
-    else {
+    
+    showLoading(true, 'Verifying channels...');
+    if (currentUserData.isBrowserUser === true) { 
+      showLoading(false); 
+      await enterApp(); 
+      listenUserChanges(currentUserKey); 
+    } else {
       const gateOk = await checkGateChannels();
+      showLoading(false);
       if (gateOk) { await enterApp(); listenUserChanges(currentUserKey); }
       else { showJoinGate(); listenUserChanges(currentUserKey); }
     }
     return true;
-  } catch(e) { console.error(e); showLoading(false); showPopup('Login Error', e.message || 'অজানা সমস্যা'); return false; }
+  } catch(e) { 
+    console.error(e); 
+    showLoading(false); 
+    showPopup('Login Error', e.message || 'অজানা সমস্যা'); 
+    return false; 
+  }
 }
 
 function listenUserChanges(loginId) {
@@ -860,8 +919,11 @@ async function processReferralBonus() {
     const snap = await db.collection('users').doc(currentUserKey).get();
     const user = snap.data();
     if (user.referralBonusGivenForTelegram === true) return;
+    
+    // Check all channels dynamically
     const allNow = Object.keys(CHANNELS).every(k => user.telegramStatus?.[k] === true);
     if (!allNow) return;
+    
     const refDoc = await db.collection('users').doc(user.referredBy).get();
     if (!refDoc.exists) return;
     const ref = refDoc.data();
@@ -883,31 +945,46 @@ function showJoinGate() {
   updateGateUI();
 }
 function hideJoinGate() { document.getElementById('joinGateScreen').classList.remove('active'); }
+
 async function checkGateChannels() {
   const u = getActiveUser();
   if (!u || !u.telegramId || u.isBrowserUser === true) return true;
   try {
     const results = {};
     for (const [k, ch] of Object.entries(CHANNELS)) results[k] = await checkChannel(u.telegramId, ch.id);
-    const status = { tg1: results.tg1 === true, tg2: results.tg2 === true, tg3: results.tg3 === true };
+    
+    // Dynamic status mapping
+    const status = {};
+    Object.keys(CHANNELS).forEach(k => {
+      status[k] = results[k] === true;
+    });
+    
     if (currentUserKey) { try { await db.collection('users').doc(currentUserKey).update({ telegramStatus: status }); } catch(e) {} }
     if (currentUserData) currentUserData.telegramStatus = status;
-    return status.tg1 && status.tg2 && status.tg3;
+    
+    const allJoined = Object.keys(CHANNELS).every(k => status[k] === true);
+    return allJoined;
   } catch(e) { return false; }
 }
+
 function updateGateUI() {
   const u = getActiveUser();
-  const s = u?.telegramStatus || { tg1:false, tg2:false, tg3:false };
-  ['tg1','tg2','tg3'].forEach((k, i) => {
+  const s = u?.telegramStatus || {};
+  
+  // Dynamic UI update for all channels
+  Object.keys(CHANNELS).forEach((k, i) => {
     const el = document.getElementById('jg' + (i+1));
+    if (!el) return;
     const btn = el.querySelector('.jg-btn');
     if (s[k]) { el.classList.add('joined'); btn.classList.add('done'); btn.textContent = '✓ Joined'; }
     else { el.classList.remove('joined'); btn.classList.remove('done'); btn.textContent = 'Join'; }
   });
-  const allJoined = s.tg1 && s.tg2 && s.tg3;
+  
+  const allJoined = Object.keys(CHANNELS).every(k => s[k] === true);
   document.getElementById('jgVerifyBtn').disabled = !allJoined;
   document.getElementById('jgVerifyBtn').textContent = allJoined ? '✅ চ্যানেল জয়েন ভেরিফাই করুন' : 'চ্যানেল জয়েন করে ভেরিফাই করুন';
 }
+
 async function joinGateChannel(k) {
   const ch = CHANNELS[k]; if(!ch) return;
   const u = getActiveUser();
@@ -923,10 +1000,11 @@ async function joinGateChannel(k) {
   setTimeout(async () => { await checkGateChannels(); updateGateUI(); }, 7000);
   setTimeout(async () => { await checkGateChannels(); updateGateUI(); }, 12000);
 }
+
 async function verifyGateChannels() {
   if (gateCheckInProgress) return;
   gateCheckInProgress = true;
-  showLoading(true);
+  showLoading(true, 'Verifying channels...');
   try {
     const ok = await checkGateChannels();
     updateGateUI();
@@ -934,17 +1012,23 @@ async function verifyGateChannels() {
     else { showPopup('❌ এখনো জয়েন হয়নি', 'সবগুলো চ্যানেলে "Join" ক্লিক করে আবার চেষ্টা করুন।'); }
   } finally { gateCheckInProgress = false; showLoading(false); }
 }
+
 async function awardJoinBonuses() {
   const u = getActiveUser();
   if (!u || !currentUserKey) return;
   try {
     const snap = await db.collection('users').doc(currentUserKey).get();
     const user = snap.data();
-    if (!user.telegramJoinBonuses) user.telegramJoinBonuses = { tg1:false, tg2:false, tg3:false };
+    if (!user.telegramJoinBonuses) {
+      user.telegramJoinBonuses = {};
+      Object.keys(CHANNELS).forEach(k => user.telegramJoinBonuses[k] = false);
+    }
     let newBalance = user.balance || 0;
     const history = user.history || [];
     let changed = false, bonusCount = 0;
-    for (const k of ['tg1','tg2','tg3']) {
+    
+    // Dynamic loop for all channels
+    for (const k of Object.keys(CHANNELS)) {
       if (user.telegramStatus?.[k] === true && !user.telegramJoinBonuses[k]) {
         user.telegramJoinBonuses[k] = true;
         newBalance += TG_JOIN_BONUS;
@@ -990,18 +1074,26 @@ function updateUI(){
     tgStatusEl.innerHTML = `${emoji} Joined: ${joined}/${TOTAL_CHANNELS}`;
     tgStatusEl.style.color = joined === TOTAL_CHANNELS ? '#10b981' : (joined > 0 ? '#f59e0b' : '#ef4444');
   }
+  
+  // ✅ UPDATE 2: Dynamic Referral Progress based on successful withdrawals
+  const successfulWithdrawals = (u.history || []).filter(h => (h.id || '').startsWith('WD_') && h.status !== 'Rejected').length;
+  const requiredRefs = REFERRALS_REQUIRED * (successfulWithdrawals + 1);
   const refs = u.referCount || 0;
-  const refPct = Math.min(100, (refs / REFERRALS_REQUIRED) * 100);
-  const refOk = refs >= REFERRALS_REQUIRED;
+  const refPct = Math.min(100, (refs / requiredRefs) * 100);
+  const refOk = refs >= requiredRefs;
+  
   document.getElementById('conditionRefBar').style.width = refPct + '%';
-  document.getElementById('conditionRefProgress').textContent = `${refs}/${REFERRALS_REQUIRED}`;
-  document.getElementById('conditionRefRemaining').textContent = refOk ? '0' : (REFERRALS_REQUIRED - refs);
+  document.getElementById('conditionRefProgress').textContent = `${refs}/${requiredRefs}`;
+  document.getElementById('conditionRefRemaining').textContent = refOk ? '0' : (requiredRefs - refs);
+  
   const refStatus = document.getElementById('conditionRefStatus');
   const refRow = document.getElementById('conditionRefRow');
   if (refOk) { refStatus.textContent='✓ Unlocked'; refStatus.classList.add('unlocked'); refRow.classList.add('unlocked'); }
   else { refStatus.textContent='🔒 Locked'; refStatus.classList.remove('unlocked'); refRow.classList.remove('unlocked'); }
+  
   const ov = document.getElementById('dualOverallStatus');
   if (refOk) { ov.textContent='✓ Unlocked'; ov.style.color='#10b981'; } else { ov.textContent='Locked'; ov.style.color='#ef4444'; }
+  
   renderTasks();
   renderWithdrawHistory(u.history);
   renderGiftHistory();
@@ -1014,15 +1106,24 @@ function renderTasks(){
   const today = new Date().toDateString();
   const adsInfo = { today: (u.lastAdDate === today ? (u.adsToday||0) : 0) };
   const adsDone = adsInfo.today >= DAILY_AD_LIMIT;
-  const t1 = u.telegramStatus?.tg1===true, t2 = u.telegramStatus?.tg2===true, t3 = u.telegramStatus?.tg3===true;
+  
   const tasks = [];
   tasks.push({ title: 'Watch Ads', desc: `৳2/Ad • আজ: ${adsInfo.today}/${DAILY_AD_LIMIT}`, icon: '🎬',
     btn: `<button class="btn ${!adsDone?'btn-purple':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${adsDone?'disabled':''} onclick="openAdWatch()">${!adsDone?'Watch':'Limit'}</button>` });
+  
   if (!isBrowser) {
-    tasks.push({ title: CHANNELS.tg1.name, desc: 'জয়েন = ৳৫', icon: '📢', btn: `<button class="btn ${!t1?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t1?'disabled':''} onclick="joinChannel('tg1')">${t1?'Joined':'Join'}</button>` });
-    tasks.push({ title: CHANNELS.tg2.name, desc: 'জয়েন = ৳৫', icon: '📢', btn: `<button class="btn ${!t2?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t2?'disabled':''} onclick="joinChannel('tg2')">${t2?'Joined':'Join'}</button>` });
-    tasks.push({ title: CHANNELS.tg3.name, desc: 'জয়েন = ৳৫', icon: '📢', btn: `<button class="btn ${!t3?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${t3?'disabled':''} onclick="joinChannel('tg3')">${t3?'Joined':'Join'}</button>` });
+    // Dynamic task rendering for all channels
+    Object.entries(CHANNELS).forEach(([k, ch]) => {
+      const joined = u.telegramStatus?.[k] === true;
+      tasks.push({ 
+        title: ch.name, 
+        desc: 'জয়েন = ৳৫', 
+        icon: ch.icon || '📢', 
+        btn: `<button class="btn ${!joined?'btn-blue':'btn-disabled'}" style="padding:6px 12px;font-size:12px;" ${joined?'disabled':''} onclick="joinChannel('${k}')">${joined?'Joined':'Join'}</button>` 
+      });
+    });
   }
+  
   const container = document.getElementById('taskListContainer');
   if(container) container.innerHTML = tasks.map(t => `<div class="task-item"><div class="task-info"><div class="task-icon">${t.icon}</div><div><div class="task-title">${t.title}</div><div class="task-desc">${t.desc}</div></div></div>${t.btn}</div>`).join('');
 }
@@ -1627,10 +1728,19 @@ async function verifyAllChannels() {
     const snap = await docRef.get();
     if (!snap.exists) return;
     const user = { ...snap.data() };
-    if (!user.telegramStatus) user.telegramStatus = { tg1:false, tg2:false, tg3:false };
-    if (!user.telegramJoinBonuses) user.telegramJoinBonuses = { tg1:false, tg2:false, tg3:false };
+    if (!user.telegramStatus) user.telegramStatus = {};
+    if (!user.telegramJoinBonuses) user.telegramJoinBonuses = {};
+    
+    // Initialize if missing
+    Object.keys(CHANNELS).forEach(k => {
+      if (user.telegramStatus[k] === undefined) user.telegramStatus[k] = false;
+      if (user.telegramJoinBonuses[k] === undefined) user.telegramJoinBonuses[k] = false;
+    });
+    
     let changed = false, newlyJoined = [], newBalance = user.balance || 0;
     const history = user.history || [];
+    
+    // Dynamic loop for all channels
     for (const [k, ch] of Object.entries(CHANNELS)) {
       const apiResult = await checkChannel(user.telegramId, ch.id);
       const isMember = apiResult === true;
@@ -1657,17 +1767,24 @@ function selectWdMethod(m){
   const f = document.getElementById('wdNumber');
   if (f) f.value = '';
 }
+
+// ✅ UPDATE 2: Strict 5 Referrals per Withdrawal
 async function doWithdraw(){
   const u = getActiveUser(); if(!u) return;
-  const refs = u.referCount || 0;
-  if (refs < REFERRALS_REQUIRED) {
-    const remaining = REFERRALS_REQUIRED - refs;
-    showPopup('🔒 Withdraw Locked', `Withdraw করতে ${REFERRALS_REQUIRED}টি রেফার বাধ্যতামূলক।\n\n📊 প্রোগ্রেস: ${refs}/${REFERRALS_REQUIRED}\n🔴 বাকি: ${remaining}টি\n\n💡 প্রতি রেফারে ৳${TG_REF_BONUS} পাবেন।`);
+  
+  // Calculate required referrals based on successful withdrawals
+  const successfulWithdrawals = (u.history || []).filter(h => (h.id || '').startsWith('WD_') && h.status !== 'Rejected').length;
+  const requiredRefs = REFERRALS_REQUIRED * (successfulWithdrawals + 1);
+  
+  if ((u.referCount || 0) < requiredRefs) {
+    const remaining = requiredRefs - (u.referCount || 0);
+    showPopup('🔒 Withdraw Locked', `৫টা রেফার কমপ্লিট করুন।\n\n📊 আপনার মোট রেফার: ${u.referCount || 0}\n🎯 এই উইথড্রর জন্য প্রয়োজন: ${requiredRefs}টি\n🔴 বাকি: ${remaining}টি\n\n💡 ৫টা রেফার কমপ্লিট হলে উইথড্র দিতে পারবেন।`);
     return;
   }
+  
   if (u.isBrowserUser !== true) {
     const allJoined = Object.keys(CHANNELS).every(k => u.telegramStatus?.[k] === true);
-    if (!allJoined) { showPopup('❌ Telegram এ জয়েন করেননি!','৩টি চ্যানেলেই জয়েন করুন।'); return; }
+    if (!allJoined) { showPopup('❌ Telegram এ জয়েন করেননি!','সবগুলো চ্যানেলে জয়েন করুন।'); return; }
   }
   const amt = parseFloat(document.getElementById('wdAmount').value);
   const wn = document.getElementById('wdNumber').value.trim();
@@ -1676,7 +1793,7 @@ async function doWithdraw(){
   const wc = WITHDRAW_CHARGE;
   const totalDeduct = amt + wc;
   if (totalDeduct > (u.balance || 0)) { showPopup('Error',`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন: ৳${totalDeduct.toFixed(2)}`); return; }
-  showLoading(true);
+  showLoading(true, 'Processing withdrawal...');
   try {
     const newBalance = u.balance - totalDeduct;
     const newTotalWithdraw = (u.totalWithdraw || 0) + amt;
@@ -1689,7 +1806,8 @@ async function doWithdraw(){
     document.getElementById('wdNumber').value = '';
     document.getElementById('wdAmount').value = '';
     updateUI();
-    showPopup('✅ উইথড্র সফল!', `৳${amt.toFixed(2)} রিকোয়েস্ট সফল!\nচার্জ: ৳${wc.toFixed(2)}\n\n⚡ সর্বনিম্ন ১০ মিনিটের মধ্যে পেমেন্ট পেয়ে যাবেন ✅\n\n💡 আপনার নম্বর গোপন রাখা হয়েছে।`);
+    // ✅ UPDATE 1: Removed sensitive text from success popup
+    showPopup('✅ উইথড্র সফল!', `৳${amt.toFixed(2)} রিকোয়েস্ট সফল!\nচার্জ: ৳${wc.toFixed(2)}\n\n⚡ সর্বনিম্ন ১০ মিনিটের মধ্যে পেমেন্ট পেয়ে যাবেন ✅`);
   } catch(e) { showPopup('Error', e.message); } finally { showLoading(false); }
 }
 
@@ -1698,7 +1816,7 @@ async function redeemGift(){
   const code = document.getElementById('giftCode').value.trim().toUpperCase();
   if (!code) { showPopup('Error','কোড দিন'); return; }
   if (u.usedGifts && u.usedGifts.includes(code)) { showPopup('সতর্কতা','আগে ব্যবহার করেছেন!'); return; }
-  showLoading(true);
+  showLoading(true, 'Redeeming gift code...');
   try {
     const snap = await db.collection('gift_codes').doc(sanitizeKey(code)).get();
     const gd = snap.data();
