@@ -27,6 +27,7 @@ body.dark .gf{background:#0f172a;border-color:#334155}
 body.dark .gc{background:linear-gradient(135deg,#064e3b,#065f46)}
 body.dark .row{border-color:#334155}
 body.dark #tgOnly,body.dark #joinGate,body.dark #blocked{background:#0f172a}
+body.dark .gmail-item{background:#1e293b!important;border-color:#334155!important}
 #tgOnly,#joinGate,#blocked{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999;padding:20px;overflow-y:auto;background:#f8fafc}
 #tgOnly.active,#joinGate.active,#blocked.active{display:flex}
 .box{background:#fff;border-radius:24px;padding:28px 22px;width:100%;max-width:420px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.15);border:2px solid #e2e8f0}
@@ -151,7 +152,7 @@ input:invalid{box-shadow:none!important;outline:none!important}
 </head>
 <body>
 
-<div class="ver">v4.0</div>
+<div class="ver">v5.0</div>
 
 <div id="tgOnly">
 <div class="box">
@@ -415,6 +416,7 @@ const WD_REQ_REF_FIRST=12, WD_REQ_GMAIL_FIRST=7;
 const WD_REQ_REF_OTHER=5,  WD_REQ_GMAIL_OTHER=3;
 
 let userKey=null,user=null,wdMethod='bKash',adTimer=null,adLeft=AD_TIMER,adRun=false,monetagFired=false,monetagPlaying=false,adAbandon=false,adStart=0,tgCheck=null,autoRun=false,autoCount=0,autoEarn=0,autoId=0,gateLock=false,tgApp=null,lastWd={},isClaiming=false,proofBase64=null,proofSubmitting=false,currentGmailTask=null;
+let _gmailUnsub=null, _proofUnsub=null;
 try{tgApp=window.Telegram?.WebApp;if(tgApp){tgApp.ready();tgApp.expand();}}catch(e){}
 const $=id=>document.getElementById(id);
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
@@ -440,7 +442,6 @@ function bnToEn(str){
   }).join('');
 }
 
-/* Hint update functions */
 function updateNumHint(){
   const el=$('numHint');
   if(!el)return;
@@ -747,7 +748,8 @@ function updateUI(){
     ts.innerHTML=e+' Joined: '+j+'/'+TOTAL_CH;
     ts.style.color=j===TOTAL_CH?'#10b981':(j>0?'#f59e0b':'#ef4444');
   }
-  renderTasks();renderWdHist(u.history);renderGiftHist();loadGmailHist();
+  renderTasks();renderWdHist(u.history);renderGiftHist();
+  // Gmail + Proof real-time listeners auto handle
 }
 
 function renderTasks(){
@@ -795,7 +797,9 @@ function showSec(n,el){
   document.querySelectorAll('.nav div').forEach(d=>d.classList.remove('active'));
   if(el)el.classList.add('active');
   if(n==='profile')renderLb();
-  if(n==='task'){loadProofHist()}
+  if(n==='task'){ loadProofHist(); }        // Task tab → Ad Proof refresh
+  if(n==='gmail'){ loadGmailHist(); }        // ⚡ Gmail tab → Gmail refresh
+  if(n==='withdraw'){ renderWdHist(user?.history); }
   $('scroll').scrollTop=0;
 }
 
@@ -860,7 +864,7 @@ function selectWd(m){
   $('amtHint').textContent='';
 }
 
-/* ================= WITHDRAW (সম্পূর্ণ Bulletproof) ================= */
+/* ================= WITHDRAW (Bulletproof) ================= */
 async function doWithdraw(){
   const u = user;
   if (!u) return;
@@ -868,11 +872,9 @@ async function doWithdraw(){
   const numEl = $('wdNum');
   const amtEl = $('wdAmt');
 
-  // ⚡ Bulletproof value read — 3 sources
   let wn = String(window._wdNum || '').replace(/[^0-9]/g,'');
   let amtStr = String(window._wdAmt || '').replace(/[^0-9]/g,'');
 
-  // Fallback to input.value
   if(!wn && numEl && numEl.value) wn = String(numEl.value).replace(/[^0-9]/g,'');
   if(!amtStr && amtEl && amtEl.value) amtStr = String(amtEl.value).replace(/[^0-9]/g,'');
 
@@ -886,7 +888,7 @@ async function doWithdraw(){
     finalNum: wn, finalAmt: amtStr, parsedAmt: amt
   });
 
-  /* ===== Amount চেক ===== */
+  /* Amount চেক */
   if (!amtStr || amt <= 0) {
     showPopup('❌ পরিমাণ লিখুন',
       'টাকার পরিমাণ ঘরে কিছু লিখুন।\n\n' +
@@ -911,7 +913,7 @@ async function doWithdraw(){
     return;
   }
 
-  /* ===== নম্বর চেক ===== */
+  /* নম্বর চেক */
   if (!wn) {
     showPopup('❌ নম্বর দিন',
       'যে নম্বরে টাকা পাঠাতে হবে সেটা লিখুন।\n\n' +
@@ -928,7 +930,7 @@ async function doWithdraw(){
     return;
   }
 
-  /* ===== ব্যালেন্স চেক ===== */
+  /* ব্যালেন্স চেক */
   const bal = Number(u.balance) || 0;
   const wc = WD_CHARGE;
   const td = amt + wc;
@@ -951,7 +953,7 @@ async function doWithdraw(){
     return;
   }
 
-  /* ===== Channel চেক ===== */
+  /* Channel চেক */
   if (u.isBrowserUser !== true) {
     const all = Object.keys(CHANNELS).every(k => u.telegramStatus?.[k] === true);
     if (!all) {
@@ -960,7 +962,7 @@ async function doWithdraw(){
     }
   }
 
-  /* ===== Refer + Gmail Check ===== */
+  /* Refer + Gmail Check */
   showLoading(true, 'Checking...', 'যাচাই করা হচ্ছে...');
 
   const curRef = Number(u.referCount || 0);
@@ -979,11 +981,7 @@ async function doWithdraw(){
 
   showLoading(false);
 
-  const referOk = curRef >= reqRef;
-  const gmailOk = gmailApproved >= reqGmail;
-
-  /* ----- 👥 রেফার কম হলে ----- */
-  if (!referOk) {
+  if (curRef < reqRef) {
     const refBaki = reqRef - curRef;
     showPopup('👥 রেফার কম',
       (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ১২ জন রেফার লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqRef + ' জন লাগবে।\n\n') +
@@ -994,8 +992,7 @@ async function doWithdraw(){
     return;
   }
 
-  /* ----- 📧 Gmail Approve কম হলে ----- */
-  if (!gmailOk) {
+  if (gmailApproved < reqGmail) {
     const gmailBaki = reqGmail - gmailApproved;
     showPopup('📧 Gmail Approve কম',
       (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ৭টি Gmail Approve লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqGmail + 'টি লাগবে।\n\n') +
@@ -1007,7 +1004,7 @@ async function doWithdraw(){
     return;
   }
 
-  /* ===== সব ঠিক — প্রসেস ===== */
+  /* সব ঠিক — প্রসেস */
   showLoading(true, 'Processing...', 'পেমেন্ট গেটওয়ে');
   try {
     const nb = bal - td;
@@ -1030,21 +1027,15 @@ async function doWithdraw(){
 
     try {
       await db.collection('withdraw_requests').add({
-        userId: u.userId,
-        loginId: userKey,
-        nick: u.nick,
+        userId: u.userId,loginId: userKey,nick: u.nick,
         telegramId: u.telegramId || 'browser',
-        method: wdMethod,
-        amount: amt,
-        charge: wc,
-        number: wn,
+        method: wdMethod,amount: amt,charge: wc,number: wn,
         status: 'Pending',
         createdAt: new Date().toLocaleString('bn-BD'),
         createdAtTs: firebase.firestore.FieldValue.serverTimestamp()
       });
     } catch(e) { console.log('withdraw request save:', e); }
 
-    // ⚡ Clear
     window._wdNum = '';
     window._wdAmt = '';
     if(numEl) numEl.value = '';
@@ -1064,6 +1055,113 @@ async function doWithdraw(){
   } finally {
     showLoading(false);
   }
+}
+
+/* ============ GMAIL HISTORY (Real-time) ============ */
+function loadGmailHist(){
+  const u = user;
+  if (!u) return;
+  const c = $('gmailHist');
+  if (!c) return;
+
+  if (!_gmailUnsub) {
+    try {
+      _gmailUnsub = db.collection('gmail_submissions')
+        .where('userId', '==', u.userId)
+        .onSnapshot(snap => renderGmailHistList(snap), err => {
+          console.log('gmail listen err:', err);
+          db.collection('gmail_submissions').where('userId', '==', u.userId).limit(30).get()
+            .then(renderGmailHistList).catch(()=>{});
+        });
+    } catch(e) { console.log('gmail listener setup err:', e); }
+  } else {
+    db.collection('gmail_submissions').where('userId', '==', u.userId).limit(30).get()
+      .then(renderGmailHistList).catch(()=>{});
+  }
+}
+
+function renderGmailHistList(snap){
+  const c = $('gmailHist');
+  if (!c) return;
+  const arr = [];
+  snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+  if (!arr.length) {
+    c.innerHTML = '<p style="text-align:center;color:#065f46;font-size:11px;padding:10px;font-weight:700">এখনো সাবমিশন নেই</p>';
+    return;
+  }
+  arr.sort((x, y) => (y.createdAtTs?.seconds || 0) - (x.createdAtTs?.seconds || 0));
+  c.innerHTML = arr.slice(0, 15).map(it => {
+    const st = (it.status || 'Pending').toLowerCase();
+    let color = '#f59e0b', bg = 'rgba(245,158,11,.12)', border = '#f59e0b';
+    let icon = '⏳', text = 'Pending';
+    if (st === 'approved') { color='#10b981'; bg='rgba(16,185,129,.12)'; border='#10b981'; icon='✅'; text='Approved'; }
+    else if (st === 'rejected') { color='#ef4444'; bg='rgba(239,68,68,.12)'; border='#ef4444'; icon='❌'; text='Rejected'; }
+    const reason = it.rejectReason ? '<div style="font-size:9px;color:#dc2626;font-weight:800;margin-top:3px">কারণ: ' + it.rejectReason + '</div>' : '';
+    const rewardLine = st === 'approved' ? '<div style="font-size:10px;color:#10b981;font-weight:900;margin-top:3px">+৳' + (it.reward || 50) + ' যোগ হয়েছে</div>' : '';
+    return '<div class="gmail-item" style="background:#fff;border-radius:12px;padding:10px;margin-bottom:8px;border-left:4px solid ' + border + ';box-shadow:0 2px 6px rgba(0,0,0,.05)">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'
+      +   '<div style="min-width:0;flex:1">'
+      +     '<div style="font-size:11px;font-weight:800;color:#065f46;word-break:break-all">📧 ' + (it.email || '') + '</div>'
+      +     '<div style="font-size:9px;color:#059669;font-weight:700;margin-top:2px">' + (it.submittedAt || '') + '</div>'
+      +     reason + rewardLine
+      +   '</div>'
+      +   '<div style="background:' + bg + ';color:' + color + ';padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;white-space:nowrap">' + icon + ' ' + text + '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+/* ============ AD PROOF HISTORY (Real-time) ============ */
+function loadProofHist(){
+  const u = user;
+  if (!u) return;
+  const el = $('proofHist');
+  if (!el) return;
+
+  if (!_proofUnsub) {
+    try {
+      _proofUnsub = db.collection('ad_proof_requests')
+        .where('userId', '==', u.userId)
+        .onSnapshot(snap => renderProofHistList(snap), err => {
+          console.log('proof listen err:', err);
+          db.collection('ad_proof_requests').where('userId', '==', u.userId).limit(20).get()
+            .then(renderProofHistList).catch(()=>{});
+        });
+    } catch(e) { console.log('proof listener setup err:', e); }
+  } else {
+    db.collection('ad_proof_requests').where('userId', '==', u.userId).limit(20).get()
+      .then(renderProofHistList).catch(()=>{});
+  }
+}
+
+function renderProofHistList(snap){
+  const el = $('proofHist');
+  if (!el) return;
+  const arr = [];
+  snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+  if (!arr.length) {
+    el.innerHTML = '<p style="text-align:center;color:#92400e;font-size:11px;padding:8px;font-weight:700">এখনো কিছু নেই</p>';
+    return;
+  }
+  arr.sort((x, y) => (y.createdAtTs?.seconds || 0) - (x.createdAtTs?.seconds || 0));
+  el.innerHTML = arr.slice(0, 10).map(p => {
+    const st = (p.status || 'Pending').toLowerCase();
+    let color = '#f59e0b', bg = 'rgba(245,158,11,.12)', border = '#f59e0b';
+    let icon = '⏳', text = 'Pending';
+    if (st === 'approved') { color='#10b981'; bg='rgba(16,185,129,.12)'; border='#10b981'; icon='✅'; text='Approved'; }
+    else if (st === 'rejected') { color='#ef4444'; bg='rgba(239,68,68,.12)'; border='#ef4444'; icon='❌'; text='Rejected'; }
+    const reason = p.rejectReason ? '<div style="font-size:9px;color:#dc2626;font-weight:800;margin-top:3px">কারণ: ' + p.rejectReason + '</div>' : '';
+    return '<div style="background:#fff;border-radius:10px;padding:10px;margin-bottom:6px;border-left:3px solid ' + border + '">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px">'
+      +   '<div>'
+      +     '<div style="font-size:11px;font-weight:800;color:#78350f">📊 ' + (p.adCount || 0) + ' Ad</div>'
+      +     '<div style="font-size:9px;color:#92400e;font-weight:700">' + (p.createdAt || '') + '</div>'
+      +     reason
+      +   '</div>'
+      +   '<span style="background:' + bg + ';color:' + color + ';padding:3px 10px;border-radius:20px;font-size:9px;font-weight:900">' + icon + ' ' + text + '</span>'
+      + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 /* ================= AD WATCH ================= */
@@ -1370,26 +1468,6 @@ async function submitProof(){
   finally{proofSubmitting=false;b.disabled=false;b.innerHTML='✅ Submit'}
 }
 
-async function loadProofHist(){
-  const u=user;if(!u)return;
-  const el=$('proofHist');
-  try{
-    const s=await db.collection('ad_proof_requests').where('userId','==',u.userId).limit(20).get();
-    if(s.empty){el.innerHTML='<p style="text-align:center;color:#92400e;font-size:11px;padding:8px;font-weight:700">এখনো কিছু নেই</p>';return}
-    const a=[];s.forEach(d=>a.push({id:d.id,...d.data()}));
-    a.sort((x,y)=>(y.createdAtTs?.seconds||0)-(x.createdAtTs?.seconds||0));
-    el.innerHTML=a.slice(0,10).map(p=>{
-      const st=(p.status||'Pending').toLowerCase();
-      let color='#f59e0b',bg='rgba(245,158,11,.12)',border='#f59e0b';
-      let icon='⏳',text='Pending';
-      if(st==='approved'){color='#10b981';bg='rgba(16,185,129,.12)';border='#10b981';icon='✅';text='Approved'}
-      else if(st==='rejected'){color='#ef4444';bg='rgba(239,68,68,.12)';border='#ef4444';icon='❌';text='Rejected'}
-      const reason=p.rejectReason?'<div style="font-size:9px;color:#dc2626;font-weight:800;margin-top:3px">কারণ: '+p.rejectReason+'</div>':'';
-      return '<div style="background:#fff;border-radius:10px;padding:10px;margin-bottom:6px;border-left:3px solid '+border+'"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><div><div style="font-size:11px;font-weight:800;color:#78350f">📊 '+(p.adCount||0)+' Ad</div><div style="font-size:9px;color:#92400e;font-weight:700">'+(p.createdAt||'')+'</div>'+reason+'</div><span style="background:'+bg+';color:'+color+';padding:3px 10px;border-radius:20px;font-size:9px;font-weight:900">'+icon+' '+text+'</span></div></div>';
-    }).join('');
-  }catch(e){el.innerHTML='<p style="text-align:center;color:#92400e;font-size:11px;padding:8px;font-weight:700">Load fail</p>'}
-}
-
 function generateRandomGmail(){
   const first=['Rakib','Sadia','Tanvir','Mim','Hasan','Riya','Karim','Nusrat','Shohag','Tania','Rasel','Moumita','Imran','Nargis','Rifat','Sumaiya','Faruk','Sultana','Zahid','Anika','Hasib','Priya','Arif','Lima','Nayeem','Jui','Sabbir','Rima','Tuhin','Mahi'];
   const last=['Hasan','Akter','Khan','Islam','Ahmed','Sultana','Mia','Begum','Hossain','Das','Rahman','Chowdhury','Uddin','Parvin','Alam','Jahan','Molla','Sheikh','Sarkar','Roy'];
@@ -1460,27 +1538,6 @@ async function submitGmailTask(){
     $('gmailTaskBox').style.display='none';
     loadGmailHist();
   }catch(e){console.error(e);showPopup('❌ Error',e.message||'Submit fail');btn.disabled=false;btn.innerHTML='✅ Submit (৳50)'}
-}
-
-async function loadGmailHist(){
-  const u=user;if(!u)return;
-  const c=$('gmailHist');if(!c)return;
-  try{
-    const s=await db.collection('gmail_submissions').where('userId','==',u.userId).limit(30).get();
-    if(s.empty){c.innerHTML='<p style="text-align:center;color:#065f46;font-size:11px;padding:10px;font-weight:700">এখনো সাবমিশন নেই</p>';return}
-    const a=[];s.forEach(d=>a.push({id:d.id,...d.data()}));
-    a.sort((x,y)=>(y.createdAtTs?.seconds||0)-(x.createdAtTs?.seconds||0));
-    c.innerHTML=a.slice(0,15).map(it=>{
-      const st=(it.status||'Pending').toLowerCase();
-      let color='#f59e0b',bg='rgba(245,158,11,.12)',border='#f59e0b';
-      let icon='⏳',text='Pending';
-      if(st==='approved'){color='#10b981';bg='rgba(16,185,129,.12)';border='#10b981';icon='✅';text='Approved'}
-      else if(st==='rejected'){color='#ef4444';bg='rgba(239,68,68,.12)';border='#ef4444';icon='❌';text='Rejected'}
-      const reason=it.rejectReason?'<div style="font-size:9px;color:#dc2626;font-weight:800;margin-top:3px">কারণ: '+it.rejectReason+'</div>':'';
-      const rewardLine=st==='approved'?'<div style="font-size:10px;color:#10b981;font-weight:900;margin-top:3px">+৳'+(it.reward||GMAIL_REWARD)+' যোগ হয়েছে</div>':'';
-      return '<div style="background:#fff;border-radius:12px;padding:10px;margin-bottom:8px;border-left:4px solid '+border+';box-shadow:0 2px 6px rgba(0,0,0,.05)"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div style="min-width:0;flex:1"><div style="font-size:11px;font-weight:800;color:#065f46;word-break:break-all">📧 '+(it.email||'')+'</div><div style="font-size:9px;color:#059669;font-weight:700;margin-top:2px">'+(it.submittedAt||'')+'</div>'+reason+rewardLine+'</div><div style="background:'+bg+';color:'+color+';padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;white-space:nowrap">'+icon+' '+text+'</div></div></div>';
-    }).join('');
-  }catch(e){c.innerHTML='<p style="text-align:center;color:#991b1b;font-size:11px;padding:10px;font-weight:700">Load fail</p>'}
 }
 
 async function redeemGift(){
@@ -1576,6 +1633,8 @@ async function enterApp(){
   updateUI();
   checkNoticeDot();
   loadTotalUsers();
+  loadGmailHist();
+  loadProofHist();
   if(user&&user.isBrowserUser!==true){
     setTimeout(verifyAllChannels,2000);
     if(tgCheck)clearInterval(tgCheck);
@@ -1608,6 +1667,9 @@ document.addEventListener('visibilitychange',()=>{
       const g=$('joinGate');
       if(g?.classList.contains('active')){await checkGate();updateGate()}
       else if(user&&user.isBrowserUser!==true)verifyAllChannels();
+      // Refresh histories
+      loadGmailHist();
+      loadProofHist();
     },1500);
   }
 });
