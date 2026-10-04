@@ -78,7 +78,7 @@ body.dark #tgOnly,body.dark #joinGate,body.dark #blocked{background:#0f172a}
 .mopt.active{border-color:#4f46e5;background:#eef2ff;color:#4f46e5;opacity:1}
 input{width:100%;padding:13px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;background:#f8fafc;font-weight:700;margin-bottom:4px;color:#1e293b;font-family:inherit;-webkit-appearance:none;appearance:none}
 input:focus{outline:none;border-color:#4f46e5;background:#fff}
-input:invalid{box-shadow:none}
+input:invalid{box-shadow:none!important;outline:none!important}
 .field-hint{font-size:11px;color:#64748b;font-weight:700;margin:0 0 10px 4px;min-height:16px;line-height:1.4}
 .field-hint.ok{color:#10b981}
 .field-hint.err{color:#ef4444}
@@ -277,31 +277,10 @@ input:invalid{box-shadow:none}
 <div class="mopt" id="moptNa" onclick="selectWd('Nagad')">Nagad</div>
 </div>
 
-<!-- ⚡ FIXED INPUTS — type="text" with no native validation ⚡ -->
-<input 
-  type="text" 
-  id="wdNum" 
-  inputmode="numeric" 
-  pattern="[0-9]*" 
-  placeholder="01712345678" 
-  autocomplete="off"
-  autocorrect="off"
-  spellcheck="false"
-  style="letter-spacing:1px"
-/>
+<input type="text" id="wdNum" placeholder="01712345678" autocomplete="off" />
 <div class="field-hint" id="numHint"></div>
 
-<input 
-  type="text" 
-  id="wdAmt" 
-  inputmode="numeric" 
-  pattern="[0-9]*" 
-  placeholder="500" 
-  autocomplete="off"
-  autocorrect="off"
-  spellcheck="false"
-  style="letter-spacing:1px"
-/>
+<input type="text" id="wdAmt" placeholder="500" autocomplete="off" />
 <div class="field-hint" id="amtHint"></div>
 
 <button class="btn btn-r btn-full" onclick="doWithdraw()">Withdraw Request</button>
@@ -864,69 +843,59 @@ function selectWd(m){
   $('amtHint').textContent='';
 }
 
-/* ============ LIVE SANITIZER — টাইপ করার সময়ই ফিল্টার ============ */
+/* Live input sanitizer */
 function setupWithdrawInputs(){
-  const numEl = $('wdNum');
-  const amtEl = $('wdAmt');
-  const numHint = $('numHint');
-  const amtHint = $('amtHint');
+  const numEl=$('wdNum'), amtEl=$('wdAmt');
+  const numHint=$('numHint'), amtHint=$('amtHint');
 
   if(numEl){
-    // সব ধরনের native validation বন্ধ
-    numEl.addEventListener('input', e=>{
-      const cleaned = bnToEn(e.target.value).replace(/[^0-9]/g, '').slice(0, 11);
-      if(e.target.value !== cleaned) e.target.value = cleaned;
-      if(!numHint) return;
+    numEl.removeAttribute('pattern');
+    numEl.removeAttribute('inputmode');
+    numEl.setAttribute('type','text');
+    numEl.addEventListener('input',()=>{
+      const raw=numEl.value;
+      const cleaned=bnToEn(raw).replace(/[^0-9]/g,'').slice(0,11);
+      if(raw!==cleaned) numEl.value=cleaned;
+      if(!numHint)return;
       if(!cleaned){numHint.textContent='';numHint.className='field-hint';return}
-      if(cleaned.length < 11){
-        numHint.textContent = '⚠️ ' + cleaned.length + '/১১ ডিজিট — বাকি ' + (11 - cleaned.length);
-        numHint.className = 'field-hint err';
-      } else if(!/^01[3-9]\d{8}$/.test(cleaned)){
-        numHint.textContent = '⚠️ সঠিক বাংলাদেশী নম্বর দিন (013-019 দিয়ে শুরু)';
-        numHint.className = 'field-hint err';
-      } else {
-        numHint.textContent = '✅ সঠিক নম্বর';
-        numHint.className = 'field-hint ok';
+      if(cleaned.length<11){
+        numHint.textContent='⚠️ '+cleaned.length+'/১১ ডিজিট — আরও '+(11-cleaned.length)+' দিন';
+        numHint.className='field-hint err';
+      }else if(!/^01[3-9]\d{8}$/.test(cleaned)){
+        numHint.textContent='⚠️ 013-019 দিয়ে শুরু হতে হবে';
+        numHint.className='field-hint err';
+      }else{
+        numHint.textContent='✅ সঠিক নম্বর';
+        numHint.className='field-hint ok';
       }
-    });
-    numEl.addEventListener('paste', e=>{
-      e.preventDefault();
-      const t = (e.clipboardData || window.clipboardData).getData('text');
-      const cleaned = bnToEn(t).replace(/[^0-9]/g, '').slice(0, 11);
-      numEl.value = cleaned;
-      numEl.dispatchEvent(new Event('input'));
     });
   }
-
   if(amtEl){
-    amtEl.addEventListener('input', e=>{
-      const cleaned = bnToEn(e.target.value).replace(/[^0-9]/g, '').slice(0, 6);
-      if(e.target.value !== cleaned) e.target.value = cleaned;
-      if(!amtHint) return;
+    amtEl.removeAttribute('pattern');
+    amtEl.removeAttribute('inputmode');
+    amtEl.setAttribute('type','text');
+    amtEl.addEventListener('input',()=>{
+      const raw=amtEl.value;
+      const cleaned=bnToEn(raw).replace(/[^0-9]/g,'').slice(0,6);
+      if(raw!==cleaned) amtEl.value=cleaned;
+      if(!amtHint)return;
       if(!cleaned){amtHint.textContent='';amtHint.className='field-hint';return}
-      const num = parseInt(cleaned, 10);
-      if(num < MIN_WD){
-        amtHint.textContent = '⚠️ সর্বনিম্ন ৳' + MIN_WD + ' — আরও ৳' + (MIN_WD - num) + ' বাড়ান';
-        amtHint.className = 'field-hint err';
-      } else if(num > MAX_WD){
-        amtHint.textContent = '⚠️ সর্বোচ্চ ৳' + MAX_WD;
-        amtHint.className = 'field-hint err';
-      } else {
-        amtHint.textContent = '✅ সঠিক পরিমাণ: ৳' + num;
-        amtHint.className = 'field-hint ok';
+      const num=parseInt(cleaned,10);
+      if(num<MIN_WD){
+        amtHint.textContent='⚠️ সর্বনিম্ন ৳'+MIN_WD+' — আরও ৳'+(MIN_WD-num)+' বাড়ান';
+        amtHint.className='field-hint err';
+      }else if(num>MAX_WD){
+        amtHint.textContent='⚠️ সর্বোচ্চ ৳'+MAX_WD;
+        amtHint.className='field-hint err';
+      }else{
+        amtHint.textContent='✅ সঠিক পরিমাণ: ৳'+num;
+        amtHint.className='field-hint ok';
       }
-    });
-    amtEl.addEventListener('paste', e=>{
-      e.preventDefault();
-      const t = (e.clipboardData || window.clipboardData).getData('text');
-      const cleaned = bnToEn(t).replace(/[^0-9]/g, '').slice(0, 6);
-      amtEl.value = cleaned;
-      amtEl.dispatchEvent(new Event('input'));
     });
   }
 }
 
-/* ================= WITHDRAW (AND কন্ডিশন) ================= */
+/* ================= WITHDRAW (সম্পূর্ণ ঠিক করা) ================= */
 async function doWithdraw(){
   const u = user;
   if (!u) return;
@@ -934,24 +903,19 @@ async function doWithdraw(){
   const numEl = $('wdNum');
   const amtEl = $('wdAmt');
   
-  // ⚡ Value পড়ার সব উপায় try করি
-  const rawNum = String(numEl.value || '').trim();
-  const rawAmt = String(amtEl.value || '').trim();
-  
+  const rawAmt = String(amtEl.value || amtEl.getAttribute('value') || '').trim();
+  const rawNum = String(numEl.value || numEl.getAttribute('value') || '').trim();
+
   const wn = bnToEn(rawNum).replace(/[^0-9]/g, '');
   const amtStr = bnToEn(rawAmt).replace(/[^0-9]/g, '');
-  const amt = amtStr ? parseInt(amtStr, 10) : NaN;
+  const amt = amtStr ? parseInt(amtStr, 10) : 0;
 
-  console.log('📥 Withdraw check:', {
-    rawAmt, amtStr, amt, isNaN: isNaN(amt),
-    rawNum, wn
-  });
+  console.log('🔍 doWithdraw:', { rawNum, rawAmt, wn, amtStr, amt });
 
-  /* ---- নম্বর চেক ---- */
+  /* ===== ১. নম্বর চেক ===== */
   if (!wn) {
-    showPopup('❌ নম্বর দিন',
-      'যে নম্বরে টাকা পাঠাতে হবে সেটা লিখুন।\n\n' +
-      'উদাহরণ: 01712345678');
+    showPopup('❌ নম্বর দিন', 
+      'যে নম্বরে টাকা পাঠাতে হবে সেটা লিখুন।\n\nউদাহরণ: 01712345678');
     numEl.focus();
     return;
   }
@@ -965,48 +929,58 @@ async function doWithdraw(){
     return;
   }
 
-  /* ---- Amount চেক ---- */
-  if (!amtStr || isNaN(amt) || amt <= 0) {
+  /* ===== ২. Amount চেক ===== */
+  if (!amtStr || amt <= 0) {
     showPopup('❌ পরিমাণ দিন',
       'কত টাকা উইথড্র করবেন সেটা লিখুন।\n\n' +
-      '📊 সর্বনিম্ন: ৳' + MIN_WD + '\n' +
-      '📊 সর্বোচ্চ: ৳' + MAX_WD + '\n\n' +
-      '📌 আপনি লিখেছেন: "' + rawAmt + '"\n\n' +
+      '📊 সর্বনিম্ন: ৳300\n' +
+      '📊 সর্বোচ্চ: ৳50000\n\n' +
       'উদাহরণ: 500');
     amtEl.focus();
     return;
   }
   if (amt < MIN_WD) {
-    showPopup('❌ কম পরিমাণ',
+    showPopup('❌ পরিমাণ কম',
       'সর্বনিম্ন ৳' + MIN_WD + ' উইথড্র করা যাবে।\n\n' +
-      'আপনি দিয়েছেন: ৳' + amt + '\n' +
+      '📊 আপনি দিয়েছেন: ৳' + amt + '\n' +
       '📊 আরও ৳' + (MIN_WD - amt) + ' বাড়ান।');
     amtEl.focus();
     return;
   }
   if (amt > MAX_WD) {
-    showPopup('❌ বেশি পরিমাণ',
+    showPopup('❌ পরিমাণ বেশি',
       'সর্বোচ্চ ৳' + MAX_WD + ' উইথড্র করা যাবে।\n\n' +
-      'আপনি দিয়েছেন: ৳' + amt);
+      '📊 আপনি দিয়েছেন: ৳' + amt);
     amtEl.focus();
     return;
   }
 
-  /* ---- Balance চেক ---- */
+  /* ===== ৩. 💰 ব্যালেন্স চেক ===== */
   const bal = Number(u.balance) || 0;
   const wc = WD_CHARGE;
   const td = amt + wc;
+
+  if (bal < MIN_WD) {
+    showPopup('💰 ব্যালেন্স কম',
+      'আপনার ব্যালেন্স: ৳' + bal.toFixed(2) + '\n' +
+      '📊 সর্বনিম্ন: ৳' + MIN_WD + '\n' +
+      '🔴 আরও ৳' + (MIN_WD - bal).toFixed(2) + ' দরকার।\n\n' +
+      '💡 Ad দেখে বা Refer করে ব্যালেন্স বাড়ান।');
+    return;
+  }
+
   if (td > bal) {
-    showPopup('❌ পর্যাপ্ত ব্যালেন্স নেই',
+    showPopup('💰 ব্যালেন্স কম',
       '📊 প্রয়োজন: ৳' + td.toFixed(2) + '\n' +
       '   (উইথড্র ৳' + amt + ' + চার্জ ৳' + wc + ')\n\n' +
       '💰 আপনার: ৳' + bal.toFixed(2) + '\n' +
-      '🔴 ঘাটতি: ৳' + (td - bal).toFixed(2));
+      '🔴 ঘাটতি: ৳' + (td - bal).toFixed(2) + '\n\n' +
+      '💡 কম টাকা দিয়ে চেষ্টা করুন।');
     amtEl.focus();
     return;
   }
 
-  /* ---- Channel চেক ---- */
+  /* ===== ৪. Channel চেক ===== */
   if (u.isBrowserUser !== true) {
     const all = Object.keys(CHANNELS).every(k => u.telegramStatus?.[k] === true);
     if (!all) {
@@ -1017,12 +991,19 @@ async function doWithdraw(){
     }
   }
 
-  /* ==== Refer + Gmail চেক (AND) ==== */
-  showLoading(true, 'Checking...', 'রেফার ও জিমেইল যাচাই হচ্ছে');
+  /* ===== ৫. রেফার ও Gmail Approve চেক ===== */
+  showLoading(true, 'Checking...', 'যাচাই করা হচ্ছে...');
 
   const curRef = Number(u.referCount || 0);
-  let gmailApproved = 0;
 
+  const wdDone = (u.history || []).filter(h =>
+    (h.id || '').startsWith('WD_') && h.status !== 'Rejected'
+  ).length;
+
+  const reqRef   = wdDone === 0 ? WD_REQ_REF_FIRST   : WD_REQ_REF_OTHER;
+  const reqGmail = wdDone === 0 ? WD_REQ_GMAIL_FIRST : WD_REQ_GMAIL_OTHER;
+
+  let gmailApproved = 0;
   try {
     const gs = await db.collection('gmail_submissions')
       .where('userId', '==', u.userId)
@@ -1031,38 +1012,39 @@ async function doWithdraw(){
     gmailApproved = gs.size;
   } catch(e) { console.log('gmail count error:', e); }
 
-  const wdDone = (u.history || []).filter(h => (h.id || '').startsWith('WD_') && h.status !== 'Rejected').length;
-  const reqRef   = wdDone === 0 ? WD_REQ_REF_FIRST   : WD_REQ_REF_OTHER;
-  const reqGmail = wdDone === 0 ? WD_REQ_GMAIL_FIRST : WD_REQ_GMAIL_OTHER;
-
   showLoading(false);
 
   const referOk = curRef >= reqRef;
   const gmailOk = gmailApproved >= reqGmail;
 
-  if (!referOk || !gmailOk) {
-    const refBaki = Math.max(0, reqRef - curRef);
-    const gmailBaki = Math.max(0, reqGmail - gmailApproved);
-    const title = wdDone === 0 ? '🔒 ১ম Withdraw Locked' : '🔒 Withdraw Locked';
-    let msg = '⚠️ উইথড্রর জন্য দুইটি শর্তই পূরণ করতে হবে:\n\n';
-    msg += (referOk ? '✅' : '❌') + '  রেফার: ' + curRef + '/' + reqRef;
-    if (!referOk) msg += '  (বাকি ' + refBaki + ' জন)';
-    msg += '\n';
-    msg += (gmailOk ? '✅' : '❌') + '  জিমেইল Approve: ' + gmailApproved + '/' + reqGmail;
-    if (!gmailOk) msg += '  (বাকি ' + gmailBaki + ' টি)';
-    msg += '\n\n';
-    if (referOk && !gmailOk) {
-      msg += '📧 এখনো ' + gmailBaki + 'টি জিমেইল Approve করাতে হবে।';
-    } else if (!referOk && gmailOk) {
-      msg += '👥 এখনো ' + refBaki + 'টি রেফার কমপ্লিট করতে হবে।';
-    } else {
-      msg += '📌 দুইটাই কমপ্লিট করুন — একটি হলেও Withdraw যাবে না।';
-    }
+  /* ----- 👥 রেফার কম হলে ----- */
+  if (!referOk) {
+    const refBaki = reqRef - curRef;
+    const title = '👥 রেফার কম';
+    const msg = 
+      (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ১২ জন রেফার লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqRef + ' জন রেফার লাগবে।\n\n') +
+      '📊 আপনার রেফার: ' + curRef + ' জন\n' +
+      '🎯 প্রয়োজন: ' + reqRef + ' জন\n' +
+      '🔴 বাকি: ' + refBaki + ' জন\n\n' +
+      '💡 Refer লিংক শেয়ার করে ' + refBaki + ' জনকে আনার চেষ্টা করুন।';
     showPopup(title, msg);
     return;
   }
 
-  /* ==== প্রসেস ==== */
+  /* ----- 📧 Gmail Approve কম হলে ----- */
+  if (!gmailOk) {
+    const gmailBaki = reqGmail - gmailApproved;
+    showPopup('📧 Gmail Approve কম',
+      (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ৫টি Gmail Approve থাকা লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqGmail + 'টি Gmail Approve থাকা লাগবে।\n\n') +
+      '📊 আপনার Approve: ' + gmailApproved + ' টি\n' +
+      '🎯 প্রয়োজন: ' + reqGmail + ' টি\n' +
+      '🔴 বাকি: ' + gmailBaki + ' টি\n\n' +
+      '💡 Gmail ট্যাবে গিয়ে আরো ' + gmailBaki + ' টি Submit করুন।\n' +
+      'Admin Approve করলে ব্যালেন্সে যোগ হবে।');
+    return;
+  }
+
+  /* ===== ৬. সব ঠিক — প্রসেস ===== */
   showLoading(true, 'Processing...', 'পেমেন্ট গেটওয়ে');
   try {
     const nb = bal - td;
@@ -1101,8 +1083,8 @@ async function doWithdraw(){
 
     numEl.value = '';
     amtEl.value = '';
-    $('numHint').textContent = '';
-    $('amtHint').textContent = '';
+    if($('numHint')) $('numHint').textContent = '';
+    if($('amtHint')) $('amtHint').textContent = '';
     updateUI();
     showPopup('✅ উইথড্র সফল!',
       '৳' + amt.toFixed(2) + ' রিকোয়েস্ট সফল!\n' +
@@ -1712,7 +1694,7 @@ window.addEventListener('blur',()=>{if(adRun&&adLeft>0&&!monetagPlaying)adAbando
 
 window.addEventListener('DOMContentLoaded',async()=>{
   try{if(window.Telegram?.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand()}}catch(e){}
-  setupWithdrawInputs();  // ⚡ Add input sanitizers
+  setupWithdrawInputs();
   await initAuth();
 });
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(e=>{});
