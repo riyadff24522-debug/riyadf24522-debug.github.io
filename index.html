@@ -145,10 +145,13 @@ input:invalid{box-shadow:none!important;outline:none!important}
 .gf .v{font-size:12px;font-weight:800;word-break:break-all}
 .gf .cp{background:#3b82f6;color:#fff;border:none;padding:6px 10px;border-radius:8px;font-size:10px;font-weight:900;cursor:pointer;flex-shrink:0;font-family:inherit}
 .gf .cp.ok{background:#10b981}
+.ver{position:fixed;top:2px;right:2px;background:#000;color:#0f0;font-size:9px;padding:2px 6px;border-radius:4px;z-index:999999;font-family:monospace}
 @media(max-width:400px){.header h1{font-size:12px}.bal{font-size:11px}.nav div{font-size:8px}.nav .ic{font-size:16px}}
 </style>
 </head>
 <body>
+
+<div class="ver">v4.0</div>
 
 <div id="tgOnly">
 <div class="box">
@@ -268,19 +271,21 @@ input:invalid{box-shadow:none!important;outline:none!important}
 <div class="card">
 <h3>💸 Withdraw Money</h3>
 <p style="font-size:12px;opacity:.7;font-weight:700;margin-bottom:10px">ব্যালেন্স: ৳<span id="wdBal">0.00</span></p>
-<div class="notice green">⚠️ প্রতি উইথড্রতে ৳৫ চার্জ। সর্বনিম্ন ৳৩০০।<br>
-📊 <b>১ম withdraw:</b> ১২ রেফার <b>এবং</b> ৫ Gmail Approve<br>
-📊 <b>২য়+ withdraw:</b> ৫ রেফার <b>এবং</b> ২ Gmail Approve<br>
+<div class="notice green">⚠️ প্রতি উইথড্রতে ৳৫ চার্জ। সর্বনিম্ন ৳৫০।<br>
+📊 <b>১ম withdraw:</b> ১২ রেফার <b>এবং</b> ৭ Gmail Approve<br>
+📊 <b>২য়+ withdraw:</b> ৫ রেফার <b>এবং</b> ৩ Gmail Approve<br>
 ⚡ ১০ মিনিটের মধ্যে পেমেন্ট ✅</div>
 <div class="grid" style="margin-bottom:10px">
 <div class="mopt active" id="moptBk" onclick="selectWd('bKash')">bKash</div>
 <div class="mopt" id="moptNa" onclick="selectWd('Nagad')">Nagad</div>
 </div>
 
-<input type="text" id="wdNum" placeholder="01712345678" autocomplete="off" />
+<input type="text" id="wdNum" placeholder="01712345678" autocomplete="off"
+  oninput="window._wdNum=this.value.replace(/[^0-9]/g,'').slice(0,11);this.value=window._wdNum;updateNumHint()" />
 <div class="field-hint" id="numHint"></div>
 
-<input type="text" id="wdAmt" placeholder="500" autocomplete="off" />
+<input type="text" id="wdAmt" placeholder="টাকার পরিমাণ (যেমন: 300)" autocomplete="off"
+  oninput="window._wdAmt=this.value.replace(/[^0-9]/g,'').slice(0,6);this.value=window._wdAmt;updateAmtHint()" />
 <div class="field-hint" id="amtHint"></div>
 
 <button class="btn btn-r btn-full" onclick="doWithdraw()">Withdraw Request</button>
@@ -390,6 +395,10 @@ input:invalid{box-shadow:none!important;outline:none!important}
 </div>
 
 <script>
+// ⚡ Global variables for withdraw inputs
+window._wdNum = '';
+window._wdAmt = '';
+
 const firebaseConfig={apiKey:"AIzaSyAxYweveDEZugb4lJk4_BuCCroMEtJgM0Q",authDomain:"ad-earn-bot-be8c6.firebaseapp.com",projectId:"ad-earn-bot-be8c6",storageBucket:"ad-earn-bot-be8c6.firebasestorage.app",messagingSenderId:"607692103845",appId:"1:607692103845:web:9a4354f957ddfbc712ed4c"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
@@ -397,11 +406,13 @@ const db=firebase.firestore();
 const BOT_USERNAME='add_arbe_bot';
 const WORKER_URL='https://ads-to-earn-api.riyadking24522.workers.dev';
 const CHANNELS={tg1:{id:'-1004471208794',link:'https://t.me/trueplaychannel1',name:'Payment Proofs',icon:'📢'},tg2:{id:'-1004491956765',link:'https://t.me/trueplaychannel2',name:'Community',icon:'👥'},tg3:{id:'-1004427257866',link:'https://t.me/trueplaychannel3',name:'Gift Codes',icon:'🎁'},tg4:{id:'-1002819430279',link:'https://t.me/tasr_wallet_chenel',name:'Tasr Wallet',icon:'💳'}};
-const AD_REWARD=1,COMPANY_SHARE=20,TG_JOIN_BONUS=5,TG_REF_BONUS=25,DAILY_AD_LIMIT=50,AD_TIMER=20,C_L1=5,C_L2=5,MIN_WD=300,MAX_WD=50000,WD_CHARGE=5,MIN_ADS=0,TOTAL_CH=4,AUTO_MAX=20,GMAIL_REWARD=50,GMAIL_LIMIT=10;
+const AD_REWARD=1,COMPANY_SHARE=20,TG_JOIN_BONUS=5,TG_REF_BONUS=25,DAILY_AD_LIMIT=50,AD_TIMER=20,C_L1=5,C_L2=5;
+const MIN_WD=50,MAX_WD=50000,WD_CHARGE=5,MIN_ADS=0,TOTAL_CH=4,AUTO_MAX=20,GMAIL_REWARD=50,GMAIL_LIMIT=10;
 const GMAIL_FIXED_PASS='@natasonewking00';
 
-const WD_REQ_REF_FIRST=12, WD_REQ_GMAIL_FIRST=5;
-const WD_REQ_REF_OTHER=5,  WD_REQ_GMAIL_OTHER=2;
+// ⚡ Withdraw conditions
+const WD_REQ_REF_FIRST=12, WD_REQ_GMAIL_FIRST=7;
+const WD_REQ_REF_OTHER=5,  WD_REQ_GMAIL_OTHER=3;
 
 let userKey=null,user=null,wdMethod='bKash',adTimer=null,adLeft=AD_TIMER,adRun=false,monetagFired=false,monetagPlaying=false,adAbandon=false,adStart=0,tgCheck=null,autoRun=false,autoCount=0,autoEarn=0,autoId=0,gateLock=false,tgApp=null,lastWd={},isClaiming=false,proofBase64=null,proofSubmitting=false,currentGmailTask=null;
 try{tgApp=window.Telegram?.WebApp;if(tgApp){tgApp.ready();tgApp.expand();}}catch(e){}
@@ -429,19 +440,54 @@ function bnToEn(str){
   }).join('');
 }
 
+/* Hint update functions */
+function updateNumHint(){
+  const el=$('numHint');
+  if(!el)return;
+  const v=window._wdNum||'';
+  if(!v){el.textContent='';el.className='field-hint';return}
+  if(v.length<11){
+    el.textContent='⚠️ '+v.length+'/১১ ডিজিট — আরও '+(11-v.length);
+    el.className='field-hint err';
+  }else if(!/^01[3-9]\d{8}$/.test(v)){
+    el.textContent='⚠️ 013-019 দিয়ে শুরু হতে হবে';
+    el.className='field-hint err';
+  }else{
+    el.textContent='✅ সঠিক নম্বর';
+    el.className='field-hint ok';
+  }
+}
+function updateAmtHint(){
+  const el=$('amtHint');
+  if(!el)return;
+  const v=window._wdAmt||'';
+  if(!v){el.textContent='';el.className='field-hint';return}
+  const n=parseInt(v,10);
+  if(n<MIN_WD){
+    el.textContent='⚠️ সর্বনিম্ন ৳'+MIN_WD+' — আরও ৳'+(MIN_WD-n);
+    el.className='field-hint err';
+  }else if(n>MAX_WD){
+    el.textContent='⚠️ সর্বোচ্চ ৳'+MAX_WD;
+    el.className='field-hint err';
+  }else{
+    el.textContent='✅ সঠিক: ৳'+n;
+    el.className='field-hint ok';
+  }
+}
+
 async function checkChannel(uid,cid){try{const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkChannel',telegramId:uid,channelId:cid})});const j=await r.json();return j.joined===true}catch(e){return null}}
 
 async function processRefBonus(){
   const u=user;
-  if(!u||!userKey) return;
-  if(!u.referredBy){return}
+  if(!u||!userKey)return;
+  if(!u.referredBy)return;
   try{
     const s=await db.collection('users').doc(userKey).get();
-    if(!s.exists) return;
+    if(!s.exists)return;
     const d=s.data();
-    if(d.referralBonusGivenForTelegram===true) return;
+    if(d.referralBonusGivenForTelegram===true)return;
     const all=Object.keys(CHANNELS).every(k=>d.telegramStatus?.[k]===true);
-    if(!all) return;
+    if(!all)return;
     const rDoc=await db.collection('users').doc(d.referredBy).get();
     if(!rDoc.exists){
       await db.collection('users').doc(userKey).update({referralBonusGivenForTelegram:true});
@@ -459,22 +505,8 @@ async function processRefBonus(){
     const nc=oldRef+1;
     const newRu=[...ruList,d.userId];
     const rh=Array.isArray(r.history)?r.history.slice(-499):[];
-    rh.push({
-      id:'REF_'+Date.now()+'_'+d.userId,
-      type:'রেফারেল বোনাস ৳'+TG_REF_BONUS+' ('+(d.nick||'User')+')',
-      amount:TG_REF_BONUS,
-      status:'Completed',
-      time:new Date().toLocaleString('bn-BD')
-    });
-    await db.collection('users').doc(d.referredBy).update({
-      balance:nb,
-      commission:Number(r.commission||0)+TG_REF_BONUS,
-      referCount:nc,
-      refCount:nc,
-      referralCount:nc,
-      referredUsers:newRu,
-      history:rh
-    });
+    rh.push({id:'REF_'+Date.now()+'_'+d.userId,type:'রেফারেল বোনাস ৳'+TG_REF_BONUS+' ('+(d.nick||'User')+')',amount:TG_REF_BONUS,status:'Completed',time:new Date().toLocaleString('bn-BD')});
+    await db.collection('users').doc(d.referredBy).update({balance:nb,commission:Number(r.commission||0)+TG_REF_BONUS,referCount:nc,refCount:nc,referralCount:nc,referredUsers:newRu,history:rh});
     await db.collection('users').doc(userKey).update({referralBonusGivenForTelegram:true});
   }catch(e){console.log('Ref bonus err:',e)}
 }
@@ -495,16 +527,10 @@ async function initAuth(){
     const loginId=sKey(tgId);
     const uRef=db.collection('users').doc(loginId);
     const dRef=db.collection('device_registry').doc(did);
-
     let refCode=getRefCode();
     if(!refCode){try{const q2=new URLSearchParams(location.search).get('ref');if(q2)refCode=q2.trim()}catch(e){}}
     refCode=(refCode||'').toUpperCase();
-
-    const [_,dSnap,uSnap]=await Promise.all([
-      auth.signInAnonymously(),
-      (!isTest?dRef.get():Promise.resolve({exists:false})),
-      uRef.get()
-    ]);
+    const [_,dSnap,uSnap]=await Promise.all([auth.signInAnonymously(),(!isTest?dRef.get():Promise.resolve({exists:false})),uRef.get()]);
     const authUid=auth.currentUser.uid;
     if(!isTest){
       if(dSnap.exists&&dSnap.data().telegramId!==tgId){showLoading(false);showBlocked('এই ডিভাইসে ইতিমধ্যে একটি অ্যাকাউন্ট রয়েছে!');return}
@@ -514,20 +540,12 @@ async function initAuth(){
       const d=uSnap.data();
       if(d.isBlocked===true){showLoading(false);showBlocked(d.blockReason||'নিয়ম লঙ্ঘন');return}
       userKey=loginId;user={...d,loginId};
-
-      if(!d.referredBy && refCode){
+      if(!d.referredBy&&refCode){
         try{
           const q=await db.collection('users').where('userId','==',refCode).limit(1).get();
-          if(!q.empty){
-            const rd=q.docs[0].data();
-            if(rd.loginId && rd.loginId!==loginId){
-              await uRef.update({referredBy:rd.loginId});
-              user.referredBy=rd.loginId;
-            }
-          }
+          if(!q.empty){const rd=q.docs[0].data();if(rd.loginId&&rd.loginId!==loginId){await uRef.update({referredBy:rd.loginId});user.referredBy=rd.loginId}}
         }catch(e){console.log('late ref bind err:',e)}
       }
-
       let ch=false,upd={};
       if(!d.authUid){upd.authUid=authUid;ch=true}
       if(!d.profileImg&&tgInfo.photo){upd.profileImg=tgInfo.photo;ch=true}
@@ -535,16 +553,13 @@ async function initAuth(){
       if(!Array.isArray(d.referredUsers)){upd.referredUsers=[];ch=true}
       if(typeof d.referCount!=='number'){upd.referCount=0;ch=true}
       if(ch){uRef.update(upd).catch(()=>{});Object.assign(user,upd)}
-    } else {
+    }else{
       const newId='USR'+Math.floor(100000+Math.random()*900000);
       let refBy=null;
       if(refCode&&refCode!==newId.toUpperCase()&&refCode!==loginId.toUpperCase()){
         try{
           const q=await db.collection('users').where('userId','==',refCode).limit(1).get();
-          if(!q.empty){
-            const rd=q.docs[0].data();
-            if(rd.loginId&&rd.loginId!==loginId)refBy=rd.loginId;
-          }
+          if(!q.empty){const rd=q.docs[0].data();if(rd.loginId&&rd.loginId!==loginId)refBy=rd.loginId}
         }catch(e){}
       }
       const nu={nick:tgInfo.nick,loginId,userId:newId,authUid,telegramId:tgId,telegramUsername:tgUser.username||'',isBrowserUser:tgInfo.isBrowser,balance:0,commission:0,referCount:0,refCount:0,referralCount:0,totalWithdraw:0,totalAdsWatched:0,adsToday:0,lastAdDate:'',referredBy:refBy,referredUsers:[],referralBonusGivenForTelegram:false,history:[],usedGifts:[],giftHistory:[],profileImg:tgInfo.photo||'',deviceId:getDeviceId(),linkedNumbers:{bKash:'',Nagad:''},telegramStatus:{tg1:false,tg2:false,tg3:false,tg4:false},telegramJoinBonuses:{tg1:false,tg2:false,tg3:false,tg4:false},telegramPendingJoins:{},isBlocked:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
@@ -554,14 +569,14 @@ async function initAuth(){
     showLoading(true,'Verifying...','চ্যানেল চেক হচ্ছে');
     if(user.isBrowserUser===true){
       showLoading(false);await enterApp();listenUser(userKey);
-    } else {
+    }else{
       const ok=await checkGate();
       showLoading(false);
       if(ok){
         await enterApp();listenUser(userKey);
         awardJoinBonus().catch(()=>{});
         setTimeout(()=>processRefBonus().catch(()=>{}),1500);
-      } else {
+      }else{
         showGate();listenUser(userKey);
       }
     }
@@ -672,7 +687,7 @@ async function verifyGateChannels(){
       await processRefBonus();
       await enterApp();
       listenUser(userKey);
-    } else {
+    }else{
       showPopup('❌ এখনো জয়েন হয়নি','সবগুলো চ্যানেলে Join ক্লিক করুন।');
     }
   }finally{gateLock=false;showLoading(false)}
@@ -837,125 +852,83 @@ function selectWd(m){
   wdMethod=m;
   $('moptBk').classList.toggle('active',m==='bKash');
   $('moptNa').classList.toggle('active',m==='Nagad');
+  window._wdNum='';
+  window._wdAmt='';
   $('wdNum').value='';
   $('wdAmt').value='';
   $('numHint').textContent='';
   $('amtHint').textContent='';
 }
 
-/* Live input sanitizer */
-function setupWithdrawInputs(){
-  const numEl=$('wdNum'), amtEl=$('wdAmt');
-  const numHint=$('numHint'), amtHint=$('amtHint');
-
-  if(numEl){
-    numEl.removeAttribute('pattern');
-    numEl.removeAttribute('inputmode');
-    numEl.setAttribute('type','text');
-    numEl.addEventListener('input',()=>{
-      const raw=numEl.value;
-      const cleaned=bnToEn(raw).replace(/[^0-9]/g,'').slice(0,11);
-      if(raw!==cleaned) numEl.value=cleaned;
-      if(!numHint)return;
-      if(!cleaned){numHint.textContent='';numHint.className='field-hint';return}
-      if(cleaned.length<11){
-        numHint.textContent='⚠️ '+cleaned.length+'/১১ ডিজিট — আরও '+(11-cleaned.length)+' দিন';
-        numHint.className='field-hint err';
-      }else if(!/^01[3-9]\d{8}$/.test(cleaned)){
-        numHint.textContent='⚠️ 013-019 দিয়ে শুরু হতে হবে';
-        numHint.className='field-hint err';
-      }else{
-        numHint.textContent='✅ সঠিক নম্বর';
-        numHint.className='field-hint ok';
-      }
-    });
-  }
-  if(amtEl){
-    amtEl.removeAttribute('pattern');
-    amtEl.removeAttribute('inputmode');
-    amtEl.setAttribute('type','text');
-    amtEl.addEventListener('input',()=>{
-      const raw=amtEl.value;
-      const cleaned=bnToEn(raw).replace(/[^0-9]/g,'').slice(0,6);
-      if(raw!==cleaned) amtEl.value=cleaned;
-      if(!amtHint)return;
-      if(!cleaned){amtHint.textContent='';amtHint.className='field-hint';return}
-      const num=parseInt(cleaned,10);
-      if(num<MIN_WD){
-        amtHint.textContent='⚠️ সর্বনিম্ন ৳'+MIN_WD+' — আরও ৳'+(MIN_WD-num)+' বাড়ান';
-        amtHint.className='field-hint err';
-      }else if(num>MAX_WD){
-        amtHint.textContent='⚠️ সর্বোচ্চ ৳'+MAX_WD;
-        amtHint.className='field-hint err';
-      }else{
-        amtHint.textContent='✅ সঠিক পরিমাণ: ৳'+num;
-        amtHint.className='field-hint ok';
-      }
-    });
-  }
-}
-
-/* ================= WITHDRAW (সম্পূর্ণ ঠিক করা) ================= */
+/* ================= WITHDRAW (সম্পূর্ণ Bulletproof) ================= */
 async function doWithdraw(){
   const u = user;
   if (!u) return;
 
   const numEl = $('wdNum');
   const amtEl = $('wdAmt');
-  
-  const rawAmt = String(amtEl.value || amtEl.getAttribute('value') || '').trim();
-  const rawNum = String(numEl.value || numEl.getAttribute('value') || '').trim();
 
-  const wn = bnToEn(rawNum).replace(/[^0-9]/g, '');
-  const amtStr = bnToEn(rawAmt).replace(/[^0-9]/g, '');
+  // ⚡ Bulletproof value read — 3 sources
+  let wn = String(window._wdNum || '').replace(/[^0-9]/g,'');
+  let amtStr = String(window._wdAmt || '').replace(/[^0-9]/g,'');
+
+  // Fallback to input.value
+  if(!wn && numEl && numEl.value) wn = String(numEl.value).replace(/[^0-9]/g,'');
+  if(!amtStr && amtEl && amtEl.value) amtStr = String(amtEl.value).replace(/[^0-9]/g,'');
+
   const amt = amtStr ? parseInt(amtStr, 10) : 0;
 
-  console.log('🔍 doWithdraw:', { rawNum, rawAmt, wn, amtStr, amt });
+  console.log('🔍 doWithdraw:', {
+    globalNum: window._wdNum,
+    globalAmt: window._wdAmt,
+    inputNum: numEl ? numEl.value : 'n/a',
+    inputAmt: amtEl ? amtEl.value : 'n/a',
+    finalNum: wn, finalAmt: amtStr, parsedAmt: amt
+  });
 
-  /* ===== ১. নম্বর চেক ===== */
-  if (!wn) {
-    showPopup('❌ নম্বর দিন', 
-      'যে নম্বরে টাকা পাঠাতে হবে সেটা লিখুন।\n\nউদাহরণ: 01712345678');
-    numEl.focus();
-    return;
-  }
-  if (wn.length !== 11 || !/^01[3-9]\d{8}$/.test(wn)) {
-    showPopup('❌ ভুল নম্বর',
-      'সঠিক বাংলাদেশী নম্বর দিন।\n\n' +
-      '📌 আপনি দিয়েছেন: ' + wn + '\n' +
-      '📌 ডিজিট: ' + wn.length + '/১১\n\n' +
-      'উদাহরণ: 01712345678');
-    numEl.focus();
-    return;
-  }
-
-  /* ===== ২. Amount চেক ===== */
+  /* ===== Amount চেক ===== */
   if (!amtStr || amt <= 0) {
-    showPopup('❌ পরিমাণ দিন',
-      'কত টাকা উইথড্র করবেন সেটা লিখুন।\n\n' +
-      '📊 সর্বনিম্ন: ৳300\n' +
-      '📊 সর্বোচ্চ: ৳50000\n\n' +
-      'উদাহরণ: 500');
-    amtEl.focus();
+    showPopup('❌ পরিমাণ লিখুন',
+      'টাকার পরিমাণ ঘরে কিছু লিখুন।\n\n' +
+      '📊 সর্বনিম্ন: ৳' + MIN_WD + '\n' +
+      '📊 সর্বোচ্চ: ৳' + MAX_WD + '\n\n' +
+      '👉 যেমন: 300');
+    if(amtEl) amtEl.focus();
     return;
   }
   if (amt < MIN_WD) {
     showPopup('❌ পরিমাণ কম',
       'সর্বনিম্ন ৳' + MIN_WD + ' উইথড্র করা যাবে।\n\n' +
-      '📊 আপনি দিয়েছেন: ৳' + amt + '\n' +
-      '📊 আরও ৳' + (MIN_WD - amt) + ' বাড়ান।');
-    amtEl.focus();
+      '📊 আপনি দিয়েছেন: ৳' + amt);
+    if(amtEl) amtEl.focus();
     return;
   }
   if (amt > MAX_WD) {
     showPopup('❌ পরিমাণ বেশি',
       'সর্বোচ্চ ৳' + MAX_WD + ' উইথড্র করা যাবে।\n\n' +
       '📊 আপনি দিয়েছেন: ৳' + amt);
-    amtEl.focus();
+    if(amtEl) amtEl.focus();
     return;
   }
 
-  /* ===== ৩. 💰 ব্যালেন্স চেক ===== */
+  /* ===== নম্বর চেক ===== */
+  if (!wn) {
+    showPopup('❌ নম্বর দিন',
+      'যে নম্বরে টাকা পাঠাতে হবে সেটা লিখুন।\n\n' +
+      '👉 যেমন: 01712345678');
+    if(numEl) numEl.focus();
+    return;
+  }
+  if (wn.length !== 11 || !/^01[3-9]\d{8}$/.test(wn)) {
+    showPopup('❌ ভুল নম্বর',
+      'সঠিক বাংলাদেশী নম্বর দিন।\n\n' +
+      '📌 আপনি: ' + wn + ' (' + wn.length + '/১১)\n\n' +
+      'উদাহরণ: 01712345678');
+    if(numEl) numEl.focus();
+    return;
+  }
+
+  /* ===== ব্যালেন্স চেক ===== */
   const bal = Number(u.balance) || 0;
   const wc = WD_CHARGE;
   const td = amt + wc;
@@ -968,38 +941,30 @@ async function doWithdraw(){
       '💡 Ad দেখে বা Refer করে ব্যালেন্স বাড়ান।');
     return;
   }
-
   if (td > bal) {
     showPopup('💰 ব্যালেন্স কম',
       '📊 প্রয়োজন: ৳' + td.toFixed(2) + '\n' +
       '   (উইথড্র ৳' + amt + ' + চার্জ ৳' + wc + ')\n\n' +
       '💰 আপনার: ৳' + bal.toFixed(2) + '\n' +
-      '🔴 ঘাটতি: ৳' + (td - bal).toFixed(2) + '\n\n' +
-      '💡 কম টাকা দিয়ে চেষ্টা করুন।');
-    amtEl.focus();
+      '🔴 ঘাটতি: ৳' + (td - bal).toFixed(2));
+    if(amtEl) amtEl.focus();
     return;
   }
 
-  /* ===== ৪. Channel চেক ===== */
+  /* ===== Channel চেক ===== */
   if (u.isBrowserUser !== true) {
     const all = Object.keys(CHANNELS).every(k => u.telegramStatus?.[k] === true);
     if (!all) {
-      showPopup('❌ Telegram জয়েন',
-        'উইথড্রর আগে ৪টি চ্যানেলে জয়েন করতে হবে।\n\n' +
-        '📱 Task ট্যাবে গিয়ে সব চ্যানেলে Join করুন।');
+      showPopup('❌ Telegram জয়েন','উইথড্রর আগে ৪টি চ্যানেলে জয়েন করুন।');
       return;
     }
   }
 
-  /* ===== ৫. রেফার ও Gmail Approve চেক ===== */
+  /* ===== Refer + Gmail Check ===== */
   showLoading(true, 'Checking...', 'যাচাই করা হচ্ছে...');
 
   const curRef = Number(u.referCount || 0);
-
-  const wdDone = (u.history || []).filter(h =>
-    (h.id || '').startsWith('WD_') && h.status !== 'Rejected'
-  ).length;
-
+  const wdDone = (u.history || []).filter(h => (h.id || '').startsWith('WD_') && h.status !== 'Rejected').length;
   const reqRef   = wdDone === 0 ? WD_REQ_REF_FIRST   : WD_REQ_REF_OTHER;
   const reqGmail = wdDone === 0 ? WD_REQ_GMAIL_FIRST : WD_REQ_GMAIL_OTHER;
 
@@ -1020,14 +985,12 @@ async function doWithdraw(){
   /* ----- 👥 রেফার কম হলে ----- */
   if (!referOk) {
     const refBaki = reqRef - curRef;
-    const title = '👥 রেফার কম';
-    const msg = 
-      (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ১২ জন রেফার লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqRef + ' জন রেফার লাগবে।\n\n') +
+    showPopup('👥 রেফার কম',
+      (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ১২ জন রেফার লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqRef + ' জন লাগবে।\n\n') +
       '📊 আপনার রেফার: ' + curRef + ' জন\n' +
       '🎯 প্রয়োজন: ' + reqRef + ' জন\n' +
       '🔴 বাকি: ' + refBaki + ' জন\n\n' +
-      '💡 Refer লিংক শেয়ার করে ' + refBaki + ' জনকে আনার চেষ্টা করুন।';
-    showPopup(title, msg);
+      '💡 Refer লিংক শেয়ার করে ' + refBaki + ' জনকে আনার চেষ্টা করুন।');
     return;
   }
 
@@ -1035,7 +998,7 @@ async function doWithdraw(){
   if (!gmailOk) {
     const gmailBaki = reqGmail - gmailApproved;
     showPopup('📧 Gmail Approve কম',
-      (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ৫টি Gmail Approve থাকা লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqGmail + 'টি Gmail Approve থাকা লাগবে।\n\n') +
+      (wdDone === 0 ? '📌 ১ম Withdraw এর জন্য ৭টি Gmail Approve লাগবে।\n\n' : '📌 এই Withdraw এর জন্য ' + reqGmail + 'টি লাগবে।\n\n') +
       '📊 আপনার Approve: ' + gmailApproved + ' টি\n' +
       '🎯 প্রয়োজন: ' + reqGmail + ' টি\n' +
       '🔴 বাকি: ' + gmailBaki + ' টি\n\n' +
@@ -1044,7 +1007,7 @@ async function doWithdraw(){
     return;
   }
 
-  /* ===== ৬. সব ঠিক — প্রসেস ===== */
+  /* ===== সব ঠিক — প্রসেস ===== */
   showLoading(true, 'Processing...', 'পেমেন্ট গেটওয়ে');
   try {
     const nb = bal - td;
@@ -1081,17 +1044,23 @@ async function doWithdraw(){
       });
     } catch(e) { console.log('withdraw request save:', e); }
 
-    numEl.value = '';
-    amtEl.value = '';
+    // ⚡ Clear
+    window._wdNum = '';
+    window._wdAmt = '';
+    if(numEl) numEl.value = '';
+    if(amtEl) amtEl.value = '';
     if($('numHint')) $('numHint').textContent = '';
     if($('amtHint')) $('amtHint').textContent = '';
     updateUI();
-    showPopup('✅ উইথড্র সফল!',
-      '৳' + amt.toFixed(2) + ' রিকোয়েস্ট সফল!\n' +
-      'চার্জ: ৳' + wc + '\n\n' +
-      '⚡ ১০ মিনিটের মধ্যে পেমেন্ট ✅');
+
+    showPopup('⏳ উইথড্র রিকোয়েস্ট পাঠানো হয়েছে',
+      '💰 পরিমাণ: ৳' + amt.toFixed(2) + '\n' +
+      '📱 ' + wdMethod + ': ' + wn + '\n' +
+      '💸 চার্জ: ৳' + wc + '\n' +
+      '📊 স্ট্যাটাস: ⏳ Pending\n\n' +
+      '⚡ Admin ১০ মিনিটের মধ্যে Approve করবে।');
   } catch(e) {
-    showPopup('❌ Error', e.message || 'উইথড্র ব্যর্থ হয়েছে');
+    showPopup('❌ Error', e.message || 'উইথড্র ব্যর্থ');
   } finally {
     showLoading(false);
   }
@@ -1192,9 +1161,7 @@ async function awardAd(u,isAuto){
   const h=u.history||[];
   h.push({id:'AD_'+Date.now(),type:isAuto?'Auto Ad Watched':'Ad Watched',amount:rew,status:'Completed',time:new Date().toLocaleString('bn-BD'),duration:Math.round(el)});
   await saveUser({balance:nb,adsToday:tc,lastAdDate:today,totalAdsWatched:nt,history:h});
-  try{
-    await db.collection('company_earnings').add({userId:u.userId,userReward:rew,companyShare:cs,adDuration:Math.round(el),timestamp:new Date().toLocaleString('bn-BD'),createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-  }catch(e){}
+  try{await db.collection('company_earnings').add({userId:u.userId,userReward:rew,companyShare:cs,adDuration:Math.round(el),timestamp:new Date().toLocaleString('bn-BD'),createdAt:firebase.firestore.FieldValue.serverTimestamp()})}catch(e){}
   await processCommission(u,rew);
   return{nb,tc};
 }
@@ -1238,14 +1205,10 @@ async function claimAd(){
   try{
     const r=await awardAd(u,false);
     if(r?.failed){closeAd();showPopup('❌ Ad Fail',r.reason||'Count হয়নি');return}
-    closeAd();
-    updateUI();
+    closeAd();updateUI();
     showClaim('🎉 ৳'+AD_REWARD.toFixed(2)+' যোগ হয়েছে!');
   }catch(e){console.error(e);showPopup('Error','Failed to claim')}
-  finally{
-    isClaiming=false;
-    b.innerHTML='Claim ৳1.00';b.style.pointerEvents='auto';
-  }
+  finally{isClaiming=false;b.innerHTML='Claim ৳1.00';b.style.pointerEvents='auto'}
 }
 
 async function startAutoEarn(){
@@ -1305,11 +1268,7 @@ async function runAuto(mid){
     const uu=user;
     if(uu){
       const r=await awardAd(uu,true);
-      if(r&&!r.failed){
-        autoCount++;autoEarn+=AD_REWARD;
-        updateUI();
-        try{navigator.vibrate?.(40)}catch(e){}
-      }
+      if(r&&!r.failed){autoCount++;autoEarn+=AD_REWARD;updateUI();try{navigator.vibrate?.(40)}catch(e){}}
     }
     await delay(1200);
     if(!autoRun||mid!==autoId){ov.classList.remove('active');return}
@@ -1343,10 +1302,7 @@ function handleProof(e){
       const c=document.createElement('canvas');
       let w=img.width,h=img.height;
       const m=800;
-      if(w>m||h>m){
-        if(w>h){h=(h/w)*m;w=m}
-        else{w=(w/h)*m;h=m}
-      }
+      if(w>m||h>m){if(w>h){h=(h/w)*m;w=m}else{w=(w/h)*m;h=m}}
       c.width=w;c.height=h;
       c.getContext('2d').drawImage(img,0,0,w,h);
       proofBase64=c.toDataURL('image/jpeg',0.65);
@@ -1406,10 +1362,8 @@ async function submitProof(){
       status:'Pending',createdAt:new Date().toLocaleString('bn-BD'),
       createdAtTs:firebase.firestore.FieldValue.serverTimestamp()
     });
-    proofBase64=null;
-    $('proofImg').value='';
-    $('proofPrev').style.display='none';
-    $('proofSub').style.display='none';
+    proofBase64=null;$('proofImg').value='';
+    $('proofPrev').style.display='none';$('proofSub').style.display='none';
     showClaim('✅ Submit সফল!\n\n📊 '+ac+'টি Ad\n💰 ৳'+rew+'\n\nAdmin verify করলে পাবেন');
     loadProofHist();
   }catch(e){console.error(e);showPopup('❌ Error',e.message)}
@@ -1468,18 +1422,8 @@ function copyF(id,btn){
   const el=$(id);if(!el)return;
   const t=el.textContent.trim();
   if(!t||t==='-')return;
-  const done=()=>{
-    btn.classList.add('ok');btn.textContent='✅ Copied';
-    try{navigator.vibrate?.(30)}catch(e){}
-    setTimeout(()=>{btn.classList.remove('ok');btn.textContent='📋 Copy'},1500);
-  };
-  const fb=()=>{
-    const ta=document.createElement('textarea');
-    ta.value=t;ta.style.position='fixed';ta.style.opacity='0';
-    document.body.appendChild(ta);ta.select();
-    try{document.execCommand('copy');done()}catch(e){}
-    document.body.removeChild(ta);
-  };
+  const done=()=>{btn.classList.add('ok');btn.textContent='✅ Copied';try{navigator.vibrate?.(30)}catch(e){}setTimeout(()=>{btn.classList.remove('ok');btn.textContent='📋 Copy'},1500)};
+  const fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(ta)};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(done).catch(fb);
   else fb();
 }
@@ -1492,27 +1436,15 @@ async function submitGmailTask(){
   btn.disabled=true;btn.innerHTML='⏳ Checking...';
   try{
     try{
-      const wRes=await fetch(WORKER_URL,{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'validateGmail',email:currentGmailTask.email,password:currentGmailTask.password})
-      });
+      const wRes=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'validateGmail',email:currentGmailTask.email,password:currentGmailTask.password})});
       const wJson=await wRes.json();
-      if(!wJson.valid){
-        showPopup('❌ Validation Failed',wJson.reason||'ভেরিফিকেশন ব্যর্থ');
-        btn.disabled=false;btn.innerHTML='✅ Submit (৳50)';
-        return;
-      }
+      if(!wJson.valid){showPopup('❌ Validation Failed',wJson.reason||'ভেরিফিকেশন ব্যর্থ');btn.disabled=false;btn.innerHTML='✅ Submit (৳50)';return}
     }catch(e){console.log('Worker validate error:',e)}
     const today=new Date();today.setHours(0,0,0,0);
     const tTs=today.getTime()/1000;
     const tsnap=await db.collection('gmail_submissions').where('userId','==',u.userId).get();
     let tCount=0,dupEmail=false;
-    tsnap.forEach(d=>{
-      const dt=d.data();
-      const ts=dt.createdAtTs?.seconds||0;
-      if(ts>=tTs)tCount++;
-      if(dt.email===currentGmailTask.email)dupEmail=true;
-    });
+    tsnap.forEach(d=>{const dt=d.data();const ts=dt.createdAtTs?.seconds||0;if(ts>=tTs)tCount++;if(dt.email===currentGmailTask.email)dupEmail=true});
     if(tCount>=GMAIL_LIMIT){showPopup('⏰ দৈনিক লিমিট','আজ '+GMAIL_LIMIT+'টি সাবমিট করেছেন। কাল আবার চেষ্টা করুন।');btn.disabled=false;btn.innerHTML='✅ Submit (৳50)';return}
     if(dupEmail){showPopup('❌ Same Gmail','এই ইমেইল আগে সাবমিট হয়েছে।');btn.disabled=false;btn.innerHTML='✅ Submit (৳50)';return}
     await db.collection('gmail_submissions').add({
@@ -1623,19 +1555,8 @@ function copyRef(){
   const l=$('refLink').textContent;
   if(!l||l==='লোড হচ্ছে...'){showToast('⚠️','লিংক লোড হয়নি');return}
   const b=$('refBtn'),bx=$('refBox');
-  const done=()=>{
-    b.classList.add('ok');b.textContent='✓ কপি হয়েছে!';
-    bx.classList.add('ok');
-    try{navigator.vibrate?.(50)}catch(e){}
-    setTimeout(()=>{b.classList.remove('ok');b.textContent='📋 Copy Link';bx.classList.remove('ok')},2000);
-  };
-  const fb=()=>{
-    const ta=document.createElement('textarea');
-    ta.value=l;ta.style.position='fixed';ta.style.opacity='0';
-    document.body.appendChild(ta);ta.select();
-    try{document.execCommand('copy');done()}catch(e){}
-    document.body.removeChild(ta);
-  };
+  const done=()=>{b.classList.add('ok');b.textContent='✓ কপি হয়েছে!';bx.classList.add('ok');try{navigator.vibrate?.(50)}catch(e){}setTimeout(()=>{b.classList.remove('ok');b.textContent='📋 Copy Link';bx.classList.remove('ok')},2000)};
+  const fb=()=>{const ta=document.createElement('textarea');ta.value=l;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(ta)};
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(l).then(done).catch(fb);
   else fb();
 }
@@ -1694,7 +1615,6 @@ window.addEventListener('blur',()=>{if(adRun&&adLeft>0&&!monetagPlaying)adAbando
 
 window.addEventListener('DOMContentLoaded',async()=>{
   try{if(window.Telegram?.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand()}}catch(e){}
-  setupWithdrawInputs();
   await initAuth();
 });
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(e=>{});
